@@ -1,0 +1,20 @@
+site_name: "UVSQ_LSSI633_data_science"
+site_url: "https://nicoudart.github.io/UVSQ_LSSI633_data_science"
+site_author: "Nicolas OUDART"
+
+theme:
+  name: readthedocs
+nav:
+  - Accueil: index.md
+  - I. Introduction: Chap1_Introduction.md
+  - II. Classification supervisée: Chap2_Classification_supervisee.md
+  - III. Régression: Chap3_Regression.md
+  - IV. Clustering: Chap4_Clustering.md
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - attr_list
+  
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
