@@ -1,6 +1,6 @@
 # LSSI633 : Sciences des données
 
-![Logo](img/){width="250"}
+![Logo](img/SI633_logo.png){width="250"}
 
 _Cours conçu pour les étudiants de L3 de l'Université de Versailles Saint-Quentin (UVSQ)_
 
