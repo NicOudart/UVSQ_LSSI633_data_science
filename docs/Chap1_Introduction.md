@@ -32,10 +32,16 @@ Ce chapitre porte sur les enjeux des sciences des données.
 
 ### Pertinence des variables
 
-###
+### Sur-apprentissage / sous-apprentissage
 
 ## Test, validation et hyperparamètres
 
 ## Import de données et fichiers CSV
 
 ## Outils Python pour l'apprentissage
+
+### Pandas
+
+### Scikit-Learn
+
+### Keras-Tensorflow, Pytorch
