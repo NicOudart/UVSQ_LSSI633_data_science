@@ -15,6 +15,10 @@ _Cours conçu pour les étudiants de L3 de l'Université de Versailles Saint-Que
 
 * [Chapitre IV : Clustering](Chap4_Clustering.md) :  .
 
+---
+
+Tous les exemples de ce cours sont imaginaires, et les données synthétiques.
+Leur intérêt est purement pédagogique. 
 
 ---
 
