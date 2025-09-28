@@ -31,6 +31,8 @@ L'objectif est qu'à la fin de ce cours vous soyez capable de :
 
 * **Evaluer les performances** de votre modèle, et les interpréter.
 
+Ce cours vous donnera aussi des astuces d'implémentation en **Python**, basées sur la bibliothèque **Scikit-Learn**.
+
 ---
 
 Tous les exemples de ce cours sont imaginaires, et les données synthétiques.
