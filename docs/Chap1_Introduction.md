@@ -6,7 +6,7 @@ Ce chapitre porte sur les enjeux des sciences des données.
 
 ## Analyse de données
 
-### Nature des données
+### Nature et type des données
 
 ### Visualisation graphique
 
