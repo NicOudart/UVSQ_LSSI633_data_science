@@ -64,11 +64,12 @@ On remarque ici que plus la variable a de noms possibles, et plus les binaires d
 
 |Astuce Python|
 |:-|
-|La bibliothèque Scikit-Learn possède dans son package "preprocessing" une fonction "OrdinalEncoder", permettant d'assigner un entier à des variables qualitatives ordinales.|
-|Dans ce même package, vous trouverez également une fonction "OneHotEncoder", permettant d'encoder en one-hot des variables qualitatives nominales.|
-|Dans les 2 cas, il vous faut créer une instance de "OrdinalEncoder" ou de "OneHotEncoder", puis utiliser la méthode "fit_transform()" avec vos données en entrée.|
+|La bibliothèque Scikit-Learn possède dans son package **preprocessing** une fonction **OrdinalEncoder**, permettant d'assigner un entier à des variables qualitatives ordinales.|
+|Dans ce même package, vous trouverez également une fonction **OneHotEncoder**, permettant d'encoder en one-hot des variables qualitatives nominales.|
+|Dans les 2 cas, il vous faut créer une instance de **OrdinalEncoder** ou de **OneHotEncoder**, puis utiliser la méthode **fit_transform()** avec vos données en entrée.|
 
 Les variables étudiées peuvent aussi être **multidimensionnelles**.
+
 
 
 Enfin, les données étudiées peuvent être **structurées**.
