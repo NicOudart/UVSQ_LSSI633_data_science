@@ -70,11 +70,45 @@ On remarque ici que plus la variable a de noms possibles, et plus les binaires d
 
 Les variables étudiées peuvent aussi être **multidimensionnelles**.
 
+En effet, dans la pluplart des situations, notre jeu de données peut se mettre sous la forme d'un tableau, dont 
 
+* Les colonnes correspondront aux "**variables**".
+
+* Les lignes correspondront aux "**individus**" : les différentes réalisations de ces variables.
+
+L'ensemble des individus sera nommé "**population**", une sélection des individus un "**échantillon**".
+
+Voici un exemple de jeu de données multidimensionnelles :
+
+|Brioche n°1|Poids (g)|Nombre de pépites de chocolat|Prix (€)|
+|:---------:|:-------:|:---------------------------:|:------:|
+|1          |70       |13                           |3.5     |
+|2          |80       |17                           |3.6     |
+|3          |85       |15                           |3.7     |
+|4          |83       |16                           |3.4     |
+|5          |76       |18                           |3.3     |
+|6          |78       |13                           |3.5     |
+
+Nous avons ici 6 individus, les brioches, pour lesquelles nous avons mesuré 3 variables, le poids, le nombre de pépites de chocolat, et le prix.
+
+|Astuce Python|
+|:-|
+|Pour stocker puis manipuler des données multidimensionnelles, on utilise souvent en Python un type de conteneur de la bibliothèque **Pandas** : les "**DataFrames**".|
+|Les DataFrames se présentent comme des tableaux pouvant contenir des variables de types différents, avec un label associé à chaque colonne du tableau (variable).|
+|Nous reparlerons de Pandas plus loin dans ce chapitre.|
 
 Enfin, les données étudiées peuvent être **structurées**.
 
+On entend par là que des données peuvent avoir un cohérence chronologique (série temporelle, un son) ou spatiale (une carte, une image, un texte, une vidéo).
 
+Par exemple, dans le cas d'une image :
+
+![Données structurées](img/Chap1_image.png)
+
+Chaque pixel de l'image doit être compris dans le contexte global de l'image : changer ça position change le jeu de données.
+
+Vous l'aurez compris, la nature des données, leur dimensionnalité, ainsi que leur structure, **peuvent rendre leur compréhension difficile**.
+Nous allons dans la suite voir comment on peut essayer de tirer des informations pertinentes de nos données.
 
 ### Visualisation graphique
 
