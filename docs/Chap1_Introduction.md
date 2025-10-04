@@ -110,6 +110,8 @@ Il est évident que changer la position des pixels les uns par rapport aux autre
 
 ![Données structurées](img/Chap1_image_shuffled.png)
 
+Dans certains cas, l'**ordre des données** est donc en soit une information nécessaire à leur interprétation.
+
 Vous l'aurez compris, la nature des données, leur dimensionnalité, ainsi que leur structure, **peuvent rendre leur compréhension difficile**.
 Nous allons dans la suite voir comment on peut essayer de tirer des informations pertinentes de nos données.
 
