@@ -105,7 +105,10 @@ Par exemple, dans le cas d'une image :
 
 ![Données structurées](img/Chap1_image.png)
 
-Chaque pixel de l'image doit être compris dans le contexte global de l'image : changer ça position change le jeu de données.
+Chaque pixel de l'image doit être compris dans le contexte global de l'image. 
+Il est évident que changer la position des pixels les uns par rapport aux autres change le jeu de données : 
+
+![Données structurées](img/Chap1_image_shuffled.png)
 
 Vous l'aurez compris, la nature des données, leur dimensionnalité, ainsi que leur structure, **peuvent rendre leur compréhension difficile**.
 Nous allons dans la suite voir comment on peut essayer de tirer des informations pertinentes de nos données.
