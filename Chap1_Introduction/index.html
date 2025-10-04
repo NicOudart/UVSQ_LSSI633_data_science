@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap1_Introduction/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>I. Introduction - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "I. Introduction";
+        var mkdocs_page_input_path = "Chap1_Introduction.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap1_Introduction/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">I. Introduction</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#analyse-de-donnees">Analyse de données</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#nature-et-type-des-donnees">Nature et type des données</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#visualisation-graphique">Visualisation graphique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#statistiques-descriptives">Statistiques descriptives</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#recherche-de-correlation">Recherche de corrélation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#preparation-des-donnees">Préparation des données</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#les-apprentissages">Les apprentissages</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#lapprentissage-automatique">L'apprentissage automatique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#les-3-grands-types-dapprentissages">Les 3 grands types d'apprentissages</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#entrainement-dun-modele">Entraînement d'un modèle</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#enjeux-de-lapprentissage">Enjeux de l'apprentissage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#quantite-et-qualite-des-donnees">Quantité et qualité des données</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#representativite-et-equilibre-des-donnees">Représentativité et équilibre des données</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pertinence-des-variables">Pertinence des variables</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sur-apprentissage-sous-apprentissage">Sur-apprentissage / sous-apprentissage</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-validation-et-hyperparametres">Test, validation et hyperparamètres</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#import-de-donnees-et-fichiers-csv">Import de données et fichiers CSV</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#outils-python-pour-lapprentissage">Outils Python pour l'apprentissage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pandas">Pandas</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#scikit-learn">Scikit-Learn</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#keras-tensorflow-pytorch">Keras-Tensorflow, Pytorch</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap2_Classification_supervisee/">II. Classification supervisée</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap3_Regression/">III. Régression</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap4_Clustering/">IV. Clustering</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">I. Introduction</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-i-introduction-aux-sciences-des-donnees">Chapitre I : Introduction aux sciences des données</h1>
+<p>Ce chapitre porte sur les concepts et les enjeux des sciences des données.</p>
+<hr />
+<h2 id="analyse-de-donnees">Analyse de données</h2>
+<h3 id="nature-et-type-des-donnees">Nature et type des données</h3>
+<p>Une des difficultés rencontrées en sciences des données provient de la <strong>grande variétés des données</strong>.</p>
+<p>Tout d'abord, les variables étudiées peuvent être de <strong>nature</strong> différente :</p>
+<p><img alt="Nature des données" src="../img/Chap1_nature_donnees.png" /></p>
+<ul>
+<li>
+<p>Une donnée <strong>quantitative continue</strong> peut prendre n'importe quelle valeur numérique : par exemple, le prix d'un kilo de farine.</p>
+</li>
+<li>
+<p>Une donnée <strong>quantitative discrète</strong> ne peut prendre qu'un nombre fini de valeurs numériques dans un intervalle : par exemple, le nombre de pépites de chocolats dans une brioche.</p>
+</li>
+<li>
+<p>Une donnée <strong>qualitative nominale</strong> est descriptive sans ordre hiérarchique : par exemple, la région d'origine d'une pâtisserie.</p>
+</li>
+<li>
+<p>Une donnée <strong>qualitative ordinale</strong> est descriptive avec un ordre hiérarchique : par exemple, le niveau de cuisson d'une baguette de pain (blanche, pas trop cuite, bien cuite).</p>
+</li>
+</ul>
+<p>La plupart des modèles d'apprentissage automatique ne prennent que des valeurs numériques en entrée.</p>
+<p>On va donc en général <strong>encoder</strong> des données qualitatives avec des <strong>valeurs numériques</strong>. Par exemple :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Cuisson du pain</th>
+<th style="text-align: center;">Encodage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Blanc</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pas trop cuit</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;">Bien cuit</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+<p>Cette méthode fonctionne bien pour des données ordinales comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
+C'est pourquoi on utilise souvent l'encodage <strong>one-hot</strong>.</p>
+<p>L'idée est de faire comme si chaque nom possible pour une variable qualitative était une variable en soit. 
+On appelle parfois ces variables imaginaires des "dummy variables".</p>
+<p>Par exemple, pour la région d'origine des pâtisseries, on passe de :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Pâtisserie</th>
+<th style="text-align: center;">Région</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Croissant</td>
+<td style="text-align: center;">Paris</td>
+</tr>
+<tr>
+<td style="text-align: center;">Merveilleux</td>
+<td style="text-align: center;">Nord</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kouign-amann</td>
+<td style="text-align: center;">Bretagne</td>
+</tr>
+<tr>
+<td style="text-align: center;">Cannelé</td>
+<td style="text-align: center;">Sud-Ouest</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kougelhopf</td>
+<td style="text-align: center;">Est</td>
+</tr>
+</tbody>
+</table>
+<p>à l'encodage one-hot suivant :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Pâtisserie</th>
+<th style="text-align: center;">Paris</th>
+<th style="text-align: center;">Nord</th>
+<th style="text-align: center;">Bretagne</th>
+<th style="text-align: center;">Sud-Ouest</th>
+<th style="text-align: center;">Est</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Croissant</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Merveilleux</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kouign-amann</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Cannelé</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kougelhopf</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>Pour le Merveilleux, on donnera donc en entrée d'un modèle le binaire 01000.</p>
+<p>On remarque ici que plus la variable a de noms possibles, et plus les binaires d'encodage one-hot seront longs, ce qui peut être problématique.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La bibliothèque Scikit-Learn possède dans son package <strong>preprocessing</strong> une fonction <strong>OrdinalEncoder</strong>, permettant d'assigner un entier à des variables qualitatives ordinales.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dans ce même package, vous trouverez également une fonction <strong>OneHotEncoder</strong>, permettant d'encoder en one-hot des variables qualitatives nominales.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dans les 2 cas, il vous faut créer une instance de <strong>OrdinalEncoder</strong> ou de <strong>OneHotEncoder</strong>, puis utiliser la méthode <strong>fit_transform()</strong> avec vos données en entrée.</td>
+</tr>
+</tbody>
+</table>
+<p>Les variables étudiées peuvent aussi être <strong>multidimensionnelles</strong>.</p>
+<p>En effet, dans la pluplart des situations, notre jeu de données peut se mettre sous la forme d'un tableau, dont </p>
+<ul>
+<li>
+<p>Les colonnes correspondront aux "<strong>variables</strong>".</p>
+</li>
+<li>
+<p>Les lignes correspondront aux "<strong>individus</strong>" : les différentes réalisations de ces variables.</p>
+</li>
+</ul>
+<p>L'ensemble des individus sera nommé "<strong>population</strong>", une sélection des individus un "<strong>échantillon</strong>".</p>
+<p>Voici un exemple de jeu de données multidimensionnelles :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Brioche n°1</th>
+<th style="text-align: center;">Poids (g)</th>
+<th style="text-align: center;">Nombre de pépites de chocolat</th>
+<th style="text-align: center;">Prix (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">3.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">3.6</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">3.7</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">3.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">3.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">3.5</td>
+</tr>
+</tbody>
+</table>
+<p>Nous avons ici 6 individus, les brioches, pour lesquelles nous avons mesuré 3 variables, le poids, le nombre de pépites de chocolat, et le prix.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Pour stocker puis manipuler des données multidimensionnelles, on utilise souvent en Python un type de conteneur de la bibliothèque <strong>Pandas</strong> : les "<strong>DataFrames</strong>".</td>
+</tr>
+<tr>
+<td style="text-align: left;">Les DataFrames se présentent comme des tableaux pouvant contenir des variables de types différents, avec un label associé à chaque colonne du tableau (variable).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nous reparlerons de Pandas plus loin dans ce chapitre.</td>
+</tr>
+</tbody>
+</table>
+<p>Enfin, les données étudiées peuvent être <strong>structurées</strong>.</p>
+<p>On entend par là que des données peuvent avoir un cohérence chronologique (série temporelle, un son) ou spatiale (une carte, une image, un texte, une vidéo).</p>
+<p>Par exemple, dans le cas d'une image :</p>
+<p><img alt="Données structurées" src="../img/Chap1_image.png" /></p>
+<p>Chaque pixel de l'image doit être compris dans le contexte global de l'image. 
+Il est évident que changer la position des pixels les uns par rapport aux autres change le jeu de données : </p>
+<p><img alt="Données structurées" src="../img/Chap1_image_shuffled.png" /></p>
+<p>Dans certains cas, l'<strong>ordre des données</strong> est donc en soit une information nécessaire à leur interprétation.</p>
+<p>Vous l'aurez compris, la nature des données, leur dimensionnalité, ainsi que leur structure, <strong>peuvent rendre leur compréhension difficile</strong>.
+Nous allons dans la suite voir comment on peut essayer de tirer des informations pertinentes de nos données.</p>
+<h3 id="visualisation-graphique">Visualisation graphique</h3>
+<h3 id="statistiques-descriptives">Statistiques descriptives</h3>
+<h3 id="recherche-de-correlation">Recherche de corrélation</h3>
+<h3 id="preparation-des-donnees">Préparation des données</h3>
+<h2 id="les-apprentissages">Les apprentissages</h2>
+<h3 id="lapprentissage-automatique">L'apprentissage automatique</h3>
+<h3 id="les-3-grands-types-dapprentissages">Les 3 grands types d'apprentissages</h3>
+<h3 id="entrainement-dun-modele">Entraînement d'un modèle</h3>
+<h2 id="enjeux-de-lapprentissage">Enjeux de l'apprentissage</h2>
+<h3 id="quantite-et-qualite-des-donnees">Quantité et qualité des données</h3>
+<h3 id="representativite-et-equilibre-des-donnees">Représentativité et équilibre des données</h3>
+<h3 id="pertinence-des-variables">Pertinence des variables</h3>
+<h3 id="sur-apprentissage-sous-apprentissage">Sur-apprentissage / sous-apprentissage</h3>
+<h2 id="test-validation-et-hyperparametres">Test, validation et hyperparamètres</h2>
+<h2 id="import-de-donnees-et-fichiers-csv">Import de données et fichiers CSV</h2>
+<h2 id="outils-python-pour-lapprentissage">Outils Python pour l'apprentissage</h2>
+<h3 id="pandas">Pandas</h3>
+<h3 id="scikit-learn">Scikit-Learn</h3>
+<h3 id="keras-tensorflow-pytorch">Keras-Tensorflow, Pytorch</h3>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Accueil"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Chap2_Classification_supervisee/" class="btn btn-neutral float-right" title="II. Classification supervisée">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Chap2_Classification_supervisee/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
