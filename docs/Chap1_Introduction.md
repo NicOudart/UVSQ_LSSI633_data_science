@@ -171,9 +171,21 @@ Nous allons voir les types de **représentations graphiques** les plus classique
 Toujours dans l'objectif de comprendre notre jeu de données, on peut essayer de **décrire** chaque variable par des **indicateurs statistiques**.
 Nous allons voir ici les indicateurs les plus communs en statistiques descriptives.
 
+Il est important de savoir comment ces indicateurs sont définis afin de comprendre les informations qu'ils donnent ou ne donnent pas sur un jeu de données.
+
 #### Moyenne, médiane et mode
 
+Lorsque l'on veut connaitre l'ordre de grandeur des valeurs d'une variable, là où se rassemblent la plupart des valeurs, on va utiliser un indicateur de **tendance centrale** : moyenne, médiane ou mode.
 
+* Il existe plusieurs façon de définir la moyenne, mais la plus connue est la **moyenne arithmétique** :
+
+$\overline{x} = \frac{1}{N} \sum_{i=1}^{N} x_i$
+
+On note en effet souvent $\overline{x}$ la moyenne d'une variable $x$.
+
+* La **médiane** est la valeur séparant les valeurs de la variable en 2 groupes de même taille : la moitié des valeurs sont supérieures à la médiane, l'autre moitié lui sont inférieures.
+
+* Le **mode** est la valeur la plus représentée dans l'ensemble des valeurs de la variable.
 
 #### Variance et écart-type
 
