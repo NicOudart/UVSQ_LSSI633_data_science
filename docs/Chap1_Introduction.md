@@ -117,7 +117,69 @@ Nous allons dans la suite voir comment on peut essayer de tirer des informations
 
 ### Visualisation graphique
 
+La 1ère étape lorsque l'on cherche à comprendre ses données, c'est d'essayer de les **visualiser** de manière pertinente.
+Nous allons voir les types de **représentations graphiques** les plus classiques pour visualiser un jeu de données.
+
+#### Courbes et nuages de points :
+
+
+
+#### Diagrammes en barres et histogrammes :
+
+
+
+#### Boîtes à moustaches :
+
+
+
+#### Kernel Density Estimation (KDE) :
+
+
+
+#### Graphique en aires :
+
+
+
+#### Diagramme circulaire (camembert) :
+
+
+
+#### En Python
+
+|Astuce Python|
+|:-|
+|La bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, propose une méthode "plot" qui permet des affichages graphiques à partir de jeux de données.|
+|Il suffit donner le bon paramètre "kind" en entrée pour obtenir le type d'affichage voulu :|
+|- "line" : une courbe.|
+|- "scatter" : un nuage de points.|
+|- "bar" : un diagramme en barres vertical.|
+|- "barh" : un diagramme en barres horizontal.|
+|- "hist" : un histogramme.|
+|- "box" : des boîtes à moustaches.|
+|- "kde" : une "kernel density estimation".|
+|- "area" : un graphique en aires.|
+|- "pie" : un diagramme circulaire.|
+
 ### Statistiques descriptives
+
+Toujours dans l'objectif de comprendre notre jeu de données, on peut essayer de **décrire** chaque variable par des **indicateurs statistiques**.
+Nous allons voir ici les indicateurs les plus communs en statistiques descriptives.
+
+#### Moyenne, médiane et mode
+
+
+
+#### Variance et écart-type
+
+
+
+#### Quantiles
+
+
+
+#### Asymétrie et kurtosis
+
+
 
 ### Recherche de corrélation
 
