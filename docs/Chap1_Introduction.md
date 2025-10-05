@@ -10,6 +10,8 @@ Ce chapitre porte sur les concepts et les enjeux des sciences des données.
 
 Une des difficultés rencontrées en sciences des données provient de la **grande variétés des données**.
 
+#### Données de différentes natures
+
 Tout d'abord, les variables étudiées peuvent être de **nature** différente :
 
 ![Nature des données](img/Chap1_nature_donnees.png)
@@ -68,6 +70,8 @@ On remarque ici que plus la variable a de noms possibles, et plus les binaires d
 |Dans ce même package, vous trouverez également une fonction **OneHotEncoder**, permettant d'encoder en one-hot des variables qualitatives nominales.|
 |Dans les 2 cas, il vous faut créer une instance de **OrdinalEncoder** ou de **OneHotEncoder**, puis utiliser la méthode **fit_transform()** avec vos données en entrée.|
 
+#### Données multidimensionnelles
+
 Les variables étudiées peuvent aussi être **multidimensionnelles**.
 
 En effet, dans la pluplart des situations, notre jeu de données peut se mettre sous la forme d'un tableau, dont 
@@ -96,6 +100,8 @@ Nous avons ici 6 individus, les brioches, pour lesquelles nous avons mesuré 3 v
 |Pour stocker puis manipuler des données multidimensionnelles, on utilise souvent en Python un type de conteneur de la bibliothèque **Pandas** : les "**DataFrames**".|
 |Les DataFrames se présentent comme des tableaux pouvant contenir des variables de types différents, avec un label associé à chaque colonne du tableau (variable).|
 |Nous reparlerons de Pandas plus loin dans ce chapitre.|
+
+#### Données structurées
 
 Enfin, les données étudiées peuvent être **structurées**.
 
