@@ -187,19 +187,131 @@ On note en effet souvent $\overline{x}$ la moyenne d'une variable $x$.
 
 * Le **mode** est la valeur la plus représentée dans l'ensemble des valeurs de la variable.
 
+|Astuce Python|
+|:-|
+|Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a ces méthodes associées aux objets DataFrames :|
+|- ".mean()": la moyenne.|
+|- ".median()": la médiane.|
+|- ".mode()": le mode.|
+
 #### Variance et écart-type
 
+Lorsque l'on veut savoir à quel point les valeurs d'une variable fluctuent autour de la valeur centrale, on va utiliser des **indicateurs de dispersion**.
 
+* Les valeurs extrêmes de la variable, le **min** et le **max**, pour connaitre l'étendue de la variable.
+
+* La **variance** est définie par la moyenne des carrées des écarts à la moyenne :
+
+$\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \overline{x})^2$
+
+* L'**écart-type** (souvent noté $\sigma$) est la racine carrée de la variance, soit a moyenne quadratique de écarts à la moyenne. 
+Contrairement à la variance, il a l'avantage d'être **homogène à la variable étudiée**.
+
+|Astuce Python|
+|:-|
+|Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a ces méthodes associées aux objets DataFrames :|
+|- ".min()" et ".max()": le minimum et le maximum.|
+|- ".var()": la variance.|
+|- ".std()": l'écart-type.|
 
 #### Quantiles
 
+Afin d'avoir plus d'informations sur la répartition de valeurs d'une variable, on peut généraliser la notion de médiane en utilisant ce que l'on appelle les **quantiles** :
+La division des valeurs de la variables en groupes de tailles égales.
 
+* **Quartiles** : 3 indicateurs en divisant les valeurs de la variable en 4 groupes (25%,50% et 75%).
+
+* **Déciles** : 9 indicateurs en divisant les valeurs de la variable en 10 groupes (10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%).
+
+* **Centiles** : 99 indicateurs en divisant les valeurs de la variable en 100 groupes (1%, 2%, 3%, ..., 98%, 99%).
 
 #### Asymétrie et kurtosis
 
+Enfin, si l'on veut une information sur la répartition des valeurs d'une variable, sous la forme d'un indicateur unique, on va utiliser un **indicateur de forme**.
 
+* Le coefficient d'**asymétrie** ("skewness" en anglais, souvent noté $\gamma_1$) permet de quantifier le désequilibre de la répartition des valeurs de la variable de chaque côté de sa valeur centrale. 
+
+$\gamma_1 = \frac{1}{N \sigma^3} \sum_{i=1}^{N} (x_i - \overline{x})^3$
+
+Un coefficient négatif indique un décalage à droite, un coefficient positif un décalage à gauche, et un coefficient nul une distribution symétrique.
+
+NB : Pour la loi normale, on a $\gamma_1 = 0$.
+
+* Le **kurtosis** (souvent noté $\gamma_2$) permet de quantifier l'acuité ou l'applatissement de la répartition des valeurs de la variable autour de sa valeur centrale.
+
+$\gamma_2 = \frac{1}{N \sigma^4} \sum_{i=1}^{N} (x_i - \overline{x})^4$
+
+Un kurtosis positif est un indicateur de valeurs anormales de la variable (aux extrêmités) plus fréquentes.
+Un kurtosis négatif est un indicateur d'une distribution très applatie des valeurs de la variable.
+
+NB : Pour la loi normale, on a $\gamma_2 = 0$.
 
 ### Recherche de corrélation
+
+Une fois que l'on a décrit statistiquement les différentes variables de notre jeu de données, on va souvent vouloir essayer des tisser des liens entre ces variables.
+Cette **analyse exploratoire** des données a 2 principales utilités :
+
+* Voir si une ou plusieurs variables pourraient servir à en **prédire** une ou plusieurs autres.
+
+* Essayer de **réduire la dimensionnalité** d'un problème basé sur ces variables.
+
+En effet, comme évoqué précédemment, les jeux de données sont souvent multidimensionnels.
+Quand la dimension des données devient très grande, la quantité de données devient peu dense en comparaison, ce qui rend difficile leur interprétation.
+On appelle communément ce problème le "Fléau de la dimension" ("curse of dimensionality" en anglais).
+
+Nous allons voir dans un 1er temps comment essayer de déterminer ce que l'on appelle des "**corrélations**" entre variables.
+Puis nous verrons une méthode classique de réduction de dimension appelée "**Analyse en Composantes Principales**".
+
+#### Matrice de corrélation
+
+Une 1ère approche pour essayer de tisser des liens ou "**corrélations**" entre les variables et de tracer ce que l'on appelle une matrice de nuages de points, ou "**scatter-matrix**" en anglais.
+
+L'idée est d'afficher une **matrice de graphiques**, représentant chacun **une variable en fonction d'une autre**, sous la forme d'un nuage de points.
+La diagonale n'étant pas très utile (une variable en fonction d'elle-même), on la remplace en général par un histogramme de la variable en question.
+
+Ce type de représentation permet de détecter visuellement des **relations entre les variables**.
+
+Voici un exemple :
+
+
+
+|Astuce Python|
+|:-|
+|Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "plotting.scatter_matrix()", qui permet d'afficher une "scatter_matrix".|
+
+Pour quantifier la corrélation entre 2 variables $x$ et $y$, on va souvent se contenter de mesurer à quel point une **relation linéaire** $y = a x + b$ peut être tirée de ces variables.
+Pour cela, on va calculer le **coefficient de corrélation** de Pearson :
+
+$r = \frac{\sum_{i=1}^{N} (x_i - \overline{x})(y_i - \overline{y})}{\sqrt{\sum_{i=1}^{N} (x_i - \overline{x})^2 \sum_{i=1}^{N} (y_i - \overline{y})^2}}$
+
+La valeur de ce coefficient est toujours compris entre -1 et 1 : 
+
+* Une valeur de 1 signifie une **corrélation** parfaite entre les variables.
+
+* Une valeur de -1 signifie une **anti-corrélation** parfaite entre les variables.
+
+* Une valeur de 0 signifie une **décorrélation** parfaite entre les variables : elles sont **indépendantes**.
+
+Il y a du sens à vouloir prédire une variable à partir d'une autre si elles sont corrélées / anti-corrélées.
+On peut aussi imaginer réduire la dimensionnalité d'un problème s'il se base sur plusieurs variables qui ne sont pas indépendantes.
+
+NB : **Attention !** Corrélation entre variables n'implique pas causalité entre variables !
+
+On affiche souvent les coefficients de corrélation obtenus pour toutes les combinaisons de variables possibles sous la forme d'une matrice : la **matrice de corrélation** de ces variables.
+La diagonale de la matrice ne contient bien évidemment que des 1.
+
+Voici un exemple :
+
+
+
+|Astuce Python|
+|:-|
+|Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "corr()" associée aux DataFrames.|
+|Elle retourne une matrice de corrélation du jeu de données.|
+
+#### Analyse en Composantes Principales (ACP)
+
+
 
 ### Préparation des données
 
