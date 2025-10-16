@@ -72,7 +72,7 @@ On remarque ici que plus la variable a de noms possibles, et plus les binaires d
 
 #### Données multidimensionnelles
 
-Les variables étudiées peuvent aussi être **multidimensionnelles**.
+Les données étudiées peuvent aussi être **multidimensionnelles**.
 
 En effet, dans la pluplart des situations, notre jeu de données peut se mettre sous la forme d'un tableau, dont 
 
@@ -311,7 +311,18 @@ Voici un exemple :
 
 #### Analyse en Composantes Principales (ACP)
 
+Comme mentionné précédemment, les jeux de données que l'on rencontre sont souvent multidimensionels.
+Ceci rend difficile voir impossible un affichage graphique compréhensible des individus d'une variable par rapport à une autre (il faudrait un graphique 2D pour 2 variables, 3D pour 3 variables, 4D pour 4 variables, etc.).
 
+Afin de représenter des données multidimensionnelles sous la forme d'un affichage graphique de **dimension faible** (en général 1, 2 ou 3), on utilise souvent l'**Analyse en Composantes Principales** (ACP).
+
+L'idée est la suivante.
+Soit un jeu de données contenant $p$ variables et $n$ individus. 
+On va chercher $q$ nouvelles variables par **projections linéaires** des $p$ variables d'origine, avec $q < p$, de manière à **perdre le moins d'information possible** sur le jeu de données.
+
+Ces $q$ nouvelles variables sont alors nommées **composantes principales**.
+
+Il existe plusieurs algorithmes pour obtenir ce résultat.
 
 ### Préparation des données
 
