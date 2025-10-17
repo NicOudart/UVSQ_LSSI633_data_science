@@ -360,6 +360,12 @@ Un cercle des corrélations permet donc de juger de la corrélation des variable
 
 On pourra utiliser la projection des données renvoyée par l'ACP pour entrainer des modèles d'apprentissage.
 
+|Astuce Python|
+|:-|
+|La classe "sklearn.decomposition.PCA" de la bibliothèque "Scikit-Learn" vous permet de réaliser l'ACP d'une matrice de données.|
+|Le nombre de composantes principales à trouver est un des attributs de la classe à initialiser ("n_components").|
+|Pour obtenir les composantes principales d'une matrice de données, il faut lui appliquer la méthode "fit_transform()" de la classe.|
+
 ### Préparation des données
 
 ## Les apprentissages
