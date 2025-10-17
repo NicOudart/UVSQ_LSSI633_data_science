@@ -354,9 +354,9 @@ Voici un exemple :
 
 Un cercle des corrélations permet donc de juger de la corrélation des variables d'origines avec les composantes principales, et de la corrélation des variables d'origine entre elles :
 
-* Plus une variable d'origine est proche du cercle, et plus elle a contribué aux axes de l'ACP. Dans l'idéal, on voudrait que toutes les variables soient proches du cercle.
+* Plus une variable d'origine est proche du cercle, plus elle est fidèlement représentée par l'ACP. Dans l'idéal, on voudrait donc que toutes les variables soient proches du cercle.
 
-* Si l'angle entre 2 variables d'origine est aigu elles sont corrélées, s'il est obtu elles sont anti-corrélées, et s'il est droit elles sont décorrélées.
+* Pour 2 variables d'origine proches du cercle, si l'angle entre 2 les variables est aigu elles sont corrélées, s'il est obtu elles sont anti-corrélées, et s'il est droit elles sont décorrélées.
 
 On pourra utiliser la projection des données renvoyée par l'ACP pour entrainer des modèles d'apprentissage.
 
