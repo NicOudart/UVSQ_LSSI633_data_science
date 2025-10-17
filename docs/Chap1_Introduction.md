@@ -322,7 +322,43 @@ On va chercher $q$ nouvelles variables par **projections linéaires** des $p$ va
 
 Ces $q$ nouvelles variables sont alors nommées **composantes principales**.
 
-Il existe plusieurs algorithmes pour obtenir ce résultat.
+Il existe plusieurs algorithmes pour obtenir ce résultat, celui implémenté dans la bibliothèque Python Scikit-Learn se base sur la Décomposition en Valeurs Singulières (SVD) de la matrice de données :
+
+$X = 
+\begin{pmatrix}
+x_{1,1} & x_{1,2} & \cdots & x_{1,p} \\
+x_{2,1} & x_{2,2} & \cdots & x_{2,p} \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+x_{n,1} & x_{n,2} &\cdots & x_{n,p} 
+\end{pmatrix}$
+
+où chaque colonne correspond à une variable, et chaque ligne correspond à un individu.
+
+On peut voir l'ACP comme le choix du sous-espace de dimension $q$ tel que le nuage de points projetés ait la variance la plus grande possible.
+
+Les résultats d'une ACP peuvent être affichés sous la forme d'un **nuage de points 2D ou 3D** ($q = 2$ ou $3$) représentant les différents individus, avec pour axes les composantes principales.
+
+Voici un exemple :
+
+
+
+L'idée est de voir si on peut séparer les individus en différents groupes à partir des composantes principales.
+
+Pour juger de la qualité d'une ACP, on utilise un type de graphique appelé "**cercle des corrélations**".
+Ce graphique 2D représente sur chaque axe la corrélation des $p$ variables d'origine avec les $q$ composantes principales.
+Chacune des $p$ variables correspond à un vecteur sur ce graphique, et un cercle de rayon 1 est également affiché pour comparaison.
+
+Voici un exemple :
+
+
+
+Un cercle des corrélations permet donc de juger de la corrélation des variables d'origines avec les composantes principales, et de la corrélation des variables d'origine entre elles :
+
+* Plus une variable d'origine est proche du cercle, et plus elle a contribué aux axes de l'ACP. Dans l'idéal, on voudrait que toutes les variables soient proches du cercle.
+
+* Si l'angle entre 2 variables d'origine est aigu elles sont corrélées, s'il est obtu elles sont anti-corrélées, et s'il est droit elles sont décorrélées.
+
+On pourra utiliser la projection des données renvoyée par l'ACP pour entrainer des modèles d'apprentissage.
 
 ### Préparation des données
 
