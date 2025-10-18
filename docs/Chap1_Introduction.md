@@ -1,10 +1,23 @@
 # Chapitre I : Introduction aux sciences des données
 
-Ce chapitre porte sur les concepts et les enjeux des sciences des données.
+Ce chapitre porte sur les grands concepts et les enjeux des sciences des données.
 
 ---
 
 ## Analyse de données
+
+L'explosion des capacités de stockage de données est à l'origine d'une explosion de la taille des jeux de données à traiter.
+D'où la nécessité de trouver de nouvelles manières de manipuler, traiter, analyser et interpréter nos données. 
+
+**La 1ère étape lorsque l'on est confronté à un vaste jeu de données est toujours de l'analyser, afin d'essayer de le comprendre :**
+
+Quels types de données contient-il ?
+Ces données sont-elles de qualité ?
+Comment ces données sont-elles réparties ?
+Peut-on tisser des liens entre les différentes variables ? 
+Peut-on regrouper les différentes réalisations de ces variables en groupes ?
+
+Cette étape est essentielle si l'on veut par la suite entrainer un modèle à "apprendre" de nos données.
 
 ### Nature et type des données
 
@@ -34,7 +47,7 @@ On va donc en général **encoder** des données qualitatives avec des **valeurs
 |Pas trop cuit  |2       |
 |Bien cuit      |3       |
 
-Cette méthode fonctionne bien pour des données ordinales comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
+Cette méthode fonctionne bien pour des données **ordinales** comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
 C'est pourquoi on utilise souvent l'encodage **one-hot**.
 
 L'idée est de faire comme si chaque nom possible pour une variable qualitative était une variable en soit. 
@@ -366,7 +379,77 @@ On pourra utiliser la projection des données renvoyée par l'ACP pour entrainer
 |Le nombre de composantes principales à trouver est un des attributs de la classe à initialiser ("n_components").|
 |Pour obtenir les composantes principales d'une matrice de données, il faut lui appliquer la méthode "fit_transform()" de la classe.|
 
-### Préparation des données
+## Préparation des données
+
+Une fois les données analysées, on a normalement une bonne idée de ce qu'un outil automatique pourra en "apprendre" ou non.
+Cependant, la plupart de ces outils (dont nous parlerons dans la section suivante), ont besoin que les données soient "**transformées**" d'une certaine manière.
+
+C'est pourquoi nous allons voir dans cette section quelques transformations classiques pour **préparer nos données**.
+
+Tout d'abord, il est possible que le jeu de données contienne des **valeurs erronées** ou **manquantes**, souvent marquées par des NaN ("Not a Number").
+Il convient alors de se débarrasser de ces valeurs avant apprentissage, car la plupart des outils ne savent pas gérer ce problème.
+
+|Astuce Python|
+|:-|
+|Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "dropna" associée aux objets DataFrames.|
+|Cette méthode permet de supprimer les NaN d'un DataFrame.|
+
+Nous avons aussi vu précédemment que les données qualitatives doivent être encodées avant apprentissage, soit en "ordinal", soit en "one-hot".
+
+Enfin, les outils d'apprentissage sont affectés par les **différences d'ordre de grandeur entre les variables**.
+C'est pourquoi une remise à l'échelle des différentes variables d'un jeu de données est nécessaire avant apprentissage.
+On appelle ce processus **recalibration**, ou "**feature scaling**" en anglais.
+
+Nous allons voir en particulier 2 types de transformation pour recalibrer des données : la **transformation min-max** et le **centrage-réduction**.
+
+### Transformation min-max
+
+Certains types de modèles d'apprentissage nécessitent des valeurs d'entrée entre 0 et 1.
+C'est pourquoi la **transformation min-max** ("normalization" en anglais) va recalibrer toutes les variables de manière à ce que leurs valeurs restent **entre 0 et 1**.
+
+Pour ce faire, on va appliquer la formule suivante au i-ème individu $x_i$ de la j-ème variable d'un jeu de données  :
+
+$\frac{x_i-min_j}{max_j-min_j}$
+
+avec $min_j$ le minimum et $max_j$ le maximum des individus de la j-ème variable.
+
+(Il est également possible d'adapter cette transformation pour les modèles prenant des valeurs entre -1 et 1 en entrée).
+
+Le problème majeur avec cette transformation est sa sensibilité aux valeurs aberrantes.
+En effet, il suffit qu'une variable ait une valeur aberrante pour qu'elle devienne le minimum ou le maximum, impactant ainsi la transformation.
+
+|Astuce Python|
+|:-|
+|La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" contient une fonction "MinMaxScaler".|
+
+### Centrage-réduction
+
+La transformation **centrage-reduction** ("standardization" en anglais) applique la formule suivante au i-ème individu $x_i$ de la j-ème variable d'un jeu de données :
+
+$\frac{x-\overline{x_p}}{\sigma_p}$
+
+avec $\overline{x_p}$ la moyenne et $\sigma_p$ l'écart-type des individus de la j-ème variable.
+
+Cette transformation est beaucoup moins sensible aux valeurs aberrantes, mais elle ne garanti pas que les valeurs des différentes variables seront entre 0 et 1 (ou -1 et 1).
+
+|Astuce Python|
+|:-|
+|La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" contient une fonction "StandardScaler".|
+
+### Autres transformations
+
+Nous l'avons précédemment, on peut découvrir que les individus d'une variable ont une distribution asymétrique.
+Par exemple, la distribution des individus peut avoir une **longue traîne** d'un côté de la médiane.
+
+On peut aussi avoir une distribution multimodale (c'est-à-dire avec plusieurs pics).
+
+Ceci peut perturber un apprentissage automatique.
+
+Dans ces situations, d'autres types de transformation pourrons alors être envisagées en addition des 2 précédentes : utiliser la racine carrée ou le logarithme de la variable, utiliser les quantiles de la variable, utiliser un encodage de la variable, etc.
+
+|Astuce Python|
+|:-|
+|La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" permet de créer sa propre transformation, avec "FunctionTransformer".|
 
 ## Les apprentissages
 
