@@ -453,9 +453,59 @@ Dans ces situations, d'autres types de transformation pourrons alors être envis
 
 ## Les apprentissages
 
+Une fois que l'on a bien cerné notre jeu de données, et qu'on l'a transformé de manière adéquate, on va en général vouloir le **modéliser**.
+L'idée du modèle sera de prendre une décision sur à partir de nouvelles données, en se basant sur la connaissance des données de la base d'origine.
+On parle alors d'"apprendre" des données.
+
 ### L'apprentissage automatique
 
+Par "modéliser", on entend trouver une fonction paramétrique $M$ qui permet de déduire une sortie vectorielle $y$ voulue à partir d'une entrée vectorielle de nouvelles données $x$ et de nos connaissances sur les données d'origine :
+
+$y = M(x,\theta)$
+
+avec $\theta$ les paramètres du modèle, qui correspondent à notre connaissance du jeu de données initial.
+
+Il nous faut donc ajuster les paramètres $\theta$ pour obtenir la sortie $y$ attendue en fonction de $x$ qui colle le plus aux données.
+C'est ce processus d'**optimisation** de $\theta$ que l'on appelle "**apprentissage**".
+
+Les jeux de données dont on doit apprendre sont en général énormes, ce qui rend souvent un ajustement manuel des paramètres impossible.
+C'est pourquoi on va en général choisir **un type de modèle**, et ajuster **automatiquement** les paramètres à nos données.
+
+D'où l'expression "**apprentissage automatique**".
+
+Suivant les applications, il existe différents types d'apprentissage, avec pour chacun différents types de modèles possibles.
+Lors de ce cours, nous verrons 3 grands types d'apprentissage, et nous verrons pour chacun quelques exemples de modèles classiques.
+
 ### Les 3 grands types d'apprentissages
+
+En apprentissage, on appelle souvent en anglais les entrée d'un modèle les "**features**", et les sortie des "**labels**".
+
+Lors du processus d'**apprentissage** (ajustement des paramètres), on va enseigner au modèle comment déterminer des "labels" correspondant à des "features", en se basant sur ce qu'il a appris d'une **base de données d'"entrainement"** de "features".
+
+#### Apprentissage supervisé ou non-supervisé
+
+Dans le cas où les données d'apprentissage ont des "labels" définis, le modèle va apprendre à retrouver ces "labels" (connus) pour ces "features".
+On espère alors qu'après apprentissage, le modèle pourra retourner les "labels" corrects une fois confronté à des "features" issus de nouvelles données.
+On parle alors de "**généralisation**".
+
+Comme on peut directement vérifier les performances du modèle à prédire les "labels" du jeu de données d'entrainement, on parle d'**apprentissage supervisé**.
+
+Dans le cas où les données d'apprentissage n'ont pas de "labels", on peut tout de même essayer de diviser les individus des "features" en différent groupes, auxquels on assignera des "labels" plus tard.
+Comme nous n'avons pas de "labels" d'entrainement comme référence, on parle d'**apprentissage non-supervisé** ou "clustering" ("partition de données").
+
+#### Classification et régression
+
+On peut aussi diviser les apprentissages suivant le type de sortie attendu, et donc de modèle à entrainer.
+
+Si la sortie est un groupe d'individus auxquel on veut assigner un nouvel individu, on va parler de "**classification**".
+
+Si la sortie est un vecteur de valeurs de variables pour un nouvel individu, on va parler de "**régression**".
+
+On peut entrainer un modèle de classification **de manière supervisée ou non-supervisée**.
+
+On ne peut entrainer un modèle de régression **que de manière supervisée**.
+
+#### Pour aller plus loin...
 
 ### Entraînement d'un modèle
 
