@@ -379,6 +379,8 @@ On pourra utiliser la projection des données renvoyée par l'ACP pour entrainer
 |Le nombre de composantes principales à trouver est un des attributs de la classe à initialiser ("n_components").|
 |Pour obtenir les composantes principales d'une matrice de données, il faut lui appliquer la méthode "fit_transform()" de la classe.|
 
+**Pour aller plus loin** : D'autres méthodes de réduction de dimensionnalité existent, on peut citer entre autres les "auto-encodeurs" et la "t-SNE".
+
 ## Préparation des données
 
 Une fois les données analysées, on a normalement une bonne idée de ce qu'un outil automatique pourra en "apprendre" ou non.
@@ -506,6 +508,18 @@ On peut entrainer un modèle de classification **de manière supervisée ou non-
 On ne peut entrainer un modèle de régression **que de manière supervisée**.
 
 #### Pour aller plus loin...
+
+Il existe un 3ème type d'apprentissage, que l'on appelle "apprentissage par **renforcement**".
+
+L'idée est la suivante : 
+
+* Le modèle est directement mis en place sur son cas d'application final.
+
+* Le modèle prend des décisions en fonction des situations, et reçoit un retour ("feedback") sur sa décision, positif ou négatif.
+
+* Le modèle se met à jour en fonction du retour qu'il a reçu.
+
+Ce processus se répète pour chaque nouvelle situation, et ainsi **le modèle apprend de ses expériences**.
 
 ### Entraînement d'un modèle
 
