@@ -507,9 +507,9 @@ On peut entrainer un modèle de classification **de manière supervisée ou non-
 
 On ne peut entrainer un modèle de régression **que de manière supervisée**.
 
-#### Pour aller plus loin...
+### Pour aller plus loin...
 
-Il existe un 3ème type d'apprentissage, que l'on appelle "apprentissage par **renforcement**".
+Il existe un 3ème type d'apprentissage, que nous ne détaillerons pas dans ce cours, qui s'appelle "apprentissage par **renforcement**".
 
 L'idée est la suivante : 
 
@@ -521,11 +521,35 @@ L'idée est la suivante :
 
 Ce processus se répète pour chaque nouvelle situation, et ainsi **le modèle apprend de ses expériences**.
 
-### Entraînement d'un modèle
+## Difficultés de l'apprentissage
 
-## Enjeux de l'apprentissage
+Comme expliqué plus haut, l'**apprentissage** est un processus d'**optimisation**, qui consiste en l'**ajustement des paramètres d'un modèle** en se basant sur les données disponibles, dans le but de prendre des décisions correctes à partir de données futures (**généralisation**).
+
+La phase durant laquelle on ajuste les paramètres est appelée **entraînement**, et les données sur lesquelles cet ajustement est fait sont appelées "**base de données d'entraînement**".
+
+Dans la section qui suit, nous aurons un aperçu des grandes difficultées que l'on peut rencontrer lors de l'entrainement d'un modèle, tous types de modèles confondus.
 
 ### Quantité et qualité des données
+
+S'il n'y a pas de règle précise pour déterminer la **quantité de données** nécessaire à un apprentissage, il y a 2 maximes à retenir :
+
+* Plus on a données d'entrainement, meilleur sera l'apprentissage par le modèle.
+
+* Plus le problème complexe, plus il faudra de données d'entrainement.
+
+Pour donner un ordre de grandeur, la quantité d'individus nécessaires à un apprentissage va en général **de quelques milliers à des centaines de millions**.
+Cependant, il n'est pas aisé de constituer une base de données aussi large, et de surcroit une base de donnée de qualité.
+
+En effet, comme on peut facilement le deviner, la **qualité des données** aura un impact sur l'apprentissage.
+La qualité des données peut par exemple être dégradée par :
+
+* La présence d'individus abérrants ("outliers"), liée à des erreurs de mesures ou à des cas exceptionnels.
+
+* Des individus manquants, liés à notre échantillonnage ou a des erreurs de mesures.
+
+* La présence de bruit dans les données.
+
+D'où la nécessité de procéder à un **nettoyage des données** en amont de l'apprentissage : supprimer certaines données, les combler, ou faire de nouvelles mesures.
 
 ### Représentativité et équilibre des données
 
