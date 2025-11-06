@@ -557,7 +557,11 @@ D'où la nécessité de procéder à un **nettoyage des données** en amont de l
 
 ### Sur-apprentissage / sous-apprentissage
 
-## Test, validation et hyperparamètres
+## Validation et test
+
+## Fonction de coût
+
+## Hyperparamètres
 
 ## Import de données et fichiers CSV
 
