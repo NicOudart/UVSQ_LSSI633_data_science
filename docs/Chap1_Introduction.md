@@ -164,7 +164,14 @@ Ceci implique donc de diviser au préalable les valeurs de $X$ en intervalles.
 
 #### Boîtes à moustaches :
 
+Lorsque l'on veut afficher de manière visuellement compréhensible la **distribution individus pour différentes variables quantitatives** $X$, $Y$ et $Z$, on peut utiliser des **boîtes à moustaches**.
+On peut également l'utiliser pour visualiser la **distribution d'une même variable pour différentes sous-populations**. 
 
+On appelle "boîte à moustaches" une représentation graphique des principaux indicateurs de distribution d'une population pour une variable donnée. 
+En général : le minimum, le 1er quartile, la médiane, le 3ème quartile et le maximum.
+Nous reparlerons de ces indicateurs plus loin dans ce chapitre.
+
+![Boîte à moustaches](img/Chap1_boites_a_moustaches.png)
 
 #### Kernel Density Estimation (KDE) :
 
