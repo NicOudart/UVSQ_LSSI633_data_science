@@ -127,7 +127,7 @@ Par exemple, dans le cas d'une image :
 Chaque pixel de l'image doit être compris dans le contexte global de l'image. 
 Il est évident que changer la position des pixels les uns par rapport aux autres change le jeu de données : 
 
-![Données structurées](img/Chap1_image_shuffled.png)
+![Données déstructurées](img/Chap1_image_shuffled.png)
 
 Dans certains cas, l'**ordre des données** est donc en soit une information nécessaire à leur interprétation.
 
@@ -141,11 +141,26 @@ Nous allons voir les types de **représentations graphiques** les plus classique
 
 #### Courbes et nuages de points :
 
+Lorsque l'on veut afficher les différentes réalisations de 2 variables $X$ et $Y$ **l'une en fonction de l'autre**, on va classiquement utiliser une **courbe** ou un **nuage de points**.
 
+Si les données ne sont **pas structurées**, on peut utiliser un **nuage de points**, qui va simplement afficher chaque réalisation comme un point sur le graphique.
+
+Si les données sont **structurées**, on peut tracer des lignes entre les différentes réalisations, dans l'ordre, ce qui va donner une **courbe**.
+
+![Courbe et nuage de points](img/Chap1_nuage_points_courbe.png)
 
 #### Diagrammes en barres et histogrammes :
 
+Lorsque l'on veut rapidement comparer des quantités les unes aux autres, on va classiquement utiliser un **diagramme en barres** ou **un histogramme**.
 
+Si on a des individus $A$, $B$ et $C$ et que l'on veut **comparer les valeurs d'une variable** $X$ pour ces 3 individus, on peut utiliser un **diagramme en barres**.
+On peut également utiliser un diagramme en barres pour afficher le **nombre d'occurences d'une étiquette** d'une variable qualitative.
+
+Si on veut représenter la distribution des valeurs d'une variable $X$ parmi les différents individus d'une population, on va utiliser un **histogramme**.
+Un histogramme affiche le **nombre d'occurences** $N$ des valeurs sur **un intervalle** de $X$.
+Ceci implique donc de diviser au préalable les valeurs de $X$ en intervalles. 
+
+![Diagramme en barres et histogramme](img/Chap1_diagramme_barres_histogramme.png)
 
 #### Boîtes à moustaches :
 
@@ -543,15 +558,30 @@ Cependant, il n'est pas aisé de constituer une base de données aussi large, et
 En effet, comme on peut facilement le deviner, la **qualité des données** aura un impact sur l'apprentissage.
 La qualité des données peut par exemple être dégradée par :
 
-* La présence d'individus abérrants ("outliers"), liée à des erreurs de mesures ou à des cas exceptionnels.
+* La présence d'**individus abérrants** ("outliers"), liée à des erreurs de mesures ou à des cas exceptionnels.
 
-* Des individus manquants, liés à notre échantillonnage ou a des erreurs de mesures.
+* Des **individus manquants**, liés à notre échantillonnage ou a des erreurs de mesures.
 
-* La présence de bruit dans les données.
+* La présence de **bruit** dans les données.
 
 D'où la nécessité de procéder à un **nettoyage des données** en amont de l'apprentissage : supprimer certaines données, les combler, ou faire de nouvelles mesures.
 
 ### Représentativité et équilibre des données
+
+Comme expliqué précedemment, notre but est d'obtenir à partir de notre base de données d'entrainement un modèle qui soit **généralisable** à toutes nouvelles données que l'on peut rencontrer.
+
+Pour que cet objectif, il faut que la base de données que l'on utilise pour entrainer le modèle soit **représentative** de la distribution des différentes variables de manière générale.
+Ceci implique de faire attention à la représentativité de notre population au moment de l'**échantillonnage**, sous peine que le modèle ait du mal à généraliser.
+
+Parfois, certains types d'individus sont par nature **sous ou sur-représentés** dans la population générale, et donc le seront toujours si on échantillonne de manière représentative.
+Comme on peut s'y attendre, ceci va avoir tendance à biaser notre modèle.
+
+Par exemple, mettons que l'on veuille entrainer un modèle à reconnaitre une photo d'un pain au chocolat d'un pain suisse.
+Les pains au chocolat étant plus courants en boulangerie que les pains suisses, on aura un **déséquilibre** dans la base de données d'entrainement, qui fera que notre modèle aura plus tendance à prédire qu'une photo montre un pain au chocolat qu'un pain suisse.
+
+Il existe plusieurs méthodes pour éviter les biais d'entrainement, en jouant soit sur l'échantillonage, soit sur les poids accordés aux différentes données pendant l'entrainement.
+
+Il est à noter qu'un mauvais échantillonage ou un déséquilibre d'une base de données utilisée pour la tester notre modèle après entrainement est aussi problématique : si on teste notre modèle sur une base de données ne contenant que des photos de pains au chocolat, il est évident que notre mesure des performances du modèle ne vaudra pas grand chose.
 
 ### Pertinence des variables
 
