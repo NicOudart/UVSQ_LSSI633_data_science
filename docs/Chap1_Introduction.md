@@ -175,7 +175,13 @@ Nous reparlerons de ces indicateurs plus loin dans ce chapitre.
 
 #### Kernel Density Estimation (KDE) :
 
+La **KDE** ou "estimation par noyau" (Kernel Density Estimation) est une méthode non-paramétrique pour **estimer la distribution de probabilité d'une variable**.
+L'avantage est que contrairement à un histogramme, on a des **valeurs continues entre 0 et 1** (on ne divise pas en intervalles).
 
+On peut l'utiliser pour afficher sous la forme d'une courbe la densité de probabilité d'une variable $X$ (KDE 1D).
+On peut aussi afficher la densité de probabilité d'une variable $X$ par rapport à une autre variable $Y$, sous la forme d'une carte 2D avec des isolignes de densité de probabilité (KDE 2D).
+
+![KDE](img/Chap1_KDE.png)
 
 #### Graphique en aires :
 
