@@ -587,11 +587,23 @@ Il est à noter qu'un mauvais échantillonage ou un déséquilibre d'une base de
 
 ### Sur-apprentissage / sous-apprentissage
 
-## Validation et test
+## Stratégie pour l'apprentissage
 
-## Fonction de coût
+### Choix des hyperparamètres
 
-## Hyperparamètres
+#### Fonction de coût
+
+#### Algorithme d'optimisation
+
+#### Vitesse de convergence et arrêt
+
+#### Architecture du modèle
+
+### Validation et test
+
+#### Eviter le sur-apprentissage
+
+#### Critères de performance
 
 ## Import de données et fichiers CSV
 
