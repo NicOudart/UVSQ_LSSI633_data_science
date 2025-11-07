@@ -183,12 +183,18 @@ On peut aussi afficher la densité de probabilité d'une variable $X$ par rappor
 
 ![KDE](img/Chap1_KDE.png)
 
-#### Graphique en aires :
-
-
-
 #### Diagramme circulaire (camembert) :
 
+Lorsque l'on veut afficher des proportions à comparer, on utilise souvent le **diagramme circulaire**, aussi connu sous le nom de "diagramme camembert".
+
+Il s'agit simplement de diviser un cercle en sections, dont la largeur représentera une proportion, et le cercle complet la proportion totale.
+On peut par exemple l'utiliser pour vérifier la répartition de variables qualitatives au sein d'une base de données.
+
+
+
+#### Graphique en aires :
+
+Lorsque l'on veut afficher l'évolution d'une proportion au cours d'un variable (souvent au cours du temps), on utilise en général un **graphique en aires**.
 
 
 #### En Python
@@ -204,8 +210,8 @@ On peut aussi afficher la densité de probabilité d'une variable $X$ par rappor
 |- "hist" : un histogramme.|
 |- "box" : des boîtes à moustaches.|
 |- "kde" : une "kernel density estimation".|
-|- "area" : un graphique en aires.|
 |- "pie" : un diagramme circulaire.|
+|- "area" : un graphique en aires.|
 
 ### Statistiques descriptives
 
