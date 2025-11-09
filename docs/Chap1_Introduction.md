@@ -190,12 +190,14 @@ Lorsque l'on veut afficher des proportions à comparer, on utilise souvent le **
 Il s'agit simplement de diviser un cercle en sections, dont la largeur représentera une proportion, et le cercle complet la proportion totale.
 On peut par exemple l'utiliser pour vérifier la répartition de variables qualitatives au sein d'une base de données.
 
-
+![Camembert](img/Chap1_camembert.png)
 
 #### Graphique en aires :
 
 Lorsque l'on veut afficher l'évolution d'une proportion au cours d'un variable (souvent au cours du temps), on utilise en général un **graphique en aires**.
+On peut par exemple l'utiliser pour vérifier la répartition de variables qualitatives au sein d'une base de données, en fonction d'une variable quantitative $X$, par exemple le temps.
 
+![Diagramme en aires](img/Chap1_diagramme_aires.png)
 
 #### En Python
 
@@ -608,7 +610,7 @@ Il est à noter qu'un mauvais échantillonage ou un déséquilibre d'une base de
 
 ## Stratégie pour l'apprentissage
 
-### Choix des hyperparamètres
+### Hyperparamètres
 
 #### Fonction de coût
 
@@ -620,9 +622,11 @@ Il est à noter qu'un mauvais échantillonage ou un déséquilibre d'une base de
 
 ### Validation et test
 
-#### Eviter le sur-apprentissage
+#### Tester la généralisation
 
 #### Critères de performance
+
+#### Validation par exclusion
 
 ## Import de données et fichiers CSV
 
