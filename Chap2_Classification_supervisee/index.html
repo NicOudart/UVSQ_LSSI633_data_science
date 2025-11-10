@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap2_Classification_supervisee/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>II. Classification supervisée - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "II. Classification supervis\u00e9e";
+        var mkdocs_page_input_path = "Chap2_Classification_supervisee.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap2_Classification_supervisee/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap1_Introduction/">I. Introduction</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">II. Classification supervisée</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#probleme-de-classification">Problème de classification</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#principe-de-la-classification-supervisee">Principe de la classification supervisée</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#les-differents-types-de-classification">Les différents types de classification</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#binaire">Binaire</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#multi-classes">Multi-classes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#multi-etiquettes">Multi-étiquettes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#multi-sorties">Multi-sorties</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#le-mnist">Le MNIST</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesures-de-performance">Mesures de performance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#matrice-de-confusion">Matrice de confusion</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#precision-rappel">Précision / rappel</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#courbe-roc">Courbe ROC</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methodes-de-base">Méthodes de base</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#decision-bayesienne">Décision Bayesienne</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#formule-de-bayes">Formule de Bayes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#prise-de-decision">Prise de décision</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#vraisemblance">Vraisemblance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn">Implémentation Scikit-Learn</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#k-plus-proches-voisins">K Plus Proches Voisins</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#choix-de-la-distance">Choix de la distance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#choix-du-parametre-k">Choix du paramètre K</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn_1">Implémentation Scikit-Learn</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#perceptron">Perceptron</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#neurone-artificiel">Neurone artificiel</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#apprentissage-et-descente-de-gradient">Apprentissage et descente de gradient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#reseau-de-neurones">Réseau de neurones</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn_2">Implémentation Scikit-Learn</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap3_Regression/">III. Régression</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap4_Clustering/">IV. Clustering</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">II. Classification supervisée</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-ii-classification-supervisee">Chapitre II : Classification supervisée</h1>
+<h2 id="probleme-de-classification">Problème de classification</h2>
+<h3 id="principe-de-la-classification-supervisee">Principe de la classification supervisée</h3>
+<p>Par "<strong>classifier</strong>", on entend ranger les individus d'une base de données dans des groupes définis, suivant leurs valeurs pour différentes variables.</p>
+<h3 id="les-differents-types-de-classification">Les différents types de classification</h3>
+<h4 id="binaire">Binaire</h4>
+<h4 id="multi-classes">Multi-classes</h4>
+<h4 id="multi-etiquettes">Multi-étiquettes</h4>
+<h4 id="multi-sorties">Multi-sorties</h4>
+<h3 id="le-mnist">Le MNIST</h3>
+<h2 id="mesures-de-performance">Mesures de performance</h2>
+<h3 id="matrice-de-confusion">Matrice de confusion</h3>
+<h3 id="precision-rappel">Précision / rappel</h3>
+<h3 id="courbe-roc">Courbe ROC</h3>
+<h2 id="methodes-de-base">Méthodes de base</h2>
+<h3 id="decision-bayesienne">Décision Bayesienne</h3>
+<h4 id="formule-de-bayes">Formule de Bayes</h4>
+<h4 id="prise-de-decision">Prise de décision</h4>
+<h4 id="vraisemblance">Vraisemblance</h4>
+<h4 id="implementation-scikit-learn">Implémentation Scikit-Learn</h4>
+<h3 id="k-plus-proches-voisins">K Plus Proches Voisins</h3>
+<h4 id="principe">Principe</h4>
+<h4 id="choix-de-la-distance">Choix de la distance</h4>
+<h4 id="choix-du-parametre-k">Choix du paramètre K</h4>
+<h4 id="implementation-scikit-learn_1">Implémentation Scikit-Learn</h4>
+<h3 id="perceptron">Perceptron</h3>
+<h4 id="neurone-artificiel">Neurone artificiel</h4>
+<h4 id="apprentissage-et-descente-de-gradient">Apprentissage et descente de gradient</h4>
+<h4 id="reseau-de-neurones">Réseau de neurones</h4>
+<h4 id="implementation-scikit-learn_2">Implémentation Scikit-Learn</h4>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Chap1_Introduction/" class="btn btn-neutral float-left" title="I. Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Chap3_Regression/" class="btn btn-neutral float-right" title="III. Régression">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Chap1_Introduction/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Chap3_Regression/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
