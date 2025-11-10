@@ -290,10 +290,12 @@ NB : Pour la loi normale, on a $\gamma_1 = 0$.
 
 $\gamma_2 = \frac{1}{N \sigma^4} \sum_{i=1}^{N} (x_i - \overline{x})^4$
 
-Un kurtosis positif est un indicateur de valeurs anormales de la variable (aux extrêmités) plus fréquentes.
+Un kurtosis positif est un indicateur de valeurs anormales de la variable (aux extrêmités, aussi appelées "outliers") plus fréquentes.
 Un kurtosis négatif est un indicateur d'une distribution très applatie des valeurs de la variable.
 
 NB : Pour la loi normale, on a $\gamma_2 = 0$.
+
+![Statistiques descriptives](img/Chap1_statistiques_descriptives.png)
 
 ### Recherche de corrélation
 
