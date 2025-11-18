@@ -324,7 +324,7 @@ Ce type de représentation permet de détecter visuellement des **relations entr
 
 Voici un exemple :
 
-
+![Matrice de nuages de points](img/Chap1_scatter_matrix.png)
 
 |Astuce Python|
 |:-|
@@ -351,9 +351,16 @@ NB : **Attention !** Corrélation entre variables n'implique pas causalité entr
 On affiche souvent les coefficients de corrélation obtenus pour toutes les combinaisons de variables possibles sous la forme d'une matrice : la **matrice de corrélation** de ces variables.
 La diagonale de la matrice ne contient bien évidemment que des 1.
 
-Voici un exemple :
+Voici un exemple où cherche les corrélations entre le diamètre, le temps de cuisson, la masse de frangipane et le prix d'une galette des rois :
 
+|          |Diamètre|Cuisson|Frangipane|Prix|
+|:--------:|:------:|:-----:|:--------:|:--:|
+|Diamètre  |1       |0.8    |0.7       |0.9 |
+|Cuisson   |0.8     |1      |0.5       |0.2 |
+|Frangipane|0.7     |0.5    |1         |0.6 |
+|Prix      |0.9     |0.2    |0.6       |1   |
 
+La moitié de l'information contenue dans cette matrice étant redondante, on n'affiche parfois que la partie triangulaire supérieure ou inférieure de cette matrice.
 
 |Astuce Python|
 |:-|
@@ -387,11 +394,9 @@ où chaque colonne correspond à une variable, et chaque ligne correspond à un 
 
 On peut voir l'ACP comme le choix du sous-espace de dimension $q$ tel que le nuage de points projetés ait la variance la plus grande possible.
 
-Les résultats d'une ACP peuvent être affichés sous la forme d'un **nuage de points 2D ou 3D** ($q = 2$ ou $3$) représentant les différents individus, avec pour axes les composantes principales.
+Les résultats d'une ACP peuvent être affichés sous la forme d'un **nuage de points 2D ou 3D** ($q = 2$ ou $3$) représentant les différents individus, avec pour axes les composantes principales :
 
-Voici un exemple :
-
-
+![ACP nuage de points](img/Chap1_ACP_scatter.png)
 
 L'idée est de voir si on peut séparer les individus en différents groupes à partir des composantes principales.
 
@@ -401,7 +406,7 @@ Chacune des $p$ variables correspond à un vecteur sur ce graphique, et un cercl
 
 Voici un exemple :
 
-
+![ACP cercle de corrélations](img/Chap1_ACP_cercle_correlations.png)
 
 Un cercle des corrélations permet donc de juger de la corrélation des variables d'origines avec les composantes principales, et de la corrélation des variables d'origine entre elles :
 
