@@ -527,6 +527,14 @@ En apprentissage, on appelle souvent en anglais les entrée d'un modèle les "**
 
 Lors du processus d'**apprentissage** (ajustement des paramètres), on va enseigner au modèle comment déterminer des "labels" correspondant à des "features", en se basant sur ce qu'il a appris d'une **base de données d'"entrainement"** de "features".
 
+Par exemple, on peut vouloir entrainer un modèle à associer à une photo de viennoiserie (feature) le nom de la viennoiserie (label) :
+
+![Exemple d'apprentissage 1](img/Chap1_apprentissage_1.png)
+
+Ou alors, on peut vouloir entrainer un modèle à associer à la masse de farine, la masse de beurre, le volume de lait et le diamètre d'un lot de crêpes (features) le prix de la crêpe (label) :
+
+![Exemple d'apprentissage 2](img/Chap1_apprentissage_2.png)
+
 #### Apprentissage supervisé ou non-supervisé
 
 Dans le cas où les données d'apprentissage ont des "labels" définis, le modèle va apprendre à retrouver ces "labels" (connus) pour ces "features".
@@ -550,6 +558,8 @@ On peut entrainer un modèle de classification **de manière supervisée ou non-
 
 On ne peut entrainer un modèle de régression **que de manière supervisée**.
 
+NB : Comme seule la classification peut être "non-supervisée", on parle en général directement de **clustering**.
+
 ### Pour aller plus loin...
 
 Il existe un 3ème type d'apprentissage, que nous ne détaillerons pas dans ce cours, qui s'appelle "apprentissage par **renforcement**".
@@ -563,6 +573,8 @@ L'idée est la suivante :
 * Le modèle se met à jour en fonction du retour qu'il a reçu.
 
 Ce processus se répète pour chaque nouvelle situation, et ainsi **le modèle apprend de ses expériences**.
+
+![Types d'apprentissage](img/Chap1_types_apprentissage.png)
 
 ## Difficultés de l'apprentissage
 
@@ -606,6 +618,8 @@ Comme on peut s'y attendre, ceci va avoir tendance à biaser notre modèle.
 
 Par exemple, mettons que l'on veuille entrainer un modèle à reconnaitre une photo d'un pain au chocolat d'un pain suisse.
 Les pains au chocolat étant plus courants en boulangerie que les pains suisses, on aura un **déséquilibre** dans la base de données d'entrainement, qui fera que notre modèle aura plus tendance à prédire qu'une photo montre un pain au chocolat qu'un pain suisse.
+
+![Base de données désequilibrée](img/Chap1_desequilibre.png)
 
 Il existe plusieurs méthodes pour éviter les biais d'entrainement, en jouant soit sur l'échantillonage, soit sur les poids accordés aux différentes données pendant l'entrainement.
 
