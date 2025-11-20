@@ -529,11 +529,11 @@ Lors du processus d'**apprentissage** (ajustement des paramètres), on va enseig
 
 Par exemple, on peut vouloir entrainer un modèle à associer à une photo de viennoiserie (feature) le nom de la viennoiserie (label) :
 
-![Exemple d'apprentissage 1](img/Chap1_apprentissage_1.png)
+![Exemple de modèle 1](img/Chap1_modele_1.png)
 
 Ou alors, on peut vouloir entrainer un modèle à associer à la masse de farine, la masse de beurre, le volume de lait et le diamètre d'un lot de crêpes (features) le prix de la crêpe (label) :
 
-![Exemple d'apprentissage 2](img/Chap1_apprentissage_2.png)
+![Exemple de modèle 2](img/Chap1_modele_2.png)
 
 #### Apprentissage supervisé ou non-supervisé
 
@@ -542,6 +542,12 @@ On espère alors qu'après apprentissage, le modèle pourra retourner les "label
 On parle alors de "**généralisation**".
 
 Comme on peut directement vérifier les performances du modèle à prédire les "labels" du jeu de données d'entrainement, on parle d'**apprentissage supervisé**.
+
+Le processus est en général itératif : le modèle va se mettre à jour au fur et à mesure des itérations pour réduire l'erreur de prédiction.
+
+Voici le concept résumé graphiquement avec notre exemple de l'association d'un nom de viennoiserie à une photo :
+
+![Exemple d'apprentissage supervisé](img/Chap1_apprentissage_supervise.png)
 
 Dans le cas où les données d'apprentissage n'ont pas de "labels", on peut tout de même essayer de diviser les individus des "features" en différent groupes, auxquels on assignera des "labels" plus tard.
 Comme nous n'avons pas de "labels" d'entrainement comme référence, on parle d'**apprentissage non-supervisé** ou "clustering" ("partition de données").
