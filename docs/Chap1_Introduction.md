@@ -544,21 +544,31 @@ On parle alors de "**généralisation**".
 Comme on peut directement vérifier les performances du modèle à prédire les "labels" du jeu de données d'entrainement, on parle d'**apprentissage supervisé**.
 
 Le processus est en général itératif : le modèle va se mettre à jour au fur et à mesure des itérations pour réduire l'erreur de prédiction.
+On a donc besoin d'une fonction d'évaluation de l'erreur, aussi appelée "**fonction de coût**".
 
-Voici le concept résumé graphiquement avec notre exemple de l'association d'un nom de viennoiserie à une photo :
+Voici le concept résumé graphiquement, avec notre exemple de l'association d'un nom de viennoiserie à une photo :
 
 ![Exemple d'apprentissage supervisé](img/Chap1_apprentissage_supervise.png)
 
 Dans le cas où les données d'apprentissage n'ont pas de "labels", on peut tout de même essayer de diviser les individus des "features" en différent groupes, auxquels on assignera des "labels" plus tard.
+On appelle la première étape "**partition**", et la seconde "**labélisation**".
+
+On a besoin d'un critère de proximité entre individus afin de définir ces groupes, souvent une "**distance**".
+Il s'agit aussi souvent d'un processus itératif.
+
 Comme nous n'avons pas de "labels" d'entrainement comme référence, on parle d'**apprentissage non-supervisé** ou "clustering" ("partition de données").
+
+Voici le concept résumé graphiquement, toujours avec notre exemple de l'association d'un nom de viennoiserie à une photo :
+
+![Exemple d'apprentissage non-supervisé](img/Chap1_apprentissage_non_supervise.png)
 
 #### Classification et régression
 
 On peut aussi diviser les apprentissages suivant le type de sortie attendu, et donc de modèle à entrainer.
 
-Si la sortie est un groupe d'individus auxquel on veut assigner un nouvel individu, on va parler de "**classification**".
+Si la sortie est quantitative discrète ou qualitative, on va parler de "**classification**".
 
-Si la sortie est un vecteur de valeurs de variables pour un nouvel individu, on va parler de "**régression**".
+Si la sortie est quantitative continue, on va parler de "**régression**".
 
 On peut entrainer un modèle de classification **de manière supervisée ou non-supervisée**.
 
