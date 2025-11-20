@@ -564,17 +564,25 @@ Voici le concept résumé graphiquement, toujours avec notre exemple de l'associ
 
 #### Classification et régression
 
-On peut aussi diviser les apprentissages suivant le type de sortie attendu, et donc de modèle à entrainer.
+On peut aussi diviser les apprentissages suivant la nature des sorties attendue, et donc de modèle à entrainer.
 
-Si la sortie est quantitative discrète ou qualitative, on va parler de "**classification**".
+Si la sortie est **quantitative discrète** ou **qualitative**, on va parler de "**classification**".
 
-Si la sortie est quantitative continue, on va parler de "**régression**".
+Si la sortie est **quantitative continue**, on va parler de "**régression**".
+
+Si l'on reprend nos 2 exemples précédents :
+
+* Le nom d'une viennoiserie étant une étiquette, soit une variable qualitative, il s'agit d'un problème de classification.
+
+* Le prix d'une crêpe étant une variable quatitative continue, il s'agit d'un problème de régression.
+
+![Classification et régression](img/Chap1_classification_regression.png)
 
 On peut entrainer un modèle de classification **de manière supervisée ou non-supervisée**.
 
 On ne peut entrainer un modèle de régression **que de manière supervisée**.
 
-NB : Comme seule la classification peut être "non-supervisée", on parle en général directement de **clustering**.
+NB : Seule la classification peut être "non-supervisée", et on parle en général directement de **clustering**.
 
 ### Pour aller plus loin...
 
@@ -589,6 +597,8 @@ L'idée est la suivante :
 * Le modèle se met à jour en fonction du retour qu'il a reçu.
 
 Ce processus se répète pour chaque nouvelle situation, et ainsi **le modèle apprend de ses expériences**.
+
+**Voici un petit schéma récapitulatif des différents types d'apprentissages que nous avons vus :**
 
 ![Types d'apprentissage](img/Chap1_types_apprentissage.png)
 
@@ -626,7 +636,7 @@ D'où la nécessité de procéder à un **nettoyage des données** en amont de l
 
 Comme expliqué précedemment, notre but est d'obtenir à partir de notre base de données d'entrainement un modèle qui soit **généralisable** à toutes nouvelles données que l'on peut rencontrer.
 
-Pour que cet objectif, il faut que la base de données que l'on utilise pour entrainer le modèle soit **représentative** de la distribution des différentes variables de manière générale.
+Pour atteindre cet objectif, il faut que la base de données que l'on utilise pour entrainer le modèle soit **représentative** de la distribution des différentes variables de manière générale.
 Ceci implique de faire attention à la représentativité de notre population au moment de l'**échantillonnage**, sous peine que le modèle ait du mal à généraliser.
 
 Parfois, certains types d'individus sont par nature **sous ou sur-représentés** dans la population générale, et donc le seront toujours si on échantillonne de manière représentative.
