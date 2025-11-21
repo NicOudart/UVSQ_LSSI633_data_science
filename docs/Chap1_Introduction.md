@@ -618,6 +618,10 @@ S'il n'y a pas de règle précise pour déterminer la **quantité de données** 
 
 * Plus le problème complexe, plus il faudra de données d'entrainement.
 
+Par exemple, dans notre exemple de classification des images de viennoiseries :
+
+![Quantité de données](img/Chap1_quantite.png)
+
 Pour donner un ordre de grandeur, la quantité d'individus nécessaires à un apprentissage va en général **de quelques milliers à des centaines de millions**.
 Cependant, il n'est pas aisé de constituer une base de données aussi large, et de surcroit une base de donnée de qualité.
 
@@ -630,7 +634,13 @@ La qualité des données peut par exemple être dégradée par :
 
 * La présence de **bruit** dans les données.
 
+Toujours pour notre exemple, on peut avoir des données manquantes ou abérrantes :
+
+![Qualité de données](img/Chap1_mauvaise_qualite.png)
+
 D'où la nécessité de procéder à un **nettoyage des données** en amont de l'apprentissage : supprimer certaines données, les combler, ou faire de nouvelles mesures.
+
+Malheureusement, nettoyer les données implique parfois de diminuer la quantité de données : on est donc souvent confronté à un **compromis entre quantité et qualité** des données.
 
 ### Représentativité et équilibre des données
 
