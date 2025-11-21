@@ -372,7 +372,7 @@ La moitié de l'information contenue dans cette matrice étant redondante, on n'
 Comme mentionné précédemment, les jeux de données que l'on rencontre sont souvent multidimensionels.
 Ceci rend difficile voir impossible un affichage graphique compréhensible des individus d'une variable par rapport à une autre (il faudrait un graphique 2D pour 2 variables, 3D pour 3 variables, 4D pour 4 variables, etc.).
 
-Afin de représenter des données multidimensionnelles sous la forme d'un affichage graphique de **dimension faible** (en général 1, 2 ou 3), on utilise souvent l'**Analyse en Composantes Principales** (ACP).
+Afin de représenter des données multidimensionnelles sous la forme d'un affichage graphique de **dimension faible** (en général 1, 2 ou 3), on utilise souvent une **méthode de réduction de dimensionnalité** connue sous le nom d'**Analyse en Composantes Principales** (ACP).
 
 L'idée est la suivante.
 Soit un jeu de données contenant $p$ variables et $n$ individus. 
@@ -663,7 +663,39 @@ Il est à noter qu'un mauvais échantillonage ou un déséquilibre d'une base de
 
 ### Pertinence des variables
 
+Pour que notre modèle soit capable de renvoyer les labels (sorties) désirés, il faut que les features (entrées) le permettent.
+
+Le sélection de **variables pertinentes** pour un problème donné est donc capital.
+C'est ce que l'on appelle en anglais le "**feature engineering**".
+
+On peut diviser cette activité en 2 grandes techniques : la **sélection de variables** et l'**extraction de variables**.
+
+#### La sélection de variables
+
+Ce n'est pas parce qu'une variable est dans la base de données qu'il faut l'utiliser pour entrainer un modèle.
+Il faut faire un tri pour **choisir les variables pertinentes** pour un problème parmi toutes les variables disponibles.
+
+Par exemple, si pour estimer le prix d'une crêpe on a accès à la masse de farine, le volume de lait et l'âge du crêpier, on va intuitivement choisir comme features la masse de farine et le volume de lait, car on devine que l'âge du crêpier n'aura pas d'impact sur le prix.
+
+L'idée est donc de sélectionner comme features **des variables qui soient corrélées aux labels**.
+
+Pour ce faire, on utilise généralement des **matrices de corrélations** vues précédemment.
+
+#### L'extraction de variables
+
+Multiplier le nombre de variables revient à augmenter la dimensionnalité d'un problème, ce qui rend l'apprentissage plus compliqué.
+De plus, certaines variables peuvent être corrélées entre elles.
+C'est pourquoi on peut vouloir **créer de nouvelles variables** pour un problème, en **combinant** des variables parmi celles disponibles.
+
+Par exemple, plutôt que d'utiliser la masse de farine et le volume de lait pour prédire le prix d'une crêpe, on peut imaginer utiliser un ratio volume de lait / masse de farine.
+
+L'idée est donc de trouver des **combinaisons de variables pertinentes** pour prédire les labels.
+
+Pour ce faire, on peut se servir d'une méthode de **réduction de dimensionnalité** telle que l'**ACP** vue précédemment.
+
 ### Sur-apprentissage / sous-apprentissage
+
+Une des problématiques majeures en apprentissage automatique est le **sur-apprentissage**.
 
 ## Stratégie pour l'apprentissage
 
