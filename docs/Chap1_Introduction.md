@@ -711,7 +711,7 @@ On peut néanmoins réduire les risques en :
 
 * Choisissant d'abord un type de modèle simple, puis un plus complexe si besoin.
 
-* En nettoyant les données pour éviter le bruit et les "outliers".
+* Nettoyant les données pour éviter le bruit et les "outliers".
 
 L'inverse du sur-apprentissage existe aussi, et se nomme "**sous-apprentissage**".
 Le modèle est alors trop simple pour capturer la complexité des données, et il tout aussi incapable de généraliser.
