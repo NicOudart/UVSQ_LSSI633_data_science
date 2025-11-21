@@ -695,7 +695,30 @@ Pour ce faire, on peut se servir d'une méthode de **réduction de dimensionnali
 
 ### Sur-apprentissage / sous-apprentissage
 
-Une des problématiques majeures en apprentissage automatique est le **sur-apprentissage**.
+Un des pires cauchemars de tout "data scientist" est le **sur-apprentissage**.
+
+Le but de tout apprentissage est d'**obtenir un modèle capable de généraliser** à de nouvelles données ce qu'il appris sur la base de données d'entrainement.
+
+Le problème est que lors de l'apprentissage, on va chercher à obtenir les meilleures performances possibles sur les données d'entrainement, ce qui peut pousser le modèle à **apprendre des détails très spécifiques à ces données** : le bruit et les "outliers" par exemple. 
+D'où le terme de "sur-apprentissage".
+
+Un tel modèle, trop compliqué, aura alors de mauvaises performances sur de nouvelles données : il sera **incapable de généraliser**.
+
+Nous verrons dans la suite de ce chapitre la stratégie classique pour détecter et éviter le sur-apprentissage.
+On peut néanmoins réduire les risques en :
+
+* Ayant des données nombreuses et représentatives.
+
+* Choisissant d'abord un type de modèle simple, puis un plus complexe si besoin.
+
+* En nettoyant les données pour éviter le bruit et les "outliers".
+
+L'inverse du sur-apprentissage existe aussi, et se nomme "**sous-apprentissage**".
+Le modèle est alors trop simple pour capturer la complexité des données, et il tout aussi incapable de généraliser.
+
+Le bon compromis que l'on va rechercher se situe donc entre les 2 :
+
+![Le sur-apprentissage](img/Chap1_surapprentissage.png)
 
 ## Stratégie pour l'apprentissage
 
