@@ -722,13 +722,87 @@ Le bon compromis que l'on va rechercher se situe donc entre les 2 :
 
 ## Stratégie pour l'apprentissage
 
+Maintenant que nous avons passé en revue les principales difficultées auxquelles on doit faire face lors de l'apprentissage d'un modèle, nous allons nous intéresser aux **stratégies d'apprentissage** classiques. 
+
 ### Hyperparamètres
+
+Dans le contexte de l'apprentissage d'un modèle, on distingue 2 types de paramètres :
+
+* Les **paramètres du modèle** que nous allons vouloir ajuster au cours de l'apprentissage, afin d'obtenir les labels désirés à partir de features données.
+
+* Les paramètres propres à l'**apprentissage**, que l'on nomme "**hyperparamètres**".
+
+Parmis les hyperparamètres, on peut citer : la fonction de coût utilisée pour l'optimisation du modèle, l'algorithme d'optimisation utilisé, la vitesse de convergence choisie, le nombre d'itérations de l'entrainement, ou encore l'architecture du modèle.
+
+Il est évident que les hyperparamètres vont **impacter les performances** du modèle obtenu après entrainement.
+
+C'est pourquoi lors d'un apprentissage, on va en général réaliser **plusieurs entrainements**, avec des hyperparamètres différents, afin d'**optimiser aussi les hyperparamètres**.
 
 #### Fonction de coût
 
+La **fonction de coût** ("loss function" en anglais), est une fonction qui prend en entrée les **labels prédits** par le modèle et les **labels attendus**, et retourne un score suivant la **proximité** de ces labels.
+On l'utilise comme **critère de la qualité des labels prédits** par un modèle **lors de son entrainement**.
+
+En général, plus la valeur retournée par la fonction de coût est faible, et meilleure est la prédiction.
+Le processus d'optimisation du modèle va donc chercher à **minimiser la fonction de coût**.
+
+On choisit une fonction de coût selon différents critères :
+
+* Qu'elle soit adaptée au type de problème de classification / régression auquel on est confronté.
+
+* Qu'elle soit adaptée à l'algorithme d'optimisation choisi : certains algorithmes nécessitent par exemple une fonction continue ou différentiable.
+
+* Qu'elle soit adaptée aux hypothèses que nous avons sur les données : certaines fonctions donneront par exemple plus ou moins de poids aux "outliers".
+
+Dans les chapitres suivants, nous verrons quelques exemples de fonctions de coût, adaptées à différents types de problèmes.
+
+**Attention !** La fonction de coût est utilisée pour évaluer la qualité de la prédiction d'un modèle sur des données labélisée.
+Il ne s'agit pas d'une évaluation de la performance d'un modèle en généralisation !
+Cette notion, bien différente, fera l'objet d'une section dans la suite de ce chapitre.
+
 #### Algorithme d'optimisation
 
+On appelle "**algorithme d'optimisation**" un algorithme dont l'objectif est de **trouver le minimum global** de la fonction de coût, afin d'**optimiser les paramètres** d'un modèle.
+C'est lui qui **réalise l'entrainement** proprement dit.
+
+Il s'agit en général d'un algorithme **itératif**, qui va faire **varier les paramètres du modèle**, afin de trouver ceux qui minimisent la fonction de coût.
+
+Voici une illustration pour un cas très simplifié de modèle à 1 paramètre :
+
+![La descente de gradient](img/Chap1_descente_de_gradient.png)
+
+L'algorithme d'optimisation de base en apprentissage supervisé est celui de la **descente de gradient**.
+Son principe est le suivant :
+
+|Algorithme de descente de gradient|
+|:-|
+|Soit $f(x)$ une fonction différentiable dont on cherche le minimum.|
+|On initialise une valeur de $x$ notée $x_0$.|
+|A chaque itération $n$ de l'algorithme, on va se déplacer dans l'espace des valeurs de $x$, de $x_n$ à $x_{n+1}$, avec la formule :|
+|$x_{n+1} = x_n - \gamma \nabla f(x_n)$|
+|avec $\nabla f(x_n)$ le gradient de la fonction en $x_n$, et $\gamma$ le "taux d'apprentissage".|
+|On peut mettre un critère d'arrêt sur $\| \nabla f(x_n) \|$.|
+
+L'idée est de parcourir l'espace des valeurs de la fonction de coût en fonction des paramètres du modèle, en suivant la direction inverse au gradient.
+
+On explique souvent le principe de cette méthode par l'analogie des "randonneurs dans le brouillard" :
+
+_Des randonneurs de montagne se retrouvent piégés par le brouillard alors qu'il cherchent à rentrer dans la vallée._
+_Comme ils ne peuvent plus voir le chemin, ils décident de se fier à leurs pieds : ils se dirigent dans la direction de la pente la plus forte._
+_Sans le savoir, les randonneurs appliquent alors l'algorithme de descente de gradient pour trouver le point minimisant l'altitude : la vallée._
+
+Encore aujourd'hui, l'entrainement des modèles d'apprentissage supervisé se fait avec des algorithmes d'optimisation basés sur la descente de gradient.
+
 #### Vitesse de convergence et arrêt
+
+Nous avons vu dans la section précédente que l'algorithme de la descente de gradient avait un paramètre appelé **taux d'apprentissage**.
+
+Il est inversement proportionnel au **pas** avec lequel l'algorithme d'optimisation va se déplacer dans l'espace des valeurs de la fonction de coût en fonction des paramètres du modèle.
+Par conséquent, le taux d'apprentissage permet de **choisir la vitesse de convergence de l'algorithme d'optimisation**.
+
+On s'attend à ce que plus le taux d'apprentissage soit élevé, plus la convergence vers le modèle optimal soit rapide.
+
+
 
 #### Architecture du modèle
 
