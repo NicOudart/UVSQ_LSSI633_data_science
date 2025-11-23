@@ -845,13 +845,106 @@ Nous développerons plus tard dans ce cours à quoi correspondent ces différent
 
 ### Entrainement, validation et test
 
+#### Performances en généralisation
+
+**Ce n'est pas parce que notre modèle a convergé vers le minimum global de l'espace d'une fonction de coût en fonction de ses paramètres qu'il aura de bonnes performances en généralisation !**
+
+En effet, nous avons vu plus tôt que le modèle peut être victime de **sur-apprentissage** : il a appris trop spécifiquement des données d'entrainement, et n'arrive donc pas à généraliser à de nouvelles données.
+
+Intuitivement, on devine qu'il faudrait mettre de côté une partie de notre base de données d'entrainement, sur laquelle nous n'entrainerons pas notre modèle.
+Ce sous-ensemble de données servira à tester le modèle une fois l'entrainement terminé, pour vérifier qu'il n'y a pas eu sur-apprentissage.
+
+C'est en effet la stratégie classique pour l'apprentissage d'un modèle.
+On dit alors que l'on a séparé la base de donnée en un **jeu d'entrainement** et un **jeu de test**.
+
+On considèrera alors que les performances obtenues par le modèle sur le jeu de test seront ses **performances en généralisation** : il aura des performances équivalentes sur tout nouveau jeu de données.
+
+Le problème est alors le suivant :
+
+* Plus on réserve de données pour les tests, et plus difficile sera l'apprentissage.
+
+* Plus on réserve de données pour l'entrainement, et moins représentatif sera le test.
+
+Souvent, le compromis retenu est **80% des données pour l'entrainement** et **20% des données pour le test**.
+
+Pour **évaluer les performances** en généralisation de notre modèle, on va utiliser une sélection de **critères de performance**, appelés "metrics" en anglais.
+
+Pour chaque type de modèle, il existe différents critères de performances, qui vont chacun essayer de capturer un aspect différent de la qualité de ses prédictions.
+Nous verrons des critères de performance classiques dans chacun des chapitres de ce cours.
+
 #### Validation par exclusion
+
+Une fois que nous avons séparé notre base de données en un jeu d'entrainement et un jeu de test, l'approche naïve pour éviter le sur-apprentissage serait d'entrainer plusieurs modèles avec différents hyperparamètres, et de retenir celui qui donne les meilleures performances en test.
+
+Cependant, si vous faites ceci, **il y a peu de chances que votre modèle ait de bonnes performances en généralisation**.
+
+En effet, ce processus revient à optimiser les hyperparamètres **spécifiquement pour notre jeu de données de test**.
+
+C'est pourquoi on va en réalité diviser extraire un 3ème sous-ensemble de notre base de jeu d'entrainement : un **jeu de validation**.
+
+L'**optimisation des hyperparamètres** se fera sur ce basant sur les performance en **validation**, et l'évaluation des **performances en généralisation** ce fera sur le **jeu de test**.
+
+**Attention ! Les performances en test ne doivent jamais être optimisées, au risque de ne plus être représentatives des performances en généralisation du modèle !**
+
+Le processus que nous avons décrit ici est connu sous le nom de **validation par exclusion**.
+Le voici décrit en détails :
+
+|Validation par exclusion|
+|:-|
+|- On sépare la base de données en un jeu d'entrainement, un jeu de validation et un jeu de test.|
+|- On entraine plusieurs modèles sur le jeu d'entrainement, avec différents hyperparamètres.|
+|- On sélectionne le modèle ayant les meilleurs résultats sur le jeu de validation.|
+|- On ré-entraine ce modèle avec les mêmes hyperparamètres, sur les données d'entrainement et de validation.|
+|- On évalue les performances en généralisation de ce modèle sur les données de test.|
+
+Souvent, on retiendra **60% des données pour l'entrainement**, **20% des données pour la validation** et **20% des données pour le test**.
+
+Voici la validation par exclusion résumée schématiquement :
+
+
 
 #### Validation croisée
 
+La validation par exclusion a 2 grands défauts :
+
+* En découpant en 3 jeux les données disponibles, nous réduisons la taille de la base de données d'entrainement, et donc nous rendons l'apprentissage plus difficile.
+
+* Les résultats peuvent dépendre de la manière dont nous avons découpé notre base de données en 3.
+
+C'est pourquoi on lui préfère souvent la **validation croisée** :
+
+|Validation croisée|
+|:-|
+||
+
+Voici la validation croisée résumée schématiquement :
+
+
+
+Cette stratégie d'apprentissage a tout de même un désavantage comparée à la validation par exclusion : elle nécessite un temps de calcul beaucoup plus long !
+
 #### Régularisation par arrêt prématuré
 
-#### Performances en généralisation
+Nous avons vu que la stratégie recommandée pour éviter les problèmes de généralisation est de comparer les performances du modèle obtenues sur les données d'entrainement à celles obtenues sur les données de validation.
+
+Pour **éviter le sur-apprentissage**, on peut en plus appliquer lors de l'entrainement la méthode de **régularisation** connue sous le nom d'**arrêt prématuré** ("early-stopping" en anglais).
+
+Son principe se base sur les idées suivantes :
+
+* Puisque nous optimisons les paramètres du modèle pour minimiser la fonction de coût, nous nous attendons à ce qu'au cours de l'entrainement, les valeurs de la fonction de coût **décroissent avec les époques pour les données d'entrainement**.
+
+* A mesure que le modèle est optimisé sur les données d'entrainement, nous nous attendons d'abord à ce que **dans un 1er temps**, la fonction de coût **décroisse aussi avec avec les époques pour les données de validation**.
+
+* Mais lorsque le modèle se met à souffrir de **sur-apprentissage**, nous nous attendons à ce que la fonction de coût se mette à **croître avec les époques pour les données de validation**.
+
+On peut donc détecter le début du sur-apprentissage comme étant l'époque où la fonction de coût se met à croitre pour les données de validation, et arrêter l'apprentissage à cette itération.
+D'où le nom d'"**arrêt prématuré**".
+
+Le processus exact est le suivant :
+
+|Arrêt prématuré|
+|:-|
+||
 
 ## Import de données et fichiers CSV
 
