@@ -35,7 +35,7 @@ Ce cours vous donnera aussi des astuces d'implémentation en **Python**, basées
 
 ---
 
-Tous les exemples de ce cours sont imaginaires, et les données synthétiques.
+Tous les exemples de ce cours sont imaginaires ou grandement simplifiés.
 Leur intérêt est purement pédagogique. 
 
 ---

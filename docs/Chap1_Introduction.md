@@ -722,6 +722,8 @@ Le bon compromis que l'on va rechercher se situe donc entre les 2 :
 
 ![Le sur-apprentissage](img/Chap1_surapprentissage.png)
 
+On appelle la recherche de ce compromis la "**régularisation**".
+
 ## Stratégie pour l'apprentissage
 
 Maintenant que nous avons passé en revue les principales difficultées auxquelles on doit faire face lors de l'apprentissage d'un modèle, nous allons nous intéresser aux **stratégies d'apprentissage** classiques. 
@@ -770,6 +772,7 @@ On appelle "**algorithme d'optimisation**" un algorithme dont l'objectif est de 
 C'est lui qui **réalise l'entrainement** proprement dit.
 
 Il s'agit en général d'un algorithme **itératif**, qui va faire **varier les paramètres du modèle**, afin de trouver ceux qui minimisent la fonction de coût.
+On appelle souvent les itérations de l'algorithme **époques** ("epochs" en anglais).
 
 Voici une illustration pour un cas très simplifié de modèle à 1 paramètre :
 
@@ -797,7 +800,7 @@ _Sans le savoir, les randonneurs sont en train d'appliquer l'algorithme de desce
 
 Encore aujourd'hui, l'entrainement des modèles d'apprentissage supervisé se fait avec des algorithmes d'optimisation basés sur la descente de gradient.
 
-#### Vitesse de convergence et arrêt
+#### Vitesse de convergence et nombre d'itérations
 
 Nous avons vu dans la section précédente que l'algorithme de la descente de gradient avait un paramètre appelé **taux d'apprentissage**.
 
@@ -805,18 +808,50 @@ Il est inversement proportionnel au **pas** avec lequel l'algorithme d'optimisat
 Par conséquent, le taux d'apprentissage permet de **choisir la vitesse de convergence de l'algorithme d'optimisation**.
 
 On s'attend à ce que plus le taux d'apprentissage soit élevé, plus la convergence vers le modèle optimal soit rapide.
+Or, ce n'est pas toujours le cas.
 
+En effet, si l'algorithme se déplace trop rapidement dans l'espace des valeurs de la fonction de coût, on a un risque de **dépassement** ("overshooting" en anglais) : l'algorithme peut passer "par-dessus" le minimum sans s'y arrêter, voir même **diverger** complètement.
 
+Le **choix d'un taux d'apprentissage adapté** est donc toujours affaire de **compromis** entre vitesse de convergence et non-dépassement.
+
+![Le taux d'apprentissage](img/Chap1_taux_apprentissage.png)
+
+Nous avons également vu précédemment que l'on peut placer dans l'algorithme un critère sur le gradient pour arrêter les itérations.
+Cependant, il est possible que ce critère ne soit jamais vérifié si l'algorithme diverge.
+
+On va donc en général choisir par sécurité un **nombre d'époques maximal** comme critère d'arrêt.
+
+Un autre problème courant est le fait que l'espace des valeurs de la fonction de coût a souvent des **minima locaux**, dans lesquels l'algorithme peut se retrouver **bloqué**.
+
+![Problème de minimum local](img/Minimum_local.png)
+
+C'est pourquoi en général, on ne va pas lancer un seul entrainement pour un jeu d'hyperparamètres, mais **plusieurs avec des initialisations différentes**.
 
 #### Architecture du modèle
 
-### Validation et test
+Certains types de modèles peuvent avoir des architectures différentes, **plus ou moins complexes** suivant le problème à résoudre.
 
-#### Tester la généralisation
+L'exemple le plus évident sont les célèbres **réseaux de neurones**, dont nous reparlerons dans les chapitres suivants.
 
-#### Critères de performance
+Dans le cas de ce type de modèle, on peut jouer sur les hyperparmètres suivants:
+
+* Le nombre de couches de neurones.
+
+* Le nombre de neurones par couche.
+
+* La fonction d'activation de chaque neurone.
+
+Nous développerons plus tard dans ce cours à quoi correspondent ces différents paramètres.
+
+### Entrainement, validation et test
 
 #### Validation par exclusion
+
+#### Validation croisée
+
+#### Régularisation par arrêt prématuré
+
+#### Performances en généralisation
 
 ## Import de données et fichiers CSV
 
