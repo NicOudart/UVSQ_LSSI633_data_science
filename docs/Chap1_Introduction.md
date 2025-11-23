@@ -2,6 +2,8 @@
 
 Ce chapitre porte sur les grands concepts et les enjeux des sciences des données.
 
+![En-tête chapitre I](img/Chap1_header.png)
+
 ---
 
 ## Analyse de données
@@ -523,7 +525,7 @@ Lors de ce cours, nous verrons 3 grands types d'apprentissage, et nous verrons p
 
 ### Les 3 grands types d'apprentissages
 
-En apprentissage, on appelle souvent en anglais les entrée d'un modèle les "**features**", et les sortie des "**labels**".
+En apprentissage, on appelle souvent en anglais **les entrées** d'un modèle les "**features**", et **les sorties** des "**labels**".
 
 Lors du processus d'**apprentissage** (ajustement des paramètres), on va enseigner au modèle comment déterminer des "labels" correspondant à des "features", en se basant sur ce qu'il a appris d'une **base de données d'"entrainement"** de "features".
 
@@ -743,6 +745,8 @@ C'est pourquoi lors d'un apprentissage, on va en général réaliser **plusieurs
 La **fonction de coût** ("loss function" en anglais), est une fonction qui prend en entrée les **labels prédits** par le modèle et les **labels attendus**, et retourne un score suivant la **proximité** de ces labels.
 On l'utilise comme **critère de la qualité des labels prédits** par un modèle **lors de son entrainement**.
 
+![Fonction de coût](img/Chap1_fonction_de_cout.png)
+
 En général, plus la valeur retournée par la fonction de coût est faible, et meilleure est la prédiction.
 Le processus d'optimisation du modèle va donc chercher à **minimiser la fonction de coût**.
 
@@ -789,7 +793,7 @@ On explique souvent le principe de cette méthode par l'analogie des "randonneur
 
 _Des randonneurs de montagne se retrouvent piégés par le brouillard alors qu'il cherchent à rentrer dans la vallée._
 _Comme ils ne peuvent plus voir le chemin, ils décident de se fier à leurs pieds : ils se dirigent dans la direction de la pente la plus forte._
-_Sans le savoir, les randonneurs appliquent alors l'algorithme de descente de gradient pour trouver le point minimisant l'altitude : la vallée._
+_Sans le savoir, les randonneurs sont en train d'appliquer l'algorithme de descente de gradient pour trouver le point minimisant l'altitude : la vallée._
 
 Encore aujourd'hui, l'entrainement des modèles d'apprentissage supervisé se fait avec des algorithmes d'optimisation basés sur la descente de gradient.
 
