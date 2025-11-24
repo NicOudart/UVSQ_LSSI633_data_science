@@ -845,9 +845,9 @@ Nous développerons plus tard dans ce cours à quoi correspondent ces différent
 
 ### Entrainement, validation et test
 
-#### Performances en généralisation
+**Ce n'est pas parce que notre modèle a convergé vers le minimum global de l'espace de la fonction de coût en fonction de ses paramètres qu'il aura de bonnes performances en généralisation !**
 
-**Ce n'est pas parce que notre modèle a convergé vers le minimum global de l'espace d'une fonction de coût en fonction de ses paramètres qu'il aura de bonnes performances en généralisation !**
+#### Performances en généralisation
 
 En effet, nous avons vu plus tôt que le modèle peut être victime de **sur-apprentissage** : il a appris trop spécifiquement des données d'entrainement, et n'arrive donc pas à généraliser à de nouvelles données.
 
@@ -940,18 +940,157 @@ Son principe se base sur les idées suivantes :
 On peut donc détecter le début du sur-apprentissage comme étant l'époque où la fonction de coût se met à croitre pour les données de validation, et arrêter l'apprentissage à cette itération.
 D'où le nom d'"**arrêt prématuré**".
 
+![Arrêt prématuré](img/Chap1_arret_premature.png)
+
 Le processus exact est le suivant :
 
 |Arrêt prématuré|
 |:-|
-||
+|Pour chaque itération du processus d'apprentissage :|
+|- On évalue la fonction de coût pour les prédictions de la méthode sur le jeu d'entrainement.|
+|- On évalue la fonction de coût pour les prédictions de la méthode sur le jeu d'évaluation.|
+|- On vérifie qu'on a bien une décroissance pour les 2 valeurs, sinon on stoppe l'entrainement.|
 
 ## Import de données et fichiers CSV
+
+Pour enregistrer une base de données sous la forme d'un tableau, on utilise couramment le format **CSV** : "Comma Separated Values".
+
+Il s'agit d'un format ouvert, compréhensible par un humain, qui peut être lu par n'importe quel éditeur de texte.
+
+Comme son nom l'indique, un fichier CSV s'organise de la manière suivante :
+
+* **Chaque ligne correspond à une ligne du tableau**. Les lignes sont séparées par un retour à la ligne "\n".
+
+* Au sein d'une ligne, **les éléments de chaque colonnes sont séparés par des virgules** ",".
+
+* La **première ligne** est souvent considérée comme l'**en-tête** du tableau (le nom des colonnes).
+
+D'où le nom "Comma Separated Values".
+
+Voici un exemple de tableau de données : 
+
+|Ville   |Latitude |Longitude|Nom             |
+|:------:|:-------:|:-------:|:--------------:|
+|Paris   |48.866667|2.333333 |Pain au chocolat|
+|Orléans |47.902734|1.908607 |Pain au chocolat|
+|Bordeaux|44.841225|-0.580036|Chocolatine     |
+|Brest   |48.390528|-4.486009|Pain au chocolat|
+|Toulouse|43.604464|1.444243 |Chocolatine     |
+
+Et voici tout simplement sa conversion en format CSV :
+
+~~~
+Ville,Latitude,Longitude,Nom
+Paris,48.866667,2.333333,Pain au chocolat
+Orléans,47.902734,1.908607,Pain au chocolat
+Bordeaux,44.841225,-0.580036,Chocolatine
+Brest,48.390528,-4.486009,Pain au chocolat
+Toulouse,43.604464,1.444243,Chocolatine
+~~~
+
+L'extension d'un fichier CSV est "**.csv**".
+Il peut être importé par la plupart des logiciels tableurs (Excel, OpenOffice Calc), et sous Python avec la bibliothèque Pandas, dont nous reparlerons plus loin.
+
+|Astuce Python|
+|:-|
+|Avec la bibliothèque Python "Pandas", on peut importer un fichier CSV sous la forme d'un "DataFrame" (tableau de données propre à "Pandas") avec la méthode "read_csv".|
+
+Bien qu'il soit très utilisé, le format CSV a quelques désavantages.
+Notamment :
+
+* Il n'est pas optimal en terme de mémoire.
+
+* Il empêche d'utiliser le caractère "," pour autre chose que séparer les colonnes du tableau.
+
+C'est pourquoi, suivant les applications, on préfèrera utiliser un fichier binaire.
 
 ## Outils Python pour l'apprentissage
 
 ### Pandas
 
+**Pandas** est une bibliothèque Python très populaire pour l'**analyse de données**.
+
+Elle permet :
+
+* D'**importer des données** sous la forme d'un conteneur nommé "**DataFrame**".
+
+* De **manipuler** ces données de manière efficace.
+
+* D'afficher facilement des **graphiques** à partir de ces données.
+
+* D'**exporter** ces données en différents formats.
+
+* De fournir une **entrée** pour l'**apprentissage** de modèles.
+
+Elle s'importe souvent sous le nom "pd" avec la commande :
+
+~~~
+import pandas as pd
+~~~
+
+Un **DataFrame** Pandas contient un jeu de données sous la forme d'un **tableau 2D**, pouvant contenir des objets de types différents.
+
+On associe à chaque donnée dans un DataFrame une "**column**" correspondant au nom de la variable, et un "**index**" correspondant au numéro de l'individu.
+
+Voici notre exemple de tableau précédent, converti en DataFrame :
+
+|   |'Ville'   |'Latitude'|'Longitude'|'Nom'             |
+|:-:|:--------:|:--------:|:---------:|:----------------:|
+|0  |'Paris'   |48.866667 |2.333333   |'Pain au chocolat'|
+|1  |'Orléans' |47.902734 |1.908607   |'Pain au chocolat'|
+|2  |'Bordeaux'|44.841225 |-0.580036  |'Chocolatine'     |
+|3  |'Brest'   |48.390528 |-4.486009  |'Pain au chocolat'|
+|4  |'Toulouse'|43.604464 |1.444243   |'Chocolatine'     |
+
+On peut accéder à une ligne d'indice `i` d'un DataFrame `df` avec la commande :
+
+~~~
+df.loc[i]
+~~~
+
+Et on peut accéder à une colonne `'col'` d'un DataFrame `df` avec la commande :
+
+~~~
+df['col']
+~~~
+
+On peut également sélectionner un sous-ensemble de données à partir d'un DataFrame, de manière conditionnelle.
+
+Par exemple, pour créer un DataFrame `df2` à partir de notre DataFrame précédent que nous nommerons `df`, mais ne contenant que les individus pour lesquels la variable `'Latitude'` est inférieure à 48.5, et la variable `'Nom'` est égale à 'Pain au chocolat', on utilisera la commande :
+
+~~~
+df2 = df[(df['Latitude']<48.5)&(df['Nom']=='Pain au chocolat')]
+~~~
+
+On obtient alors le DataFrame `df2` suivant : 
+
+|   |'Ville'   |'Latitude'|'Longitude'|'Nom'             |
+|:-:|:--------:|:--------:|:---------:|:----------------:|
+|1  |'Orléans' |47.902734 |1.908607   |'Pain au chocolat'|
+|3  |'Brest'   |48.390528 |-4.486009  |'Pain au chocolat'|
+
+On remarque que pour l'opérateur booléen ET on doit utiliser "&", et pour l'opérateur booléen OU on doit utiliser "|".
+
 ### Scikit-Learn
 
+
+
 ### Keras-Tensorflow, Pytorch
+
+
+
+---
+
+## Conclusion
+
+Ce chapitre vous a donné une introduction très générale aux sciences des données.
+La suite de ce cours sera découpée en 3 chapitres, portant chacun sur un type d'apprentissage automatique :
+
+* La classification supervisée.
+
+* La régression.
+
+* Le partitionnement ("clustering" ou classification non-supervisée).
+
+Chacun introduira de manière générale son type d'apprentissage, présentera un panel des modèles de base, et donnera des outils d'évaluation des performances.
+Un exemple "fil rouge" d'application sera utilisé pour illustrer chaque chapitre.
