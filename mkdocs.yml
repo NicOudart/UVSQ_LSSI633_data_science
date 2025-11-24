@@ -9,7 +9,7 @@ nav:
   - I. Introduction: Chap1_Introduction.md
   - II. Classification supervisée: Chap2_Classification_supervisee.md
   - III. Régression: Chap3_Regression.md
-  - IV. Clustering: Chap4_Clustering.md
+  - IV. Partitionnement: Chap4_Partitionnement.md
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true

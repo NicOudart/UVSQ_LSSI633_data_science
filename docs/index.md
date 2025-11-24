@@ -19,13 +19,13 @@ Vous trouverez dans ce cours une initiation aux sciences des données, et plus p
 
 * [Chapitre III : Régression](Chap3_Regression.md) : une initiation à la régression par apprentissage supervisé.
 
-* [Chapitre IV : Clustering](Chap4_Clustering.md) :  une initiation au partitionnement, aussi connu sous le nom de classification par apprentissage non-supervisé.
+* [Chapitre IV : Partitionnement](Chap4_Partitionnement.md) :  une initiation au partitionnement, aussi connu sous le nom de classification par apprentissage non-supervisé ("clustering").
 
 L'objectif est qu'à la fin de ce cours vous soyez capable de :
 
 * **Prendre du recul** sur un jeu de données, et savoir l'**analyser** / le **préparer** en vue d'un apprentissage.
 
-* **Identifier** à quel **type de problème** (classification, regression, clustering) vous êtes confrontés.
+* **Identifier** à quel **type de problème** (classification, regression, partitionnement) vous êtes confrontés.
 
 * **Réfléchir aux enjeux** liés à chacun de ces types de problèmes, et savoir **choisir une des méthodes** pertinente parmi celles vue en cours.
 

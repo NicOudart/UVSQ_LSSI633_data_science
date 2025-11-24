@@ -584,7 +584,7 @@ On peut entrainer un modèle de classification **de manière supervisée ou non-
 
 On ne peut entrainer un modèle de régression **que de manière supervisée**.
 
-NB : Seule la classification peut être "non-supervisée", et on parle en général directement de **clustering**.
+NB : Seule la classification peut être "non-supervisée", et on parle en général directement de **partitionnement** ("clustering").
 
 ### Pour aller plus loin...
 
@@ -911,11 +911,20 @@ La validation par exclusion a 2 grands défauts :
 
 * Les résultats peuvent dépendre de la manière dont nous avons découpé notre base de données en 3.
 
-C'est pourquoi on lui préfère souvent la **validation croisée** :
+C'est pourquoi on lui préfère souvent la **validation croisée**.
+
+L'idée est la suivante : on met toujours de côté un jeu de test, mais on ne réalise plus une séparation entre données d'entrainement et données de validation.
+A la place, on sépare la base d'entrainement en plusieurs petits jeux de données, et on réalise plusieurs entrainements du modèle, avec pour chacun jeu un de validation différent parmi ces petits jeux.
 
 |Validation croisée|
 |:-|
-||
+|- On sépare la base de données en un jeu d'entrainement et un jeu de test.|
+|- On sépare le jeu d'entrainement en k sous-jeux.|
+|- On réalise k combinaisons, où un des k sous-jeux est utilisé pour la validation, pendant que les k-1 autres sont utilisées pour l'entrainement.|
+|- La qualité des prédictions du modèle est évaluée à chaque itération comme étant la moyenne de celles évaluée pour chaque combinaison.|
+|- On sélectionne le modèle ayant en moyenne les meilleurs résultats en validation.|
+|- On ré-entraine ce modèle avec les mêmes hyperparamètres, sur le jeu d'entrainement complet.|
+|- On évalue les performances en généralisation de ce modèle sur les données de test.|
 
 Voici la validation croisée résumée schématiquement :
 
@@ -1071,13 +1080,32 @@ On obtient alors le DataFrame `df2` suivant :
 
 On remarque que pour l'opérateur booléen ET on doit utiliser "&", et pour l'opérateur booléen OU on doit utiliser "|".
 
+**Nous utiliserons la bibliothèque Pandas afin d'importer, d'analyser et de manipuler des données dans le cadre de ce cours**.
+
 ### Scikit-Learn
 
+**Scikit-Learn** est une bibliothèque Python pour l'**apprentissage automatique**.
 
+Elle contient des implémentations de méthodes pour :
+
+* La **classification supervisée**.
+
+* La **régression**.
+
+* Le **partitionnement**.
+
+* La réduction de dimensionnalité.
+
+**Nous utiliserons la bibliothèque Scikit-Learn pour de l'apprentissage de modèles dans le cadre de ce cours**.
 
 ### Keras-Tensorflow, Pytorch
 
+Pour aller plus loin, lorsque le modèle est un réseau de neurones, et que ce réseau contient de nombreuses couches de neurones, on entre dans un sous-domaine de l'apprentissage appelé **apprentissage profond** ("deep learning" en anglais).
+(Nous reparlerons des réseaux de neurones dans les chapitres suivants).
 
+Pour l'apprentissage profond, il existe 2 grandes bibliothèques concurrentes sur Python : **Keras-Tensorflow** et **Pytorch**.
+
+**L'apprentissage profond ne sera pas au programme de ce cours, qui n'est qu'une introduction aux sciences des données**.
 
 ---
 
@@ -1090,7 +1118,7 @@ La suite de ce cours sera découpée en 3 chapitres, portant chacun sur un type 
 
 * La régression.
 
-* Le partitionnement ("clustering" ou classification non-supervisée).
+* Le partitionnement ("clustering" ou "classification non-supervisée").
 
 Chacun introduira de manière générale son type d'apprentissage, présentera un panel des modèles de base, et donnera des outils d'évaluation des performances.
 Un exemple "fil rouge" d'application sera utilisé pour illustrer chaque chapitre.

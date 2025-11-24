@@ -1,3 +1,3 @@
-# Chapitre IV : Clustering
+# Chapitre IV : Partitionnement
 
 ## Problème de partitionnement
