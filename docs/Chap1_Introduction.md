@@ -901,7 +901,7 @@ Souvent, on retiendra **60% des données pour l'entrainement**, **20% des donné
 
 Voici la validation par exclusion résumée schématiquement :
 
-
+![Validation par exclusion](img/Chap1_validation_par_exclusion.png)
 
 #### Validation croisée
 
@@ -928,7 +928,7 @@ A la place, on sépare la base d'entrainement en plusieurs petits jeux de donné
 
 Voici la validation croisée résumée schématiquement :
 
-
+![Validation croisée](img/Chap1_validation_croisee.png)
 
 Cette stratégie d'apprentissage a tout de même un désavantage comparée à la validation par exclusion : elle nécessite un temps de calcul beaucoup plus long !
 
@@ -1096,6 +1096,14 @@ Elle contient des implémentations de méthodes pour :
 
 * La réduction de dimensionnalité.
 
+On peut importer cette bibliothèque Python avec la commande :
+
+~~~
+import sklearn
+~~~
+
+Même si en général on n'importe pas toute la bibliothèque, mais seulement les packages dont on a besoin.
+
 **Nous utiliserons la bibliothèque Scikit-Learn pour de l'apprentissage de modèles dans le cadre de ce cours**.
 
 ### Keras-Tensorflow, Pytorch
@@ -1111,14 +1119,14 @@ Pour l'apprentissage profond, il existe 2 grandes bibliothèques concurrentes su
 
 ## Conclusion
 
-Ce chapitre vous a donné une introduction très générale aux sciences des données.
+Ce chapitre vous a donné une **introduction très générale aux sciences des données**.
 La suite de ce cours sera découpée en 3 chapitres, portant chacun sur un type d'apprentissage automatique :
 
-* La classification supervisée.
+* La **classification supervisée**.
 
-* La régression.
+* La **régression**.
 
-* Le partitionnement ("clustering" ou "classification non-supervisée").
+* Le **partitionnement** ("clustering" ou "classification non-supervisée").
 
-Chacun introduira de manière générale son type d'apprentissage, présentera un panel des modèles de base, et donnera des outils d'évaluation des performances.
-Un exemple "fil rouge" d'application sera utilisé pour illustrer chaque chapitre.
+Chacun introduira de manière générale son type d'apprentissage, présentera un panel des **modèles** de base, et donnera des outils d'**évaluation des performances**.
+Un **exemple "fil rouge"** d'application sera utilisé pour illustrer chaque chapitre.
