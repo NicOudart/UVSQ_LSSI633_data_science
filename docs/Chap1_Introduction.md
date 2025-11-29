@@ -39,7 +39,7 @@ Tout d'abord, les variables étudiées peuvent être de **nature** différente :
 
 * Une donnée **qualitative ordinale** est descriptive avec un ordre hiérarchique : par exemple, le niveau de cuisson d'une baguette de pain (blanche, pas trop cuite, bien cuite).
 
-La plupart des modèles d'apprentissage automatique ne prennent que des valeurs numériques en entrée.
+La plupart des modèles d'apprentissage automatique ne peuvent manipuler que des valeurs numériques.
 
 On va donc en général **encoder** des données qualitatives avec des **valeurs numériques**. Par exemple :
 
@@ -49,7 +49,9 @@ On va donc en général **encoder** des données qualitatives avec des **valeurs
 |Pas trop cuit  |2       |
 |Bien cuit      |3       |
 
-Cette méthode fonctionne bien pour des données **ordinales** comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
+On appelle cet encodage, **encodage par étiquette** ("label encoding").
+
+Cette méthode fonctionne toujours pour des données **ordinales** comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
 C'est pourquoi on utilise souvent l'encodage **one-hot**.
 
 L'idée est de faire comme si chaque nom possible pour une variable qualitative était une variable en soit. 
@@ -81,7 +83,7 @@ On remarque ici que plus la variable a de noms possibles, et plus les binaires d
 
 |Astuce Python|
 |:-|
-|La bibliothèque Scikit-Learn possède dans son package **preprocessing** une fonction **OrdinalEncoder**, permettant d'assigner un entier à des variables qualitatives ordinales.|
+|La bibliothèque Scikit-Learn possède dans son package **preprocessing** des fonctions **LabelEncoder** et **OrdinalEncoder**, permettant d'assigner un entier à des variables qualitatives nominales ou ordinales.|
 |Dans ce même package, vous trouverez également une fonction **OneHotEncoder**, permettant d'encoder en one-hot des variables qualitatives nominales.|
 |Dans les 2 cas, il vous faut créer une instance de **OrdinalEncoder** ou de **OneHotEncoder**, puis utiliser la méthode **fit_transform()** avec vos données en entrée.|
 
@@ -1105,6 +1107,20 @@ import sklearn
 Même si en général on n'importe pas toute la bibliothèque, mais seulement les packages dont on a besoin.
 
 **Nous utiliserons la bibliothèque Scikit-Learn pour de l'apprentissage de modèles dans le cadre de ce cours**.
+
+### Seaborn
+
+**Seaborn** est une bibliothèque Python d'**affichage graphique** de données statistiques.
+
+Ses outils d'affichage peuvent s'avérer utiles en complément de ceux de Pandas et Matplotlib.
+
+Elle s'importe souvent sous le nom "sns" avec la commande :
+
+~~~
+import seaborn as sns
+~~~
+
+**Nous utiliserons quelques outils d'affichage graphique de Seaborn dans le cadre de ce cours**.
 
 ### Keras-Tensorflow, Pytorch
 
