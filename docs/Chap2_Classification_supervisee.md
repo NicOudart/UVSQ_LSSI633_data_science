@@ -40,6 +40,8 @@ Par "**classifier**", on entend ranger les individus d'une base de données dans
 
 #### Prise de décision
 
+#### Application à notre exemple
+
 #### Vraisemblance
 
 #### Implémentation Scikit-Learn
@@ -54,6 +56,8 @@ Par "**classifier**", on entend ranger les individus d'une base de données dans
 
 #### Implémentation Scikit-Learn
 
+#### Application à notre exemple
+
 ### Perceptron
 
 #### Neurone artificiel
@@ -63,3 +67,5 @@ Par "**classifier**", on entend ranger les individus d'une base de données dans
 #### Réseau de neurones
 
 #### Implémentation Scikit-Learn
+
+#### Application à notre exemple

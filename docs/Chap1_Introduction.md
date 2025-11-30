@@ -39,54 +39,6 @@ Tout d'abord, les variables étudiées peuvent être de **nature** différente :
 
 * Une donnée **qualitative ordinale** est descriptive avec un ordre hiérarchique : par exemple, le niveau de cuisson d'une baguette de pain (blanche, pas trop cuite, bien cuite).
 
-La plupart des modèles d'apprentissage automatique ne peuvent manipuler que des valeurs numériques.
-
-On va donc en général **encoder** des données qualitatives avec des **valeurs numériques**. Par exemple :
-
-|Cuisson du pain|Encodage|
-|:-------------:|:------:|
-|Blanc          |1       |
-|Pas trop cuit  |2       |
-|Bien cuit      |3       |
-
-On appelle cet encodage, **encodage par étiquette** ("label encoding").
-
-Cette méthode fonctionne toujours pour des données **ordinales** comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
-C'est pourquoi on utilise souvent l'encodage **one-hot**.
-
-L'idée est de faire comme si chaque nom possible pour une variable qualitative était une variable en soit. 
-On appelle parfois ces variables imaginaires des "dummy variables".
-
-Par exemple, pour la région d'origine des pâtisseries, on passe de :
-
-|Pâtisserie   |Région   |
-|:-----------:|:-------:|
-|Croissant    |Paris    |
-|Merveilleux  |Nord     |
-|Kouign-amann |Bretagne |
-|Cannelé      |Sud-Ouest|
-|Kougelhopf   |Est      |
-
-à l'encodage one-hot suivant :
-
-|Pâtisserie  |Paris|Nord|Bretagne|Sud-Ouest|Est|
-|:----------:|:---:|:--:|:------:|:-------:|:-:|
-|Croissant   |1    |0   |0       |0        |0  |
-|Merveilleux |0    |1   |0       |0        |0  |
-|Kouign-amann|0    |0   |1       |0        |0  |
-|Cannelé     |0    |0   |0       |1        |0  |
-|Kougelhopf  |0    |0   |0       |0        |1  |
-
-Pour le Merveilleux, on donnera donc en entrée d'un modèle le binaire 01000.
-
-On remarque ici que plus la variable a de noms possibles, et plus les binaires d'encodage one-hot seront longs, ce qui peut être problématique.
-
-|Astuce Python|
-|:-|
-|La bibliothèque Scikit-Learn possède dans son package **preprocessing** des fonctions **LabelEncoder** et **OrdinalEncoder**, permettant d'assigner un entier à des variables qualitatives nominales ou ordinales.|
-|Dans ce même package, vous trouverez également une fonction **OneHotEncoder**, permettant d'encoder en one-hot des variables qualitatives nominales.|
-|Dans les 2 cas, il vous faut créer une instance de **OrdinalEncoder** ou de **OneHotEncoder**, puis utiliser la méthode **fit_transform()** avec vos données en entrée.|
-
 #### Données multidimensionnelles
 
 Les données étudiées peuvent aussi être **multidimensionnelles**.
@@ -443,7 +395,7 @@ Il convient alors de se débarrasser de ces valeurs avant apprentissage, car la 
 |Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "dropna" associée aux objets DataFrames.|
 |Cette méthode permet de supprimer les NaN d'un DataFrame.|
 
-Nous avons aussi vu précédemment que les données qualitatives doivent être encodées avant apprentissage, soit en "ordinal", soit en "one-hot".
+Nous allons voir que les données **qualitatives** doivent être encodées avant apprentissage, soit en "ordinal", soit en "one-hot".
 
 Enfin, les outils d'apprentissage sont affectés par les **différences d'ordre de grandeur entre les variables**.
 C'est pourquoi une remise à l'échelle des différentes variables d'un jeu de données est nécessaire avant apprentissage.
@@ -499,6 +451,56 @@ Dans ces situations, d'autres types de transformation pourrons alors être envis
 |Astuce Python|
 |:-|
 |La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" permet de créer sa propre transformation, avec "FunctionTransformer".|
+
+### Encodage des données
+
+La plupart des modèles d'apprentissage automatique dont nous allons parler dans ce cours ne peuvent manipuler que des valeurs numériques.
+
+On va donc en général **encoder** des données qualitatives avec des **valeurs numériques**. Par exemple :
+
+|Cuisson du pain|Encodage|
+|:-------------:|:------:|
+|Blanc          |1       |
+|Pas trop cuit  |2       |
+|Bien cuit      |3       |
+
+On appelle cet encodage, **encodage par étiquette** ("label encoding").
+
+Cette méthode fonctionne toujours pour des données **ordinales** comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
+C'est pourquoi on utilise souvent l'encodage **one-hot**.
+
+L'idée est de faire comme si chaque nom possible pour une variable qualitative était une variable en soit. 
+On appelle parfois ces variables imaginaires des "dummy variables".
+
+Par exemple, pour la région d'origine des pâtisseries, on passe de :
+
+|Pâtisserie   |Région   |
+|:-----------:|:-------:|
+|Croissant    |Paris    |
+|Merveilleux  |Nord     |
+|Kouign-amann |Bretagne |
+|Cannelé      |Sud-Ouest|
+|Kougelhopf   |Est      |
+
+à l'encodage one-hot suivant :
+
+|Pâtisserie  |Paris|Nord|Bretagne|Sud-Ouest|Est|
+|:----------:|:---:|:--:|:------:|:-------:|:-:|
+|Croissant   |1    |0   |0       |0        |0  |
+|Merveilleux |0    |1   |0       |0        |0  |
+|Kouign-amann|0    |0   |1       |0        |0  |
+|Cannelé     |0    |0   |0       |1        |0  |
+|Kougelhopf  |0    |0   |0       |0        |1  |
+
+Pour le Merveilleux, on donnera donc en entrée d'un modèle le binaire 01000.
+
+On remarque ici que plus la variable a de noms possibles, et plus les binaires d'encodage one-hot seront longs, ce qui peut être problématique.
+
+|Astuce Python|
+|:-|
+|La bibliothèque Scikit-Learn possède dans son package **preprocessing** des fonctions **LabelEncoder** et **OrdinalEncoder**, permettant d'assigner un entier à des variables qualitatives nominales ou ordinales.|
+|Dans ce même package, vous trouverez également une fonction **OneHotEncoder**, permettant d'encoder en one-hot des variables qualitatives nominales.|
+|Dans les 2 cas, il vous faut créer une instance de **OrdinalEncoder** ou de **OneHotEncoder**, puis utiliser la méthode **fit_transform()** avec vos données en entrée.|
 
 ## Les apprentissages
 
