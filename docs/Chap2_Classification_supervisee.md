@@ -1,5 +1,11 @@
 # Chapitre II : Classification supervisée
 
+Ce chapitre est une introduction à la classification supervisée : principe, mesures de performances et méthodes de base.
+
+![En-tête chapitre II](img/Chap2_header.png)
+
+---
+
 ## Problème de classification
 
 ### Principe de la classification supervisée
@@ -16,7 +22,7 @@ Par "**classifier**", on entend ranger les individus d'une base de données dans
 
 #### Multi-sorties
 
-### Le MNIST
+### Exemple de problème
 
 ## Mesures de performance
 
