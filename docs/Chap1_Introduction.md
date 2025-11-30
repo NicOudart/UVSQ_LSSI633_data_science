@@ -423,7 +423,7 @@ En effet, il suffit qu'une variable ait une valeur aberrante pour qu'elle devien
 |:-|
 |La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" contient une fonction "MinMaxScaler".|
 
-### Centrage-réduction
+### Transformation centrage-réduction
 
 La transformation **centrage-reduction** ("standardization" en anglais) applique la formule suivante au i-ème individu $x_i$ de la j-ème variable d'un jeu de données :
 
@@ -456,7 +456,7 @@ Dans ces situations, d'autres types de transformation pourrons alors être envis
 
 La plupart des modèles d'apprentissage automatique dont nous allons parler dans ce cours ne peuvent manipuler que des valeurs numériques.
 
-On va donc en général **encoder** des données qualitatives avec des **valeurs numériques**. Par exemple :
+On va donc en général **encoder** des données **qualitatives** avec des **valeurs numériques**. Par exemple :
 
 |Cuisson du pain|Encodage|
 |:-------------:|:------:|
@@ -498,9 +498,9 @@ On remarque ici que plus la variable a de noms possibles, et plus les binaires d
 
 |Astuce Python|
 |:-|
-|La bibliothèque Scikit-Learn possède dans son package **preprocessing** des fonctions **LabelEncoder** et **OrdinalEncoder**, permettant d'assigner un entier à des variables qualitatives nominales ou ordinales.|
-|Dans ce même package, vous trouverez également une fonction **OneHotEncoder**, permettant d'encoder en one-hot des variables qualitatives nominales.|
-|Dans les 2 cas, il vous faut créer une instance de **OrdinalEncoder** ou de **OneHotEncoder**, puis utiliser la méthode **fit_transform()** avec vos données en entrée.|
+|La bibliothèque Scikit-Learn possède dans son package "preprocessing" des fonctions "LabelEncoder" et "OrdinalEncoder", permettant d'assigner un entier à des variables qualitatives nominales ou ordinales.|
+|Dans ce même package, vous trouverez également une fonction "OneHotEncoder", permettant d'encoder en one-hot des variables qualitatives nominales.|
+|Dans les 2 cas, il vous faut créer une instance de "OrdinalEncoder" ou de "OneHotEncoder", puis utiliser la méthode "fit_transform()" avec vos données en entrée.|
 
 ## Les apprentissages
 
@@ -907,6 +907,10 @@ Voici la validation par exclusion résumée schématiquement :
 
 ![Validation par exclusion](img/Chap1_validation_par_exclusion.png)
 
+|Astuce Python|
+|:-|
+|La bibliothèque Scikit-Learn possède dans son package "model_selection" une fonction "train_test_split" pour séparer une base de données en jeux d'entrainement et de test.|
+
 #### Validation croisée
 
 La validation par exclusion a 2 grands défauts :
@@ -935,6 +939,10 @@ Voici la validation croisée résumée schématiquement :
 ![Validation croisée](img/Chap1_validation_croisee.png)
 
 Cette stratégie d'apprentissage a tout de même un désavantage comparée à la validation par exclusion : elle nécessite un temps de calcul beaucoup plus long !
+
+|Astuce Python|
+|:-|
+|La bibliothèque Scikit-Learn possède dans son package "model_selection" une fonction "cross_validate".|
 
 #### Régularisation par arrêt prématuré
 

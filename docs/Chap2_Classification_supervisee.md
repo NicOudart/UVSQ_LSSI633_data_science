@@ -24,6 +24,8 @@ Par "**classifier**", on entend ranger les individus d'une base de données dans
 
 ### Exemple de problème
 
+![Spectres d'instruments](img/Chap2_spectres_instruments.png)
+
 ## Mesures de performance
 
 ### Matrice de confusion
