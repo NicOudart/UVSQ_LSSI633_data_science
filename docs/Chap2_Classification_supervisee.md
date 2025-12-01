@@ -43,7 +43,7 @@ On voit nettement la différence de timbre entre les 3 instruments.
 
 D'où l'idée suivante : **peut-on entrainer un modèle à reconnaitre un instrument à partir d'un enregistrement ?**
 
-Voici un jeu de données au format CSV, collectées à partir d'enregistrements d'une flute, d'un hautbois et d'une trompette jouant un La (440 Hz) : [Chap2_instruments_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap2_instruments_dataset.csv)
+Voici un jeu de données au format CSV, collectées à partir de milliers d'enregistrements d'une flute, d'un hautbois et d'une trompette jouant un La (440 Hz) : [Chap2_instruments_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap2_instruments_dataset.csv)
 
 Le tableau de données qu'il contient est de la forme suivante :
 
@@ -73,7 +73,7 @@ Une fois le fichier CSV téléchargé, il peut être importé sous Python en tan
 df_dataset = pd.read_csv(input_path)
 ~~~
 
-Il est possible avec Seaborn d'afficher ces données sous la forme d'une matrice de corrélation, avec chaque classe d'une couleur différente.
+Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de corrélations**, avec chaque classe d'une couleur différente.
 Ce type de représentation permet de vérifier la séparabilité des différentes classes à partir des features sélectionnés.
 
 Voici la commande Seaborn :
@@ -88,8 +88,6 @@ On obtient alors le graphique suivant :
 
 On observe que les classes "flute", "oboe" et "trumpet" sont plutôt bien séparables à partir des amplitudes des 3 premières harmoniques.
 Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de ces données à donc du sens.
-
-Comme nous allons ici procéder à un apprentissage supervisé, nous choisisson d'appliquer une stratégie de validation par exclusion (voir le Chapitre I).
 
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
 **Nous verrons cet exemple plus en détails en TP.**
@@ -115,6 +113,10 @@ Comme nous allons ici procéder à un apprentissage supervisé, nous choisisson 
 #### Vraisemblance
 
 #### Implémentation Scikit-Learn
+
+#### Application à notre exemple
+
+![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_histogramme_harmo1.png)
 
 ### K Plus Proches Voisins
 
