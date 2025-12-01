@@ -116,7 +116,7 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 
 ![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_histogramme.png)
 
-![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_modele.png)
+![Modèles - loi normale](img/Chap2_exemple_modele.png)
 
 ### K Plus Proches Voisins
 
