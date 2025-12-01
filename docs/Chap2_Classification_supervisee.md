@@ -108,15 +108,15 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 
 #### Prise de décision
 
-#### Application à notre exemple
-
 #### Vraisemblance
 
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
 
-![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_histogramme_harmo1.png)
+![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_histogramme.png)
+
+![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_modele.png)
 
 ### K Plus Proches Voisins
 
