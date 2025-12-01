@@ -26,7 +26,7 @@ Comme mentionné lors du Chapitre I, par "**classifier**" on entend associer une
 
 ### Exemple de problème
 
-Pourquoi est-on capables de reconnaitre le son d'un instrument de musique d'un autre ?
+**Pourquoi est-on capables de reconnaitre le son d'un instrument de musique d'un autre ?**
 
 Lorsqu'un instrument joue une note, le son émit ne contient jamais qu'une seule fréquence.
 Il est en réalité constitué d'une "fréquence fondamentale" (la note que l'on veut jouer), et des "harmoniques" (des fréquences multiples de la fondamentale).
@@ -43,7 +43,7 @@ On voit nettement la différence de timbre entre les 3 instruments.
 
 D'où l'idée suivante : **peut-on entrainer un modèle à reconnaitre un instrument à partir d'un enregistrement ?**
 
-Voici un jeu de données au format CSV, collectées à partir d'enregistrements d'une flute, d'un hautbois et d'une trompette jouant un La (440 Hz) : [Chap2_instruments_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/main/datasets/Chap2_instruments_dataset.csv)
+Voici un jeu de données au format CSV, collectées à partir d'enregistrements d'une flute, d'un hautbois et d'une trompette jouant un La (440 Hz) : [Chap2_instruments_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap2_instruments_dataset.csv)
 
 Le tableau de données qu'il contient est de la forme suivante :
 
@@ -86,7 +86,8 @@ On obtient alors le graphique suivant :
 
 ![Matrice de corrélations des 3 instruments](img/Chap2_correlation_matrix_instruments.png)
 
-On observe bien que les classes "flute", "oboe" et "trumpet" sont séparables à partir des amplitudes des 3 premières harmoniques.
+On observe que les classes "flute", "oboe" et "trumpet" sont plutôt bien séparables à partir des amplitudes des 3 premières harmoniques.
+Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de ces données à donc du sens.
 
 Comme nous allons ici procéder à un apprentissage supervisé, nous choisisson d'appliquer une stratégie de validation par exclusion (voir le Chapitre I).
 
