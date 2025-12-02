@@ -132,7 +132,7 @@ D'après le **théorème de Bayes** :
 
 $p(C_i \mid x) = \frac{p(x \mid C_i)p(C_i)}{p(x)}$
 
-avec $p(x) = \sum{i=1}{q} p(x \mid C_i)p(C_i)$
+avec $p(x) = \sum_{i=1}^{q} p(x \mid C_i)p(C_i)$
 
 On nomme $p(x)$ la densité de "**probabilité d'observation**", et $p(x \mid C_i)$ la densité de "**probabilité conditionnelle d'observation**".
 
@@ -148,7 +148,7 @@ On cherchera juste le modèle permettant de minimiser les erreurs de classificat
 **Cas particulier :** Si tous les $p(x \mid C_i)$ sont égaux, alors la feature sélectionnée n'est pas pertinente pour la classification.
 
 Ce principe est **généralisable** aux cas de classifications avec $m$ features d'espaces de probabilité $X_1$, $X_2$, ... $X_m$.
-On cherchera la classe $C_i$ qui maximise $p(C_i) \prod{j=1}{m}p(x_j \mid C_i)$.
+On cherchera la classe $C_i$ qui maximise $p(C_i) \prod_{j=1}^{m}p(x_j \mid C_i)$.
 
 #### Choix du modèle
 
