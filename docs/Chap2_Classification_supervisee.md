@@ -104,9 +104,67 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 
 ### Décision Bayesienne
 
+La **décision Bayesienne**, aussi connue sous le nom de "classification Bayesienne naïve" est une méthode de classification se basant sur un **modèle probabiliste** des features, considérées **indépendantes**, et du **théorème de Bayes**.
+
 #### Principe
 
+Imaginons que nous avons un problème de classification avec $q$ **classes** $C_1$, $C_2$, ..., $C_q$.
+Nous voulons prédire la classe à laquelle appartient un individu.
+
+La probabilité de chaque classe $i$ notée $p(C_i)$, aussi appelée "**probabilité a priori**".
+
+On a $\sum_{i=1}^{q} p(C_i) = 1$ et on peut facilement estimer les différents $p(C_i)$ à partir du nombre d'occurences de $C_i$ dans les données divisée par la taille de la base de données.
+
+En ne connaissant que les probabilités a priori de chaque classe, nous serions obligés de classer n'importe quel individu comme appartenant à la classe $C_i$ ayant le $p(C_i)$ le plus élevé.
+Nous aurions alors un classifieur retournant toujours la même classe. 
+Pas très utile...
+
+Or, nous avons en réalité accès à plus d'informations : nos fameuses "features", dont nous voulons nous servir pour prédire la classe d'un individu.
+
+Mettons que nous avons accès à une feature d'intérêt pour cette classification. 
+On notera $X$ l'espace des **observations** associé.
+
+Pour déterminer la classe d'un individu, on peut alors partir du principe suivant : choisir le $C_i$ tel que $p(C_i \mid x)$ **soit maximal**.
+
+On nomme $p(C_i \mid x)$ "**probabilités a posteriori**".
+
+D'après le **théorème de Bayes** :
+
+$p(C_i \mid x) = \frac{p(x \mid C_i)p(C_i)}{p(x)}$
+
+avec $p(x) = \sum{i=1}{q} p(x \mid C_i)p(C_i)$
+
+On nomme $p(x)$ la densité de "**probabilité d'observation**", et $p(x \mid C_i)$ la densité de "**probabilité conditionnelle d'observation**".
+
+Toute la difficulté de la méthode est d'**estimer** $p(x \mid C_i)$.
+On va en général chercher à **modéliser** ces densités de probabilité conditionnelle.
+
+![Décision Bayesienne](img/Chap2_decision_bayesienne.png)
+
+**Attention !** En général, il y a des recouvrements entre les différentes densités de probabilité conditionnelle.
+On ne peut alors pas obtenir classifieur parfait.
+On cherchera juste le modèle permettant de minimiser les erreurs de classification. 
+
+**Cas particulier :** Si tous les $p(x \mid C_i)$ sont égaux, alors la feature sélectionnée n'est pas pertinente pour la classification.
+
+Ce principe est **généralisable** aux cas de classifications avec $m$ features d'espaces de probabilité $X_1$, $X_2$, ... $X_m$.
+On cherchera la classe $C_i$ qui maximise $p(C_i) \prod{j=1}{m}p(x_j \mid C_i)$.
+
 #### Choix du modèle
+
+Comme nous l'avons expliqué, la décision Bayesienne nécessite un modèle des probabilités conditionnelles d'observation $p(x \mid C_i)$ pour chaque classe $C_i$.
+
+Pour ce faire, on **ajuste une fonction de densité de probabilité** pour chaque $p(C_i \mid x)$ à notre jeu d'entrainement.
+
+Ceci implique donc 2 choix :
+
+- Une **fonction de densité de probabilité**, ce qui implique de faire une hypothèse sur la distribution des observations pour chaque classe.
+
+- Une **méthode d'ajustement de loi de probabilité**.
+
+Parmi les fonctions de densité de probabilité classiques, on peut citer : la loi normale, la loi uniforme ou la loi de Student.
+
+La méthode d'ajustement la plus classique pour la décision Bayesienne est celle du **maximum de vraisemblance**.
 
 #### Maximum de vraisemblance
 
