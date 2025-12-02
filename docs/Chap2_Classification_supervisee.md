@@ -104,11 +104,11 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 
 ### Décision Bayesienne
 
-#### Formule de Bayes
+#### Principe
 
-#### Prise de décision
+#### Choix du modèle
 
-#### Vraisemblance
+#### Maximum de vraisemblance
 
 #### Implémentation Scikit-Learn
 
@@ -116,7 +116,11 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 
 ![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_histogramme.png)
 
-![Modèles - loi normale](img/Chap2_exemple_modele.png)
+![Probabilités conditionnelles](img/Chap2_exemple_probabilites_conditionnelles.png)
+
+![Probabilité d'observation](img/Chap2_exemple_probabilite_observation.png)
+
+![Probabilités a posteriori](img/Chap2_exemple_probabilites_aposteriori.png)
 
 ### K Plus Proches Voisins
 
