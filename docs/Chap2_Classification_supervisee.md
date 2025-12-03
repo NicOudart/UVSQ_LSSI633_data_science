@@ -158,13 +158,18 @@ Pour ce faire, on **ajuste une fonction de densité de probabilité** pour chaqu
 
 Ceci implique donc 2 choix :
 
-- Une **fonction de densité de probabilité**, ce qui implique de faire une hypothèse sur la distribution des observations pour chaque classe.
+- Une **fonction de densité de probabilité**, ce qui implique de faire une **hypothèse forte** sur la distribution des observations pour chaque classe.
 
 - Une **méthode d'ajustement de loi de probabilité**.
 
-Parmi les fonctions de densité de probabilité classiques, on peut citer : la loi normale, la loi uniforme ou la loi de Student.
+La fonction de densité de probabilité la plus classique est celle de la **loi normale** : 
+
+$f(x) = \frac{1}{\sigma \sqrt(2 \pi)} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}$
+
+avec 2 paramètres à ajuster $\mu$ (la moyenne) et $\sigma$ (l'écart-type).
 
 La méthode d'ajustement la plus classique pour la décision Bayesienne est celle du **maximum de vraisemblance**.
+C'est elle que nous allons détailler.
 
 #### Maximum de vraisemblance
 
