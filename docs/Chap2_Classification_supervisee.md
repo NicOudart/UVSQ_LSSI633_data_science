@@ -213,7 +213,7 @@ C'est elle que nous allons détailler.
 |Soit une loi de probabilité $f(x,\theta)$, définie par des paramètres $\theta$.|
 |Pour un échantillon observé $(x_1,x_2,...,x_n)$, on nomme **vraisemblance** ("likelihood" en anglais) la probabilité que cet échantillon provienne d'un tirage de $f(x,\theta)$.|
 |Si les tirages sont indépendants, on peut exprimer la vraisemblance de la manière suivantes :|
-|$L(x_1,x_2,...,x_n,\theta) = \prod{k=1}^{n} f(x_k,\theta)$|
+|$L(x_1,x_2,...,x_n,\theta) = \prod_{k=1}^{n} f(x_k,\theta)$|
 
 La méthode du **maximum de vraisemblance** découle du fait que le modèle $f$ de paramètres $\theta$ représentant le mieux les observations est celui qui **maximise** la vraisemblance, c'est-à-dire **la probabilité que l'échantillon provienne de cette loi**.
 
@@ -221,7 +221,7 @@ L'idée est donc de rechercher les $\theta$ maximisant $L(x_1,x_2,...,x_n,\theta
 
 Souvent, pour simplifier les calculs, on ne va pas rechercher le maximum de la vraisemblance, mais de la log-vraisemblance :
 
-$logL(x_1,x_2,...,x_n,\theta) = \sum{k=1}^{n} log(f(x_k,\theta))$
+$logL(x_1,x_2,...,x_n,\theta) = \sum_{k=1}^{n} log(f(x_k,\theta))$
 
 En effet, rechercher les paramètres $\theta$ maximisant $L$ ou $logL$ est équivalent, et rechercher un maximum implique un calcul de dérivée, ce qui est plus simple pour des sommes que pour des produits.
 
@@ -233,15 +233,15 @@ $f(x,\mu,\sigma) = \frac{1}{\sigma \sqrt(2 \pi)} e^{- \frac{1}{2} (\frac{x - \mu
 
 On cherchera alors les paramètres $\theta = (\mu,\sigma)$ vérifiant :
 
-$\frac{\partial}{\partial{\theta}} \sum{k=1}^{n} (-log(\sigma) - log(\sqrt(2 \pi)) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+$\frac{\partial}{\partial{\theta}} \sum_{k=1}^{n} (-log(\sigma) - log(\sqrt(2 \pi)) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
-soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
 soit pour chaque paramètre :
 
-$\frac{\partial}{\partial{\mu}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+$\frac{\partial}{\partial{\mu}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
-$\frac{\partial}{\partial{\sigma}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+$\frac{\partial}{\partial{\sigma}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
 On montre alors que les paramètres vérifiant ces équations sont :
 
@@ -309,9 +309,74 @@ Une optimisation de ces hyperparamètres n'est donc pas possible avec Scikit-Lea
 
 #### Application à notre exemple
 
+Nous allons à présent appliquer la classification Bayesienne à notre problème exemple.
+
+Afin de rendre la visualisation plus facile, nous allons simplifier le problème :
+
+Mettons que nous voulons juste effectuer une classification binaire de nos enregistrements, entre les classes "flute" ou "trompette", en utilisant comme unique feature l'amplitude relative de la 1ère harmonique.
+
+Pour ce faire, nous importons le fichier CSV sous la forme d'un DataFrame, et nous sélectionnons les variables et les individus qui nous intéressent :
+
+~~~
+df_dataset = pd.read_csv(input_path)
+
+df_dataset = df_dataset[['instrument','harmo1']]
+df_dataset = df_dataset[(df_dataset['instrument']=='flute')|(df_dataset['instrument']=='trumpet')]
+~~~
+
+Nous diviserons ici nos données en un jeu d'entrainement (80%) et un jeu de test (20%), sous la forme de 2 DataFrames : 
+
+~~~
+df_train=df_dataset.sample(frac=0.8,random_state=0)
+df_test=df_dataset.drop(df_train.index)
+~~~
+
+On peut alors tracer un histogramme de notre feature pour les données d'entrainement, en sépararant les 2 classes :
+
 ![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_histogramme.png)
 
+On peut noter qu'il y a peu de recouvrement entre les 2 distributions, ce qui laisse entrevoir qu'il est possible d'entrainer un modèle à classifier ces données.
+
+En 1ère approche, nous choisissons d'ajuster à ces 2 distributions des modèles de lois normales.
+Il faudra se poser la question de la pertinence de ce choix.
+
+Tout d'abord, nous allons séparer le jeu d'entrainement en 2 Series (DataFrame Pandas ne contenant qu'une colonnes) suivant si l'instrument est une flute ou une trompette :
+
+~~~
+sr_harmo1_flute_train = df_train[df_train['instrument']=='flute']['harmo1']
+sr_harmo1_trumpet_train = df_train[df_train['instrument']=='trumpet']['harmo1']
+~~~
+
+On peut alors réaliser nos 2 ajustements, et récupérer les paramètres $mu$ et $\sigma$ correspondants :
+
+~~~
+mu_harmo1_flute,sig_harmo1_flute = norm.fit(sr_harmo1_flute_train)
+mu_harmo1_trumpet,sig_harmo1_trumpet = norm.fit(sr_harmo1_trumpet_train)
+~~~
+
+Maintenant que nous avons les paramètres de nos modèles, nous pouvons évaluer la densité des probabilités conditionnelles pour la classe "flute" et la classe "trompette".
+
+Voici par exemple 301 évaluations pour des valeurs d'amplitude de la 1ère harmonique entre -30 et 0 dB :
+
+~~~
+x_axis = np.linspace(-30,0,301)
+
+proba_norm_flute = norm.pdf(x_axis,mean_harmo1_flute,sig_harmo1_flute)
+proba_norm_trumpet = norm.pdf(x_axis,mean_harmo1_trumpet,sig_harmo1_trumpet)
+~~~
+
+Nous pouvons alors tracer les courbes correspondantes par-dessus notre histogramme (affiché en densité de probabilité) :
+
 ![Probabilités conditionnelles](img/Chap2_exemple_probabilites_conditionnelles.png)
+
+Si nos modèles ne paraissent pas complément inadaptés, on peut noter qu'ils ne capturent pas la légère asymétrie de nos distributions.
+On pourrait donc se poser la question d'essayer d'autres lois de probabilités, asymétriques.
+
+Continuons avec nos modèles pour les probabilités conditionnelles.
+
+La prochaine étape 
+
+
 
 ![Probabilité d'observation](img/Chap2_exemple_probabilite_observation.png)
 
