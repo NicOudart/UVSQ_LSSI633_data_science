@@ -125,6 +125,7 @@ Mettons que nous avons accès à une feature d'intérêt pour cette classificati
 On notera $X$ l'espace des **observations** associé.
 
 Pour déterminer la classe d'un individu, on peut alors partir du principe suivant : choisir le $C_i$ tel que $p(C_i \mid x)$ **soit maximal**.
+Nous expliquerons pourquoi dans la suite.
 
 On nomme $p(C_i \mid x)$ "**probabilités a posteriori**".
 
@@ -150,6 +151,40 @@ On cherchera juste le modèle permettant de minimiser les erreurs de classificat
 Ce principe est **généralisable** aux cas de classifications avec $m$ features d'espaces de probabilité $X_1$, $X_2$, ... $X_m$.
 On cherchera la classe $C_i$ qui maximise $p(C_i) \prod_{j=1}^{m}p(x_j \mid C_i)$.
 
+#### Frontière de décision et erreur
+
+Comme nous l'avons expliqué précédemment, sauf cas particulier, on ne peut pas obtenir un classifieur parfait.
+
+On va donc essayer d'établir des **frontières de décision** entre les classes : des intervalles de $x$ pour lesquels on attribura une classe.
+Et nous recherchons même les frontières de décision optimales : celles qui minimisent le risque d'erreurs.
+
+Prenons un cas simple de classification binaire entre 2 classes $C_1$ et $C_2$.
+Nous noterons $x = D$ la frontière de décision choisie.
+
+On a alors 2 types d'erreurs de classification possibles : 
+
+* Classifier l'individu en $C_1$ alors qu'il appartient à $C_2$.
+
+* Classifier l'individu en $C_2$ alors qu'il appartient à $C_1$.
+
+Les probabilités d'erreurs associées sont $$ et $$.
+
+Elles correspondent aux aires représentées sur ce schéma : 
+
+![Erreur décision Bayesienne](img/Chap2_erreur_decision_bayesienne.png)
+
+Pour obtenir la frontière de décision optimale $x = O$, on va chercher à minimiser la somme de ces erreurs.
+
+L'aire entourée en vert correspond à ce que l'on appelle "l'**erreur réductible**" : c'est la portion de l'erreur totale que l'on peut réduire pour obtenir la frontière optimale.
+
+On retrouve bien que :
+
+* Si $p(C_1 \mid x) > p(C_2 \mid x)$ alors on classifie l'individu comme appartenant à $C_1$.
+
+* Si $p(C_1 \mid x) < p(C_2 \mid x)$ alors on classifie l'individu comme appartenant à $C_2$.
+
+On peut généraliser à $q$ classes : comme dit précédemment, pour obtenir les frontières de décision optimales, on choisi le $C_i$ tel que $p(C_i \mid x)$ **soit maximal**.
+
 #### Choix du modèle
 
 Comme nous l'avons expliqué, la décision Bayesienne nécessite un modèle des probabilités conditionnelles d'observation $p(x \mid C_i)$ pour chaque classe $C_i$.
@@ -173,7 +208,13 @@ C'est elle que nous allons détailler.
 
 #### Maximum de vraisemblance
 
-#### Implémentation Scikit-Learn
+
+
+#### Implémentation Scipy
+
+~~~
+from scipy.stats import norm
+~~~
 
 #### Application à notre exemple
 
