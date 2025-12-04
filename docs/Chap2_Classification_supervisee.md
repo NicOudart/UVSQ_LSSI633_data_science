@@ -216,6 +216,8 @@ C'est elle que nous allons détailler.
 from scipy.stats import norm
 ~~~
 
+
+
 #### Application à notre exemple
 
 ![Histogramme de la 1ère harmonique pour la flute et la trompette](img/Chap2_exemple_histogramme.png)
