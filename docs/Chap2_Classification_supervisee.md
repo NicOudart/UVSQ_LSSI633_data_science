@@ -167,7 +167,7 @@ On a alors 2 types d'erreurs de classification possibles :
 
 * Classifier l'individu en $C_2$ alors qu'il appartient à $C_1$.
 
-Les probabilités d'erreurs associées sont $$ et $$.
+Les probabilités d'erreurs associées sont $\int_{-\infinity}^{D} p(x \mid C_2)p(C_2) dx$ et $\int_{D}^{+\infinity} p(x \mid C_1)p(C_1) dx$.
 
 Elles correspondent aux aires représentées sur ce schéma : 
 
@@ -208,15 +208,104 @@ C'est elle que nous allons détailler.
 
 #### Maximum de vraisemblance
 
+|Définition|
+|:-|
+|Soit une loi de probabilité $f(x,\theta)$, définie par des paramètres $\theta$.|
+|Pour un échantillon observé $(x_1,x_2,...,x_n)$, on nomme **vraisemblance** ("likelihood" en anglais) la probabilité que cet échantillon provienne d'un tirage de $f(x,\theta)$.|
+|Si les tirages sont indépendants, on peut exprimer la vraisemblance de la manière suivantes :|
+|$L(x_1,x_2,...,x_n,\theta) = \prod{k=1}^{n} f(x_k,\theta)$|
 
+La méthode du **maximum de vraisemblance** découle du fait que le modèle $f$ de paramètres $\theta$ représentant le mieux les observations est celui qui **maximise** la vraisemblance, c'est-à-dire **la probabilité que l'échantillon provienne de cette loi**.
+
+L'idée est donc de rechercher les $\theta$ maximisant $L(x_1,x_2,...,x_n,\theta)$.
+
+Souvent, pour simplifier les calculs, on ne va pas rechercher le maximum de la vraisemblance, mais de la log-vraisemblance :
+
+$logL(x_1,x_2,...,x_n,\theta) = \sum{k=1}^{n} log(f(x_k,\theta))$
+
+En effet, rechercher les paramètres $\theta$ maximisant $L$ ou $logL$ est équivalent, et rechercher un maximum implique un calcul de dérivée, ce qui est plus simple pour des sommes que pour des produits.
+
+On va donc pour chaque paramètre $\theta_j$ de $\theta$ la valeur qui vérifie $\frac{\partial}{\partial{\theta_j}} \sum{k=1}^{n} log(f(x_k,\theta)) = 0$.
+
+Prenons l'exemple de la loi normale :
+
+$f(x,\mu,\sigma) = \frac{1}{\sigma \sqrt(2 \pi)} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}$
+
+On cherchera alors les paramètres $\theta = (\mu,\sigma)$ vérifiant :
+
+$\frac{\partial}{\partial{\theta}} \sum{k=1}^{n} (-log(\sigma) - log(\sqrt(2 \pi)) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+
+soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+
+soit pour chaque paramètre :
+
+$\frac{\partial}{\partial{\mu}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+
+$\frac{\partial}{\partial{\sigma}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+
+On montre alors que les paramètres vérifiant ces équations sont :
+
+$\mu = \frac{1}{n} \sum_{k=1}^{n} x_k$ et $\sigma^2 = \frac{1}{n} \sum_{k=1}^{n} (x_k - \mu)^2$
+
+Ce qui était attendu.
 
 #### Implémentation Scipy
+
+Afin de réaliser un ajustement de loi de probabilité, on peut utiliser la bibliothèque de calculs scientifiques Scipy, et en particulier son module de statistiques "scipy.stat".
+
+Par exemple, pour un ajustement avec une loi normale, on pourra importer l'objet "norm" avec :
 
 ~~~
 from scipy.stats import norm
 ~~~
 
+On peut alors ajuster une loi normale à un ensemble d'observations contenu dans un conteneur `x_obs`, et récupérer la moyenne `mu` et l'écart-type `sigma` avec :
 
+~~~
+mu,sigma = norm.fit(x_obs)
+~~~
+
+Par défaut, la méthode du maximum de vraisemblance est utilisée.
+Mais on peut également utiliser la "méthode des moments" (que nous ne présenterons pas dans ce cours), en ajoutant un paramètre `method = 'MM'` en entrée.
+
+Une fois la loi normale ajustée, on a accès à la densité de probabilité `dp` associée à une réalisation `x` avec :
+
+~~~
+dp = norm.pdf(x,mu,sigma)
+~~~
+
+Bien d'autres lois de probabilité sont disponibles dans le module "scipy.stats", et fonctionnent sur le même principe que "norm".
+
+#### Implémentation Scikit-Learn
+
+Il est à noter qu'il existe aussi une implémentation de la classification Bayesienne dans Scikit-Learn, dans l'hypothèse de distributions des features suivant des lois normales.
+
+Elle peut être importée avec :
+
+~~~
+from sklearn.naive_bayes import GaussianNB
+~~~
+
+On doit alors créer un objet "GaussianNB" qui contiendra notre modèle :
+
+~~~
+bayes_classifier = GaussianNB()
+~~~
+
+Il faut ensuite l'entrainer avec nos features et labels d'entrainement, nommés ici `feature_train` et `label_train` :
+
+~~~
+bayes_classifier.fit(feature_train,label_train)
+~~~
+
+Et enfin, on peut réaliser une prédiction à partir de features de test, nommés `feature_test` :
+
+~~~
+label_test = bayes_classifier.predict(feature_test)
+~~~
+
+Cette implémentation peut être pratique dans certains cas, mais elle ne permet pas de jouer sur les hyperparamètres suivants : la loi de probabilité et la méthode d'ajustement.
+Une optimisation de ces hyperparamètres n'est donc pas possible avec Scikit-Learn.
 
 #### Application à notre exemple
 
