@@ -388,7 +388,7 @@ proba_trumpet = len(sr_harmo1_trumpet_train)/len(df_train)
 On peut alors utiliser estimer la densité de probabilité d'observation :
 
 ~~~
-proba_x = proba_norm_flute*proba_flute + proba_norm_trumpet*proba_trumpet
+proba_obs = proba_norm_flute*proba_flute + proba_norm_trumpet*proba_trumpet
 ~~~
 
 Si nous l'affichons avec les histogrammes, nous pouvons vérifier qu'elle est bien cohérente avec la distribution des observations.
@@ -398,8 +398,8 @@ Si nous l'affichons avec les histogrammes, nous pouvons vérifier qu'elle est bi
 Enfin, nous pouvons calculer les probabilités a posteriori, en se basant sur la formule de Bayes :
 
 ~~~
-proba_bayes_flute = proba_norm_flute*proba_flute/proba_x
-proba_bayes_trumpet = proba_norm_trumpet*proba_trumpet/proba_x
+proba_bayes_flute = proba_norm_flute*proba_flute/proba_obs
+proba_bayes_trumpet = proba_norm_trumpet*proba_trumpet/proba_obs
 ~~~
 
 On peut alors afficher ces probabilités, et tracer la frontière de décision :
@@ -412,11 +412,65 @@ La frontière de décision se trouve à environ -13,16 dB :
 
 * Si on mesure une 1ère harmonique ayant une amplitude supérieure, on classifiera l'instrument comme étant une trompette.
 
-Comme nous l'avons mentionné précédemment, nous pourrions aussi comparer $p(x \mid C = 'flute')p(C='flute')$ et $p(x \mid C = 'trumpet')p(C='trumpet')$ pour classifier les observations. 
+Comme nous l'avons mentionné précédemment, si la probabilité d'appartenance aux classes ne nous intéresse pas, nous pourrions juste comparer $p(x \mid C = 'flute')p(C='flute')$ et $p(x \mid C = 'trumpet')p(C='trumpet')$ pour classifier les observations. 
 
-Nous allons à présent déterminer les performances de notre classifieur Bayesien :
+Maintenant que nous avons vu le principe, on voudrait pouvoir ré-entrainer notre modèle afin d'optimiser les hyperparamètres, et réaliser des prédictions sur les jeux d'entrainement et de test, le tout de manière efficace.
 
+Dans ce but, nous pouvons mettre notre classification binaire Bayesienne sous la forme d'une classe `binary_bayes` avec 2 méthodes `train` et `predict` pour l'entrainement et la prédiction.
+Voici un exemple d'implémentation :
 
+~~~
+class binary_bayes:
+    
+    def __init__(self,stat_model):
+        
+        self.stat_model = stat_model
+        
+        self.true_params = None
+        self.false_params = None
+        
+        self.proba_true = None
+    
+    def train(self,x_true,x_false):
+        
+        self.true_params = self.stat_model.fit(x_true)
+        self.false_params = self.stat_model.fit(x_false)
+        
+        len_true = len(x_true)
+        len_false = len(x_false)
+        self.proba_true = len_true/(len_true+len_false)
+        
+    def predict(self,x):
+        
+        proba_norm_true = self.stat_model.pdf(x,*self.true_params)
+        proba_norm_false = self.stat_model.pdf(x,*self.false_params)
+        
+        proba_obs = proba_norm_true*self.proba_true + proba_norm_false*(1-self.proba_true)
+
+        proba_bayes_true = proba_norm_true*self.proba_true/proba_obs
+        
+        return proba_bayes_true
+~~~
+
+On peut alors facilement définir un classificateur binaire "est-ce une flute ?" utilisant la loi normale telle qu'implémentée par Scipy :
+
+~~~
+is_a_flute = binary_bayes(norm)
+~~~
+
+Entrainer ce classifieur sur notre jeu d'entrainement :
+
+~~~
+is_a_flute.train(sr_harmo1_flute_train,sr_harmo1_trumpet_train)
+~~~
+
+Et réaliser des prédictions sur nos données d'entrainement et de test :
+
+~~~
+prediction_train = (is_a_flute.predict(df_train['harmo1']))
+
+prediction_test = (is_a_flute.predict(df_test['harmo1']))
+~~~
 
 ### K Plus Proches Voisins
 
