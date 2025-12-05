@@ -142,6 +142,10 @@ On va en général chercher à **modéliser** ces densités de probabilité cond
 
 ![Décision Bayesienne](img/Chap2_decision_bayesienne.png)
 
+**NB :** Il est à noter que rechercher la classe $C_i$ maximisant $p(C_i \mid x)$ **est équivalent** à rechercher $C_i$ maximisant $p(x \mid C_i)p(C_i)$.
+Il n'est donc en théorie pas utile de calculer $p(x)$ pour obtenir le classificateur.
+Mais il est nécessaire d'avoir $p(x)$ pour obtenir des probabilités d'appartenance à une classe.
+
 **Attention !** En général, il y a des recouvrements entre les différentes densités de probabilité conditionnelle.
 On ne peut alors pas obtenir classifieur parfait.
 On cherchera juste le modèle permettant de minimiser les erreurs de classification. 
@@ -167,7 +171,7 @@ On a alors 2 types d'erreurs de classification possibles :
 
 * Classifier l'individu en $C_2$ alors qu'il appartient à $C_1$.
 
-Les probabilités d'erreurs associées sont $\int_{-\infinity}^{D} p(x \mid C_2)p(C_2) dx$ et $\int_{D}^{+\infinity} p(x \mid C_1)p(C_1) dx$.
+Les probabilités d'erreurs associées sont $\int_{-\infty}^{D} p(x \mid C_2)p(C_2) dx$ et $\int_{D}^{+\infty} p(x \mid C_1)p(C_1) dx$.
 
 Elles correspondent aux aires représentées sur ce schéma : 
 
@@ -199,7 +203,7 @@ Ceci implique donc 2 choix :
 
 La fonction de densité de probabilité la plus classique est celle de la **loi normale** : 
 
-$f(x) = \frac{1}{\sigma \sqrt(2 \pi)} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}$
+$f(x) = \frac{1}{\sigma \sqrt{2 \pi}} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}$
 
 avec 2 paramètres à ajuster $\mu$ (la moyenne) et $\sigma$ (l'écart-type).
 
@@ -225,17 +229,17 @@ $logL(x_1,x_2,...,x_n,\theta) = \sum_{k=1}^{n} log(f(x_k,\theta))$
 
 En effet, rechercher les paramètres $\theta$ maximisant $L$ ou $logL$ est équivalent, et rechercher un maximum implique un calcul de dérivée, ce qui est plus simple pour des sommes que pour des produits.
 
-On va donc pour chaque paramètre $\theta_j$ de $\theta$ la valeur qui vérifie $\frac{\partial}{\partial{\theta_j}} \sum{k=1}^{n} log(f(x_k,\theta)) = 0$.
+On va donc pour chaque paramètre $\theta_j$ de $\theta$ la valeur qui vérifie $\frac{\partial}{\partial{\theta_j}} \sum_{k=1}^{n} log(f(x_k,\theta)) = 0$.
 
 Prenons l'exemple de la loi normale :
 
-$f(x,\mu,\sigma) = \frac{1}{\sigma \sqrt(2 \pi)} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}$
+$f(x,\mu,\sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}$
 
 On cherchera alors les paramètres $\theta = (\mu,\sigma)$ vérifiant :
 
-$\frac{\partial}{\partial{\theta}} \sum_{k=1}^{n} (-log(\sigma) - log(\sqrt(2 \pi)) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+$\frac{\partial}{\partial{\theta}} \sum_{k=1}^{n} (-log(\sigma) - log(\sqrt{2 \pi}) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
-soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt{2 \pi} - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
 soit pour chaque paramètre :
 
@@ -374,13 +378,45 @@ On pourrait donc se poser la question d'essayer d'autres lois de probabilités, 
 
 Continuons avec nos modèles pour les probabilités conditionnelles.
 
-La prochaine étape 
+La prochaine étape est d'estimer la probabilité de chaque classe, à partir de leurs densités relatives :
 
+~~~
+proba_flute = len(sr_harmo1_flute_train)/len(df_train)
+proba_trumpet = len(sr_harmo1_trumpet_train)/len(df_train)
+~~~
 
+On peut alors utiliser estimer la densité de probabilité d'observation :
+
+~~~
+proba_x = proba_norm_flute*proba_flute + proba_norm_trumpet*proba_trumpet
+~~~
+
+Si nous l'affichons avec les histogrammes, nous pouvons vérifier qu'elle est bien cohérente avec la distribution des observations.
 
 ![Probabilité d'observation](img/Chap2_exemple_probabilite_observation.png)
 
+Enfin, nous pouvons calculer les probabilités a posteriori, en se basant sur la formule de Bayes :
+
+~~~
+proba_bayes_flute = proba_norm_flute*proba_flute/proba_x
+proba_bayes_trumpet = proba_norm_trumpet*proba_trumpet/proba_x
+~~~
+
+On peut alors afficher ces probabilités, et tracer la frontière de décision :
+
 ![Probabilités a posteriori](img/Chap2_exemple_probabilites_aposteriori.png)
+
+La frontière de décision se trouve à environ -13,16 dB : 
+
+* Si on mesure une 1ère harmonique ayant une amplitude inférieure, on classifiera l'instrument comme étant une flute.
+
+* Si on mesure une 1ère harmonique ayant une amplitude supérieure, on classifiera l'instrument comme étant une trompette.
+
+Comme nous l'avons mentionné précédemment, nous pourrions aussi comparer $p(x \mid C = 'flute')p(C='flute')$ et $p(x \mid C = 'trumpet')p(C='trumpet')$ pour classifier les observations. 
+
+Nous allons à présent déterminer les performances de notre classifieur Bayesien :
+
+
 
 ### K Plus Proches Voisins
 
