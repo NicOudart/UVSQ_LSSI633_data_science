@@ -354,6 +354,8 @@ sr_harmo1_trumpet_train = df_train[df_train['instrument']=='trumpet']['harmo1']
 On peut alors réaliser nos 2 ajustements, et récupérer les paramètres $mu$ et $\sigma$ correspondants :
 
 ~~~
+from scipy.stats import norm
+
 mu_harmo1_flute,sig_harmo1_flute = norm.fit(sr_harmo1_flute_train)
 mu_harmo1_trumpet,sig_harmo1_trumpet = norm.fit(sr_harmo1_trumpet_train)
 ~~~
@@ -406,7 +408,7 @@ On peut alors afficher ces probabilités, et tracer la frontière de décision :
 
 ![Probabilités a posteriori](img/Chap2_exemple_probabilites_aposteriori.png)
 
-La frontière de décision se trouve à environ -13,16 dB : 
+La frontière de décision se trouve à environ -13.16 dB : 
 
 * Si on mesure une 1ère harmonique ayant une amplitude inférieure, on classifiera l'instrument comme étant une flute.
 
@@ -455,6 +457,8 @@ class binary_bayes:
 On peut alors facilement définir un classificateur binaire "est-ce une flute ?" utilisant la loi normale telle qu'implémentée par Scipy :
 
 ~~~
+from scipy.stats import norm
+
 is_a_flute = binary_bayes(norm)
 ~~~
 
@@ -470,6 +474,34 @@ Et réaliser des prédictions sur nos données d'entrainement et de test :
 prediction_train = (is_a_flute.predict(df_train['harmo1']))
 
 prediction_test = (is_a_flute.predict(df_test['harmo1']))
+~~~
+
+En partant du principe que nous positionnons la frontière de décision à une probabilité d'appartenance à classe "flute" de 0.5, nous pouvons obtenir les matrices de confusion en entrainement et en test avec les commandes suivantes :
+
+~~~
+from sklearn.metrics import confusion_matrix
+
+#Label encoding:
+ground_truth_train = (df_train['instrument']=='flute').astype(int)
+ground_truth_test = (df_test['instrument']=='flute').astype(int)
+
+cm_train = confusion_matrix(ground_truth_train, prediction_train>0.5)
+cm_test = confusion_matrix(ground_truth_test, prediction_test>0.5)
+~~~
+
+Voici les résultats en entrainement obtenus pour notre exemple :
+
+![Exemple de matrice de confusion](img/Chap2_exemple_matrice_confusion.png)
+
+On observe que les performances du modèle sont très similaires entre les données d'entrainement et de test.
+Il n'y a aucun faux positif, mais on a quelques faux négatifs : parfois notre modèle classifie des enregistrements de flutes comme n'étant pas des flutes.
+
+Suivant les applications, on peut vouloir choisir une frontière de décision différente, pour diminuer le nombre de faux négatifs, au prix d'une augmentation du nombre de faux positifs.
+Afin de voir les effets d'un tel choix, on tracer une courbe ROC à partir des probabilités prédites par notre modèle :
+
+~~~
+fpr_train, tpr_train, thresholds_train = roc_curve(ground_truth_train, prediction_train)
+fpr_test, tpr_test, thresholds_test = roc_curve(ground_truth_test, prediction_test)
 ~~~
 
 ### K Plus Proches Voisins
