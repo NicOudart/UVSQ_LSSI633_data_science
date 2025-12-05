@@ -506,6 +506,22 @@ fp_rate_train, tp_rate_train, thresholds_train = roc_curve(ground_truth_train, p
 fp_rate_test, tp_rate_test, thresholds_test = roc_curve(ground_truth_test, prediction_test)
 ~~~
 
+#### Remarques
+
+La méthode de la classification de Bayes a les **avantages** suivants :
+
+* Elle fonctionne pour **tous les types de classification et variables**.
+
+* Elle est relativement **simple** à mettre en place, avec **peu de paramètres**.
+
+* Les décisions qu'elle prend sont complément **expliquées** et **interprétables** : un humain peut les comprendre.
+
+Mais cette méthode a aussi les **limites** suivantes :
+
+* Elle fait l'hypothèse de l'**indépendance des variables** entre elles, ce qui dans la pratique limite son application aux problèmes avec peu de features.
+
+* Elle fait une hypothèse forte sur la **distribution des observations** pour chaque variable. Il s'agit souvent d'une hypothèse de **normalité**.
+
 ### K Plus Proches Voisins
 
 #### Principe
