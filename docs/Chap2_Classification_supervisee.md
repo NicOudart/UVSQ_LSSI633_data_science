@@ -494,14 +494,16 @@ Voici les résultats en entrainement obtenus pour notre exemple :
 ![Exemple de matrice de confusion](img/Chap2_exemple_matrice_confusion.png)
 
 On observe que les performances du modèle sont très similaires entre les données d'entrainement et de test.
+Ceci tend à montrer que l'on a pas de problème de sur-ajustement important, ce qui laisse présager des performances similaires en généralisation.
+
 Il n'y a aucun faux positif, mais on a quelques faux négatifs : parfois notre modèle classifie des enregistrements de flutes comme n'étant pas des flutes.
 
 Suivant les applications, on peut vouloir choisir une frontière de décision différente, pour diminuer le nombre de faux négatifs, au prix d'une augmentation du nombre de faux positifs.
 Afin de voir les effets d'un tel choix, on tracer une courbe ROC à partir des probabilités prédites par notre modèle :
 
 ~~~
-fpr_train, tpr_train, thresholds_train = roc_curve(ground_truth_train, prediction_train)
-fpr_test, tpr_test, thresholds_test = roc_curve(ground_truth_test, prediction_test)
+fp_rate_train, tp_rate_train, thresholds_train = roc_curve(ground_truth_train, prediction_train)
+fp_rate_test, tp_rate_test, thresholds_test = roc_curve(ground_truth_test, prediction_test)
 ~~~
 
 ### K Plus Proches Voisins
