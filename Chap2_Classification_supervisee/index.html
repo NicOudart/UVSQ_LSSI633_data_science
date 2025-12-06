@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap2_Classification_supervisee/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>II. Classification supervisée - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "II. Classification supervis\u00e9e";
+        var mkdocs_page_input_path = "Chap2_Classification_supervisee.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap2_Classification_supervisee/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap1_Introduction/">I. Introduction</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">II. Classification supervisée</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#probleme-de-classification">Problème de classification</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#principe-de-la-classification-supervisee">Principe de la classification supervisée</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#les-differents-types-de-classification">Les différents types de classification</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#binaire">Binaire</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#multi-classes">Multi-classes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#multi-etiquettes">Multi-étiquettes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#multi-sorties">Multi-sorties</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exemple-de-probleme">Exemple de problème</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesures-de-performance">Mesures de performance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#matrice-de-confusion">Matrice de confusion</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#precision-rappel">Précision / rappel</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#courbe-roc">Courbe ROC</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methodes-de-base">Méthodes de base</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#decision-bayesienne">Décision Bayesienne</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#frontiere-de-decision-et-erreur">Frontière de décision et erreur</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#choix-du-modele">Choix du modèle</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#maximum-de-vraisemblance">Maximum de vraisemblance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scipy">Implémentation Scipy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple">Application à notre exemple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#remarques">Remarques</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#k-plus-proches-voisins">K Plus Proches Voisins</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe_1">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#choix-de-la-distance">Choix de la distance</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#choix-du-parametre-k">Choix du paramètre K</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn_1">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple_1">Application à notre exemple</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#perceptron">Perceptron</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#neurone-artificiel">Neurone artificiel</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#apprentissage-et-descente-de-gradient">Apprentissage et descente de gradient</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#reseau-de-neurones">Réseau de neurones</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn_2">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple_2">Application à notre exemple</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap3_Regression/">III. Régression</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap4_Partitionnement/">IV. Partitionnement</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">II. Classification supervisée</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-ii-classification-supervisee">Chapitre II : Classification supervisée</h1>
+<p>Ce chapitre est une introduction à la classification supervisée : principe, mesures de performances et méthodes de base.</p>
+<p><img alt="En-tête chapitre II" src="../img/Chap2_header.png" /></p>
+<hr />
+<h2 id="probleme-de-classification">Problème de classification</h2>
+<h3 id="principe-de-la-classification-supervisee">Principe de la classification supervisée</h3>
+<p>Comme mentionné lors du Chapitre I, par "<strong>classifier</strong>" on entend associer une réalisation d'une variable <strong>quantitative discrète</strong> ou <strong>qualitative</strong> à un individu (labels), à partir des réalisations d'autres variables (features).</p>
+<h3 id="les-differents-types-de-classification">Les différents types de classification</h3>
+<h4 id="binaire">Binaire</h4>
+<h4 id="multi-classes">Multi-classes</h4>
+<h4 id="multi-etiquettes">Multi-étiquettes</h4>
+<h4 id="multi-sorties">Multi-sorties</h4>
+<h3 id="exemple-de-probleme">Exemple de problème</h3>
+<p><strong>Pourquoi est-on capables de reconnaitre le son d'un instrument de musique d'un autre ?</strong></p>
+<p>Lorsqu'un instrument joue une note, le son émit ne contient jamais qu'une seule fréquence.
+Il est en réalité constitué d'une "fréquence fondamentale" (la note que l'on veut jouer), et des "harmoniques" (des fréquences multiples de la fondamentale).</p>
+<p>Pour une même note jouée, suivant l'instrument, les harmoniques n'auront pas la même amplitude comparée à la fondamentale.
+C'est ce que l'on appelle le "timbre" de l'instrument.
+Lorsque nous écoutons de la musique, et que nous reconnaissons le son d'un instrument, c'est grâce à son timbre.</p>
+<p>Voici 3 exemples de spectres issus d'enregistrements d'une flute, d'un hautbois et d'une trompette jouant un La (440 Hz) :</p>
+<p><img alt="Spectres des 3 instruments" src="../img/Chap2_spectres_instruments.png" /></p>
+<p>On voit nettement la différence de timbre entre les 3 instruments.</p>
+<p>D'où l'idée suivante : <strong>peut-on entrainer un modèle à reconnaitre un instrument à partir d'un enregistrement ?</strong></p>
+<p>Voici un jeu de données au format CSV, collectées à partir de milliers d'enregistrements d'une flute, d'un hautbois et d'une trompette jouant un La (440 Hz) : <a href="https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap2_instruments_dataset.csv">Chap2_instruments_dataset</a></p>
+<p>Le tableau de données qu'il contient est de la forme suivante :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">instrument</th>
+<th style="text-align: center;">harmo1</th>
+<th style="text-align: center;">harmo2</th>
+<th style="text-align: center;">harmo3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">oboe</td>
+<td style="text-align: center;">11.842</td>
+<td style="text-align: center;">11.58</td>
+<td style="text-align: center;">10.28</td>
+</tr>
+<tr>
+<td style="text-align: center;">flute</td>
+<td style="text-align: center;">-17.083</td>
+<td style="text-align: center;">-17.384</td>
+<td style="text-align: center;">-21.496</td>
+</tr>
+<tr>
+<td style="text-align: center;">trumpet</td>
+<td style="text-align: center;">-8.152</td>
+<td style="text-align: center;">-24.089</td>
+<td style="text-align: center;">-23.813</td>
+</tr>
+<tr>
+<td style="text-align: center;">oboe</td>
+<td style="text-align: center;">9.381</td>
+<td style="text-align: center;">12.434</td>
+<td style="text-align: center;">11.905</td>
+</tr>
+<tr>
+<td style="text-align: center;">oboe</td>
+<td style="text-align: center;">-1.217</td>
+<td style="text-align: center;">2.082</td>
+<td style="text-align: center;">16.275</td>
+</tr>
+<tr>
+<td style="text-align: center;">trumpet</td>
+<td style="text-align: center;">-3.294</td>
+<td style="text-align: center;">-13.812</td>
+<td style="text-align: center;">-17.934</td>
+</tr>
+<tr>
+<td style="text-align: center;">trumpet</td>
+<td style="text-align: center;">-4.118</td>
+<td style="text-align: center;">-13.485</td>
+<td style="text-align: center;">-18.985</td>
+</tr>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+<tr>
+<td style="text-align: center;">trumpet</td>
+<td style="text-align: center;">-7.762</td>
+<td style="text-align: center;">-5.934</td>
+<td style="text-align: center;">-23.308</td>
+</tr>
+<tr>
+<td style="text-align: center;">flute</td>
+<td style="text-align: center;">-17.96</td>
+<td style="text-align: center;">-19.406</td>
+<td style="text-align: center;">-22.409</td>
+</tr>
+<tr>
+<td style="text-align: center;">oboe</td>
+<td style="text-align: center;">7.764</td>
+<td style="text-align: center;">6.618</td>
+<td style="text-align: center;">13.361</td>
+</tr>
+</tbody>
+</table>
+<p>Il contient pour chacun des 5612 enregistrements le nom de l'instrument, et l'amplitude en dB des 3 premières harmoniques relativement à la fondamentale.</p>
+<p>Notre problème de classification sera le suivant : <strong>prédire l'instrument ayant joué un La à partir des amplitudes des 3 premières harmoniques</strong>.</p>
+<p>Voyons d'abord si une telle classification est possible à partir de ces données.</p>
+<p>Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :</p>
+<pre><code>df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>Il est possible avec Seaborn d'afficher ces données sous la forme d'une <strong>matrice de corrélations</strong>, avec chaque classe d'une couleur différente.
+Ce type de représentation permet de vérifier la séparabilité des différentes classes à partir des features sélectionnés.</p>
+<p>Voici la commande Seaborn :</p>
+<pre><code>sns.pairplot(df_dataset,hue='instrument')
+</code></pre>
+<p>On obtient alors le graphique suivant :</p>
+<p><img alt="Matrice de corrélations des 3 instruments" src="../img/Chap2_correlation_matrix_instruments.png" /></p>
+<p>On observe que les classes "flute", "oboe" et "trumpet" sont plutôt bien séparables à partir des amplitudes des 3 premières harmoniques.
+Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de ces données à donc du sens.</p>
+<p><strong>Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.</strong>
+<strong>Nous verrons cet exemple plus en détails en TP.</strong></p>
+<h2 id="mesures-de-performance">Mesures de performance</h2>
+<h3 id="matrice-de-confusion">Matrice de confusion</h3>
+<h3 id="precision-rappel">Précision / rappel</h3>
+<h3 id="courbe-roc">Courbe ROC</h3>
+<h2 id="methodes-de-base">Méthodes de base</h2>
+<h3 id="decision-bayesienne">Décision Bayesienne</h3>
+<p>La <strong>décision Bayesienne</strong>, aussi connue sous le nom de "classification Bayesienne naïve" est une méthode de classification se basant sur un <strong>modèle probabiliste</strong> des features, considérées <strong>indépendantes</strong>, et du <strong>théorème de Bayes</strong>.</p>
+<h4 id="principe">Principe</h4>
+<p>Imaginons que nous avons un problème de classification avec <span class="arithmatex">\(q\)</span> <strong>classes</strong> <span class="arithmatex">\(C_1\)</span>, <span class="arithmatex">\(C_2\)</span>, ..., <span class="arithmatex">\(C_q\)</span>.
+Nous voulons prédire la classe à laquelle appartient un individu.</p>
+<p>La probabilité de chaque classe <span class="arithmatex">\(i\)</span> notée <span class="arithmatex">\(p(C_i)\)</span>, aussi appelée "<strong>probabilité a priori</strong>".</p>
+<p>On a <span class="arithmatex">\(\sum_{i=1}^{q} p(C_i) = 1\)</span> et on peut facilement estimer les différents <span class="arithmatex">\(p(C_i)\)</span> à partir du nombre d'occurences de <span class="arithmatex">\(C_i\)</span> dans les données divisée par la taille de la base de données.</p>
+<p>En ne connaissant que les probabilités a priori de chaque classe, nous serions obligés de classer n'importe quel individu comme appartenant à la classe <span class="arithmatex">\(C_i\)</span> ayant le <span class="arithmatex">\(p(C_i)\)</span> le plus élevé.
+Nous aurions alors un classifieur retournant toujours la même classe. 
+Pas très utile...</p>
+<p>Or, nous avons en réalité accès à plus d'informations : nos fameuses "features", dont nous voulons nous servir pour prédire la classe d'un individu.</p>
+<p>Mettons que nous avons accès à une feature d'intérêt pour cette classification. 
+On notera <span class="arithmatex">\(X\)</span> l'espace des <strong>observations</strong> associé.</p>
+<p>Pour déterminer la classe d'un individu, on peut alors partir du principe suivant : choisir le <span class="arithmatex">\(C_i\)</span> tel que <span class="arithmatex">\(p(C_i \mid x)\)</span> <strong>soit maximal</strong>.
+Nous expliquerons pourquoi dans la suite.</p>
+<p>On nomme <span class="arithmatex">\(p(C_i \mid x)\)</span> "<strong>probabilités a posteriori</strong>".</p>
+<p>D'après le <strong>théorème de Bayes</strong> :</p>
+<p><span class="arithmatex">\(p(C_i \mid x) = \frac{p(x \mid C_i)p(C_i)}{p(x)}\)</span></p>
+<p>avec <span class="arithmatex">\(p(x) = \sum_{i=1}^{q} p(x \mid C_i)p(C_i)\)</span></p>
+<p>On nomme <span class="arithmatex">\(p(x)\)</span> la densité de "<strong>probabilité d'observation</strong>", et <span class="arithmatex">\(p(x \mid C_i)\)</span> la densité de "<strong>probabilité conditionnelle d'observation</strong>".</p>
+<p>Toute la difficulté de la méthode est d'<strong>estimer</strong> <span class="arithmatex">\(p(x \mid C_i)\)</span>.
+On va en général chercher à <strong>modéliser</strong> ces densités de probabilité conditionnelle.</p>
+<p><img alt="Décision Bayesienne" src="../img/Chap2_decision_bayesienne.png" /></p>
+<p><strong>NB :</strong> Il est à noter que rechercher la classe <span class="arithmatex">\(C_i\)</span> maximisant <span class="arithmatex">\(p(C_i \mid x)\)</span> <strong>est équivalent</strong> à rechercher <span class="arithmatex">\(C_i\)</span> maximisant <span class="arithmatex">\(p(x \mid C_i)p(C_i)\)</span>.
+Il n'est donc en théorie pas utile de calculer <span class="arithmatex">\(p(x)\)</span> pour obtenir le classificateur.
+Mais il est nécessaire d'avoir <span class="arithmatex">\(p(x)\)</span> pour obtenir des probabilités d'appartenance à une classe.</p>
+<p><strong>Attention !</strong> En général, il y a des recouvrements entre les différentes densités de probabilité conditionnelle.
+On ne peut alors pas obtenir classifieur parfait.
+On cherchera juste le modèle permettant de minimiser les erreurs de classification. </p>
+<p><strong>Cas particulier :</strong> Si tous les <span class="arithmatex">\(p(x \mid C_i)\)</span> sont égaux, alors la feature sélectionnée n'est pas pertinente pour la classification.</p>
+<p>Ce principe est <strong>généralisable</strong> aux cas de classifications avec <span class="arithmatex">\(m\)</span> features d'espaces de probabilité <span class="arithmatex">\(X_1\)</span>, <span class="arithmatex">\(X_2\)</span>, ... <span class="arithmatex">\(X_m\)</span>.
+On cherchera la classe <span class="arithmatex">\(C_i\)</span> qui maximise <span class="arithmatex">\(p(C_i) \prod_{j=1}^{m}p(x_j \mid C_i)\)</span>.</p>
+<h4 id="frontiere-de-decision-et-erreur">Frontière de décision et erreur</h4>
+<p>Comme nous l'avons expliqué précédemment, sauf cas particulier, on ne peut pas obtenir un classifieur parfait.</p>
+<p>On va donc essayer d'établir des <strong>frontières de décision</strong> entre les classes : des intervalles de <span class="arithmatex">\(x\)</span> pour lesquels on attribura une classe.
+Et nous recherchons même les frontières de décision optimales : celles qui minimisent le risque d'erreurs.</p>
+<p>Prenons un cas simple de classification binaire entre 2 classes <span class="arithmatex">\(C_1\)</span> et <span class="arithmatex">\(C_2\)</span>.
+Nous noterons <span class="arithmatex">\(x = D\)</span> la frontière de décision choisie.</p>
+<p>On a alors 2 types d'erreurs de classification possibles : </p>
+<ul>
+<li>
+<p>Classifier l'individu en <span class="arithmatex">\(C_1\)</span> alors qu'il appartient à <span class="arithmatex">\(C_2\)</span>.</p>
+</li>
+<li>
+<p>Classifier l'individu en <span class="arithmatex">\(C_2\)</span> alors qu'il appartient à <span class="arithmatex">\(C_1\)</span>.</p>
+</li>
+</ul>
+<p>Les probabilités d'erreurs associées sont <span class="arithmatex">\(\int_{-\infty}^{D} p(x \mid C_2)p(C_2) dx\)</span> et <span class="arithmatex">\(\int_{D}^{+\infty} p(x \mid C_1)p(C_1) dx\)</span>.</p>
+<p>Elles correspondent aux aires représentées sur ce schéma : </p>
+<p><img alt="Erreur décision Bayesienne" src="../img/Chap2_erreur_decision_bayesienne.png" /></p>
+<p>Pour obtenir la frontière de décision optimale <span class="arithmatex">\(x = O\)</span>, on va chercher à minimiser la somme de ces erreurs.</p>
+<p>L'aire entourée en vert correspond à ce que l'on appelle "l'<strong>erreur réductible</strong>" : c'est la portion de l'erreur totale que l'on peut réduire pour obtenir la frontière optimale.</p>
+<p>On retrouve bien que :</p>
+<ul>
+<li>
+<p>Si <span class="arithmatex">\(p(C_1 \mid x) &gt; p(C_2 \mid x)\)</span> alors on classifie l'individu comme appartenant à <span class="arithmatex">\(C_1\)</span>.</p>
+</li>
+<li>
+<p>Si <span class="arithmatex">\(p(C_1 \mid x) &lt; p(C_2 \mid x)\)</span> alors on classifie l'individu comme appartenant à <span class="arithmatex">\(C_2\)</span>.</p>
+</li>
+</ul>
+<p>On peut généraliser à <span class="arithmatex">\(q\)</span> classes : comme dit précédemment, pour obtenir les frontières de décision optimales, on choisi le <span class="arithmatex">\(C_i\)</span> tel que <span class="arithmatex">\(p(C_i \mid x)\)</span> <strong>soit maximal</strong>.</p>
+<h4 id="choix-du-modele">Choix du modèle</h4>
+<p>Comme nous l'avons expliqué, la décision Bayesienne nécessite un modèle des probabilités conditionnelles d'observation <span class="arithmatex">\(p(x \mid C_i)\)</span> pour chaque classe <span class="arithmatex">\(C_i\)</span>.</p>
+<p>Pour ce faire, on <strong>ajuste une fonction de densité de probabilité</strong> pour chaque <span class="arithmatex">\(p(C_i \mid x)\)</span> à notre jeu d'entrainement.</p>
+<p>Ceci implique donc 2 choix :</p>
+<ul>
+<li>
+<p>Une <strong>fonction de densité de probabilité</strong>, ce qui implique de faire une <strong>hypothèse forte</strong> sur la distribution des observations pour chaque classe.</p>
+</li>
+<li>
+<p>Une <strong>méthode d'ajustement de loi de probabilité</strong>.</p>
+</li>
+</ul>
+<p>La fonction de densité de probabilité la plus classique est celle de la <strong>loi normale</strong> : </p>
+<p><span class="arithmatex">\(f(x) = \frac{1}{\sigma \sqrt{2 \pi}} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}\)</span></p>
+<p>avec 2 paramètres à ajuster <span class="arithmatex">\(\mu\)</span> (la moyenne) et <span class="arithmatex">\(\sigma\)</span> (l'écart-type).</p>
+<p>La méthode d'ajustement la plus classique pour la décision Bayesienne est celle du <strong>maximum de vraisemblance</strong>.
+C'est elle que nous allons détailler.</p>
+<h4 id="maximum-de-vraisemblance">Maximum de vraisemblance</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Définition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Soit une loi de probabilité <span class="arithmatex">\(f(x,\theta)\)</span>, définie par des paramètres <span class="arithmatex">\(\theta\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pour un échantillon observé <span class="arithmatex">\((x_1,x_2,...,x_n)\)</span>, on nomme <strong>vraisemblance</strong> ("likelihood" en anglais) la probabilité que cet échantillon provienne d'un tirage de <span class="arithmatex">\(f(x,\theta)\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Si les tirages sont indépendants, on peut exprimer la vraisemblance de la manière suivantes :</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="arithmatex">\(L(x_1,x_2,...,x_n,\theta) = \prod_{k=1}^{n} f(x_k,\theta)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>La méthode du <strong>maximum de vraisemblance</strong> découle du fait que le modèle <span class="arithmatex">\(f\)</span> de paramètres <span class="arithmatex">\(\theta\)</span> représentant le mieux les observations est celui qui <strong>maximise</strong> la vraisemblance, c'est-à-dire <strong>la probabilité que l'échantillon provienne de cette loi</strong>.</p>
+<p>L'idée est donc de rechercher les <span class="arithmatex">\(\theta\)</span> maximisant <span class="arithmatex">\(L(x_1,x_2,...,x_n,\theta)\)</span>.</p>
+<p>Souvent, pour simplifier les calculs, on ne va pas rechercher le maximum de la vraisemblance, mais de la log-vraisemblance :</p>
+<p><span class="arithmatex">\(logL(x_1,x_2,...,x_n,\theta) = \sum_{k=1}^{n} log(f(x_k,\theta))\)</span></p>
+<p>En effet, rechercher les paramètres <span class="arithmatex">\(\theta\)</span> maximisant <span class="arithmatex">\(L\)</span> ou <span class="arithmatex">\(logL\)</span> est équivalent, et rechercher un maximum implique un calcul de dérivée, ce qui est plus simple pour des sommes que pour des produits.</p>
+<p>On va donc pour chaque paramètre <span class="arithmatex">\(\theta_j\)</span> de <span class="arithmatex">\(\theta\)</span> la valeur qui vérifie <span class="arithmatex">\(\frac{\partial}{\partial{\theta_j}} \sum_{k=1}^{n} log(f(x_k,\theta)) = 0\)</span>.</p>
+<p>Prenons l'exemple de la loi normale :</p>
+<p><span class="arithmatex">\(f(x,\mu,\sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{- \frac{1}{2} (\frac{x - \mu}{\sigma})^2}\)</span></p>
+<p>On cherchera alors les paramètres <span class="arithmatex">\(\theta = (\mu,\sigma)\)</span> vérifiant :</p>
+<p><span class="arithmatex">\(\frac{\partial}{\partial{\theta}} \sum_{k=1}^{n} (-log(\sigma) - log(\sqrt{2 \pi}) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0\)</span></p>
+<p>soit <span class="arithmatex">\(\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt{2 \pi} - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0\)</span></p>
+<p>soit pour chaque paramètre :</p>
+<p><span class="arithmatex">\(\frac{\partial}{\partial{\mu}} (- n log(\sigma) - n log(\sqrt{2 \pi}) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0\)</span></p>
+<p><span class="arithmatex">\(\frac{\partial}{\partial{\sigma}} (- n log(\sigma) - n log(\sqrt{2 \pi}) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0\)</span></p>
+<p>On montre alors que les paramètres vérifiant ces équations sont :</p>
+<p><span class="arithmatex">\(\mu = \frac{1}{n} \sum_{k=1}^{n} x_k\)</span> et <span class="arithmatex">\(\sigma^2 = \frac{1}{n} \sum_{k=1}^{n} (x_k - \mu)^2\)</span></p>
+<p>Ce qui était attendu.</p>
+<h4 id="implementation-scipy">Implémentation Scipy</h4>
+<p>Afin de réaliser un ajustement de loi de probabilité, on peut utiliser la bibliothèque de calculs scientifiques Scipy, et en particulier son module de statistiques "scipy.stat".</p>
+<p>Par exemple, pour un ajustement avec une loi normale, on pourra importer l'objet "norm" avec :</p>
+<pre><code>from scipy.stats import norm
+</code></pre>
+<p>On peut alors ajuster une loi normale à un ensemble d'observations contenu dans un conteneur <code>x_obs</code>, et récupérer la moyenne <code>mu</code> et l'écart-type <code>sigma</code> avec :</p>
+<pre><code>mu,sigma = norm.fit(x_obs)
+</code></pre>
+<p>Par défaut, la méthode du maximum de vraisemblance est utilisée.
+Mais on peut également utiliser la "méthode des moments" (que nous ne présenterons pas dans ce cours), en ajoutant un paramètre <code>method = 'MM'</code> en entrée.</p>
+<p>Une fois la loi normale ajustée, on a accès à la densité de probabilité <code>dp</code> associée à une réalisation <code>x</code> avec :</p>
+<pre><code>dp = norm.pdf(x,mu,sigma)
+</code></pre>
+<p>Bien d'autres lois de probabilité sont disponibles dans le module "scipy.stats", et fonctionnent sur le même principe que "norm".</p>
+<h4 id="implementation-scikit-learn">Implémentation Scikit-Learn</h4>
+<p>Il est à noter qu'il existe aussi une implémentation de la classification Bayesienne dans Scikit-Learn, dans l'hypothèse de distributions des features suivant des lois normales.</p>
+<p>Elle peut être importée avec :</p>
+<pre><code>from sklearn.naive_bayes import GaussianNB
+</code></pre>
+<p>On doit alors créer un objet "GaussianNB" qui contiendra notre modèle :</p>
+<pre><code>bayes_classifier = GaussianNB()
+</code></pre>
+<p>Il faut ensuite l'entrainer avec nos features et labels d'entrainement, nommés ici <code>feature_train</code> et <code>label_train</code> :</p>
+<pre><code>bayes_classifier.fit(feature_train,label_train)
+</code></pre>
+<p>Et enfin, on peut réaliser une prédiction à partir de features de test, nommés <code>feature_test</code> :</p>
+<pre><code>label_test = bayes_classifier.predict(feature_test)
+</code></pre>
+<p>Cette implémentation peut être pratique dans certains cas, mais elle ne permet pas de jouer sur les hyperparamètres suivants : la loi de probabilité et la méthode d'ajustement.
+Une optimisation de ces hyperparamètres n'est donc pas possible avec Scikit-Learn.</p>
+<h4 id="application-a-notre-exemple">Application à notre exemple</h4>
+<p>Nous allons à présent appliquer la classification Bayesienne à notre problème exemple.</p>
+<p>Afin de rendre la visualisation plus facile, nous allons simplifier le problème :</p>
+<p>Mettons que nous voulons juste effectuer une classification binaire de nos enregistrements, entre les classes "flute" ou "trompette", en utilisant comme unique feature l'amplitude relative de la 1ère harmonique.</p>
+<p>Pour ce faire, nous importons le fichier CSV sous la forme d'un DataFrame, et nous sélectionnons les variables et les individus qui nous intéressent :</p>
+<pre><code>df_dataset = pd.read_csv(input_path)
+
+df_dataset = df_dataset[['instrument','harmo1']]
+df_dataset = df_dataset[(df_dataset['instrument']=='flute')|(df_dataset['instrument']=='trumpet')]
+</code></pre>
+<p>Nous diviserons ici nos données en un jeu d'entrainement (80%) et un jeu de test (20%), sous la forme de 2 DataFrames : </p>
+<pre><code>df_train=df_dataset.sample(frac=0.8,random_state=0)
+df_test=df_dataset.drop(df_train.index)
+</code></pre>
+<p>On peut alors tracer un histogramme de notre feature pour les données d'entrainement, en sépararant les 2 classes :</p>
+<p><img alt="Histogramme de la 1ère harmonique pour la flute et la trompette" src="../img/Chap2_exemple_histogramme.png" /></p>
+<p>On peut noter qu'il y a peu de recouvrement entre les 2 distributions, ce qui laisse entrevoir qu'il est possible d'entrainer un modèle à classifier ces données.</p>
+<p>En 1ère approche, nous choisissons d'ajuster à ces 2 distributions des modèles de lois normales.
+Il faudra se poser la question de la pertinence de ce choix.</p>
+<p>Tout d'abord, nous allons séparer le jeu d'entrainement en 2 Series (DataFrame Pandas ne contenant qu'une colonnes) suivant si l'instrument est une flute ou une trompette :</p>
+<pre><code>sr_harmo1_flute_train = df_train[df_train['instrument']=='flute']['harmo1']
+sr_harmo1_trumpet_train = df_train[df_train['instrument']=='trumpet']['harmo1']
+</code></pre>
+<p>On peut alors réaliser nos 2 ajustements, et récupérer les paramètres <span class="arithmatex">\(mu\)</span> et <span class="arithmatex">\(\sigma\)</span> correspondants :</p>
+<pre><code>from scipy.stats import norm
+
+mu_harmo1_flute,sig_harmo1_flute = norm.fit(sr_harmo1_flute_train)
+mu_harmo1_trumpet,sig_harmo1_trumpet = norm.fit(sr_harmo1_trumpet_train)
+</code></pre>
+<p>Maintenant que nous avons les paramètres de nos modèles, nous pouvons évaluer la densité des probabilités conditionnelles pour la classe "flute" et la classe "trompette".</p>
+<p>Voici par exemple 301 évaluations pour des valeurs d'amplitude de la 1ère harmonique entre -30 et 0 dB :</p>
+<pre><code>x_axis = np.linspace(-30,0,301)
+
+proba_norm_flute = norm.pdf(x_axis,mean_harmo1_flute,sig_harmo1_flute)
+proba_norm_trumpet = norm.pdf(x_axis,mean_harmo1_trumpet,sig_harmo1_trumpet)
+</code></pre>
+<p>Nous pouvons alors tracer les courbes correspondantes par-dessus notre histogramme (affiché en densité de probabilité) :</p>
+<p><img alt="Probabilités conditionnelles" src="../img/Chap2_exemple_probabilites_conditionnelles.png" /></p>
+<p>Si nos modèles ne paraissent pas complément inadaptés, on peut noter qu'ils ne capturent pas la légère asymétrie de nos distributions.
+On pourrait donc se poser la question d'essayer d'autres lois de probabilités, asymétriques.</p>
+<p>Continuons avec nos modèles pour les probabilités conditionnelles.</p>
+<p>La prochaine étape est d'estimer la probabilité de chaque classe, à partir de leurs densités relatives :</p>
+<pre><code>proba_flute = len(sr_harmo1_flute_train)/len(df_train)
+proba_trumpet = len(sr_harmo1_trumpet_train)/len(df_train)
+</code></pre>
+<p>On peut alors utiliser estimer la densité de probabilité d'observation :</p>
+<pre><code>proba_obs = proba_norm_flute*proba_flute + proba_norm_trumpet*proba_trumpet
+</code></pre>
+<p>Si nous l'affichons avec les histogrammes, nous pouvons vérifier qu'elle est bien cohérente avec la distribution des observations.</p>
+<p><img alt="Probabilité d'observation" src="../img/Chap2_exemple_probabilite_observation.png" /></p>
+<p>Enfin, nous pouvons calculer les probabilités a posteriori, en se basant sur la formule de Bayes :</p>
+<pre><code>proba_bayes_flute = proba_norm_flute*proba_flute/proba_obs
+proba_bayes_trumpet = proba_norm_trumpet*proba_trumpet/proba_obs
+</code></pre>
+<p>On peut alors afficher ces probabilités, et tracer la frontière de décision :</p>
+<p><img alt="Probabilités a posteriori" src="../img/Chap2_exemple_probabilites_aposteriori.png" /></p>
+<p>La frontière de décision se trouve à environ -13.16 dB : </p>
+<ul>
+<li>
+<p>Si on mesure une 1ère harmonique ayant une amplitude inférieure, on classifiera l'instrument comme étant une flute.</p>
+</li>
+<li>
+<p>Si on mesure une 1ère harmonique ayant une amplitude supérieure, on classifiera l'instrument comme étant une trompette.</p>
+</li>
+</ul>
+<p>Comme nous l'avons mentionné précédemment, si la probabilité d'appartenance aux classes ne nous intéresse pas, nous pourrions juste comparer <span class="arithmatex">\(p(x \mid C = 'flute')p(C='flute')\)</span> et <span class="arithmatex">\(p(x \mid C = 'trumpet')p(C='trumpet')\)</span> pour classifier les observations. </p>
+<p>Maintenant que nous avons vu le principe, on voudrait pouvoir ré-entrainer notre modèle afin d'optimiser les hyperparamètres, et réaliser des prédictions sur les jeux d'entrainement et de test, le tout de manière efficace.</p>
+<p>Dans ce but, nous pouvons mettre notre classification binaire Bayesienne sous la forme d'une classe <code>binary_bayes</code> avec 2 méthodes <code>train</code> et <code>predict</code> pour l'entrainement et la prédiction.
+Voici un exemple d'implémentation :</p>
+<pre><code>class binary_bayes:
+
+    def __init__(self,stat_model):
+
+        self.stat_model = stat_model
+
+        self.true_params = None
+        self.false_params = None
+
+        self.proba_true = None
+
+    def train(self,x_true,x_false):
+
+        self.true_params = self.stat_model.fit(x_true)
+        self.false_params = self.stat_model.fit(x_false)
+
+        len_true = len(x_true)
+        len_false = len(x_false)
+        self.proba_true = len_true/(len_true+len_false)
+
+    def predict(self,x):
+
+        proba_norm_true = self.stat_model.pdf(x,*self.true_params)
+        proba_norm_false = self.stat_model.pdf(x,*self.false_params)
+
+        proba_obs = proba_norm_true*self.proba_true + proba_norm_false*(1-self.proba_true)
+
+        proba_bayes_true = proba_norm_true*self.proba_true/proba_obs
+
+        return proba_bayes_true
+</code></pre>
+<p>On peut alors facilement définir un classificateur binaire "est-ce une flute ?" utilisant la loi normale telle qu'implémentée par Scipy :</p>
+<pre><code>from scipy.stats import norm
+
+is_a_flute = binary_bayes(norm)
+</code></pre>
+<p>Entrainer ce classifieur sur notre jeu d'entrainement :</p>
+<pre><code>is_a_flute.train(sr_harmo1_flute_train,sr_harmo1_trumpet_train)
+</code></pre>
+<p>Et réaliser des prédictions sur nos données d'entrainement et de test :</p>
+<pre><code>prediction_train = (is_a_flute.predict(df_train['harmo1']))
+
+prediction_test = (is_a_flute.predict(df_test['harmo1']))
+</code></pre>
+<p>En partant du principe que nous positionnons la frontière de décision à une probabilité d'appartenance à classe "flute" de 0.5, nous pouvons obtenir les matrices de confusion en entrainement et en test avec les commandes suivantes :</p>
+<pre><code>from sklearn.metrics import confusion_matrix
+
+#Label encoding:
+ground_truth_train = (df_train['instrument']=='flute').astype(int)
+ground_truth_test = (df_test['instrument']=='flute').astype(int)
+
+cm_train = confusion_matrix(ground_truth_train, prediction_train&gt;0.5)
+cm_test = confusion_matrix(ground_truth_test, prediction_test&gt;0.5)
+</code></pre>
+<p>Voici les résultats en entrainement obtenus pour notre exemple :</p>
+<p><img alt="Exemple de matrice de confusion" src="../img/Chap2_exemple_matrice_confusion.png" /></p>
+<p>On observe que les performances du modèle sont très similaires entre les données d'entrainement et de test.
+Ceci tend à montrer que l'on a pas de problème de sur-ajustement important, ce qui laisse présager des performances similaires en généralisation.</p>
+<p>Il n'y a aucun faux positif, mais on a quelques faux négatifs : parfois notre modèle classifie des enregistrements de flutes comme n'étant pas des flutes.</p>
+<p>Suivant les applications, on peut vouloir choisir une frontière de décision différente, pour diminuer le nombre de faux négatifs, au prix d'une augmentation du nombre de faux positifs.
+Afin de voir les effets d'un tel choix, on tracer une courbe ROC à partir des probabilités prédites par notre modèle :</p>
+<pre><code>fp_rate_train, tp_rate_train, thresholds_train = roc_curve(ground_truth_train, prediction_train)
+fp_rate_test, tp_rate_test, thresholds_test = roc_curve(ground_truth_test, prediction_test)
+</code></pre>
+<h4 id="remarques">Remarques</h4>
+<p>La méthode de la classification de Bayes a les <strong>avantages</strong> suivants :</p>
+<ul>
+<li>
+<p>Elle fonctionne pour <strong>tous les types de classification et variables</strong>.</p>
+</li>
+<li>
+<p>Elle est relativement <strong>simple</strong> à mettre en place, avec <strong>peu de paramètres</strong>.</p>
+</li>
+<li>
+<p>Les décisions qu'elle prend sont complément <strong>expliquées</strong> et <strong>interprétables</strong> : un humain peut les comprendre.</p>
+</li>
+</ul>
+<p>Mais cette méthode a aussi les <strong>limites</strong> suivantes :</p>
+<ul>
+<li>
+<p>Elle fait l'hypothèse de l'<strong>indépendance des variables</strong> entre elles, ce qui dans la pratique limite son application aux problèmes avec peu de features.</p>
+</li>
+<li>
+<p>Elle fait une hypothèse forte sur la <strong>distribution des observations</strong> pour chaque variable. Il s'agit souvent d'une hypothèse de <strong>normalité</strong>.</p>
+</li>
+</ul>
+<h3 id="k-plus-proches-voisins">K Plus Proches Voisins</h3>
+<h4 id="principe_1">Principe</h4>
+<p>La méthode de la classification Bayesienne que nous venons de voir avait pour désavantage de nécessiter une hypothèse sur la distribution des observations.</p>
+<p>Dans cette section, nous allons présenter une méthode ne nécessitant aucun a priori sur les données : les <strong>K Plus Proches Voisin</strong>, aussi connue sous l'acronyme KPPV.</p>
+<p>Les KPPV est une méthode dite de "lazy learning" : il n'y a pas de réel apprentissage préalable à la prédiction.
+Le jeu de données d'apprentissage est <strong>stocké en mémoire</strong>, et utilisé au moment de la prédiction.</p>
+<p>L'idée est la suivante : pour classer un nouvel individu, on va calculer sa <strong>distance aux <span class="arithmatex">\(k\)</span> individus les plus proches</strong> dans les données d'entrainement.
+On attibura alors à l'individu la classe <strong>la plus représentée</strong> parmi ses <span class="arithmatex">\(k\)</span> "plus proches voisins".</p>
+<p>Prédire la classe d'un individu avec cette méthode implique :</p>
+<p>(1) De mesurer la distance entre l'individu à classifier et <strong>tous les individus du jeu d'entrainement</strong>.
+C'est ce que l'on appelle "l'approche brute". 
+Et plus le jeu d'entrainement est grand, plus le temps de calcul sera long.
+Pour cette raison, on choisi de stocker le jeu d'entrainement dans une <strong>structure de donnée la plus efficace à parcourir</strong> possible (exemple : KD-Tree).</p>
+<p>(2) De choisir une <strong>mesure de distance</strong> adaptée au problème.</p>
+<p>(3) De choisir le <strong>nombre de "plus proches voisins"</strong> à l'individu à considérer.</p>
+<p>(4) De choisir de quelle manière on va affecter une classe à l'individu à partir de la classe de ses voisins : Un <strong>vote majoritaire</strong> ? 
+S'il y a un gros déséquilibre entre classes, ce type de vote risque d'être biaisé.
+On préférera alors un vote avec des <strong>poids différents</strong> suivant les classes.</p>
+<h4 id="choix-de-la-distance">Choix de la distance</h4>
+<h4 id="choix-du-parametre-k">Choix du paramètre K</h4>
+<h4 id="implementation-scikit-learn_1">Implémentation Scikit-Learn</h4>
+<h4 id="application-a-notre-exemple_1">Application à notre exemple</h4>
+<h3 id="perceptron">Perceptron</h3>
+<h4 id="neurone-artificiel">Neurone artificiel</h4>
+<h4 id="apprentissage-et-descente-de-gradient">Apprentissage et descente de gradient</h4>
+<h4 id="reseau-de-neurones">Réseau de neurones</h4>
+<h4 id="implementation-scikit-learn_2">Implémentation Scikit-Learn</h4>
+<h4 id="application-a-notre-exemple_2">Application à notre exemple</h4>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Chap1_Introduction/" class="btn btn-neutral float-left" title="I. Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Chap3_Regression/" class="btn btn-neutral float-right" title="III. Régression">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Chap1_Introduction/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Chap3_Regression/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
