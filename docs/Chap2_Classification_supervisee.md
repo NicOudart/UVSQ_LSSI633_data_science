@@ -549,8 +549,8 @@ Pour cette raison, on choisi de stocker le jeu d'entrainement dans une **structu
 
 (3) De choisir le **nombre de "plus proches voisins"** à l'individu à considérer.
 
-(4) De choisir de quelle manière on va affecter une classe à l'individu à partir de classe des voisins : Un **vote majoritaire** ? 
-S'il y a un gros déséquilibre entre classe, ce type de vote risque d'être biaisé.
+(4) De choisir de quelle manière on va affecter une classe à l'individu à partir de la classe de ses voisins : Un **vote majoritaire** ? 
+S'il y a un gros déséquilibre entre classes, ce type de vote risque d'être biaisé.
 On préférera alors un vote avec des **poids différents** suivant les classes.
 
 #### Choix de la distance
