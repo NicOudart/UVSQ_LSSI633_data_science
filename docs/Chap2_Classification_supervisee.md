@@ -243,9 +243,9 @@ soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt{2 \pi} - 
 
 soit pour chaque paramètre :
 
-$\frac{\partial}{\partial{\mu}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+$\frac{\partial}{\partial{\mu}} (- n log(\sigma) - n log(\sqrt{2 \pi}) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
-$\frac{\partial}{\partial{\sigma}} (- n log(\sigma) - n log(\sqrt(2 \pi)) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+$\frac{\partial}{\partial{\sigma}} (- n log(\sigma) - n log(\sqrt{2 \pi}) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
 On montre alors que les paramètres vérifiant ces équations sont :
 
