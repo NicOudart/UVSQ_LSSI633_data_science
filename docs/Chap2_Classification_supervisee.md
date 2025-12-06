@@ -526,6 +526,33 @@ Mais cette méthode a aussi les **limites** suivantes :
 
 #### Principe
 
+La méthode de la classification Bayesienne que nous venons de voir avait pour désavantage de nécessiter une hypothèse sur la distribution des observations.
+
+Dans cette section, nous allons présenter une méthode ne nécessitant aucun a priori sur les données : les **K Plus Proches Voisin**, aussi connue sous l'acronyme KPPV.
+
+Les KPPV est une méthode dite de "lazy learning" : il n'y a pas de réel apprentissage préalable à la prédiction.
+Le jeu de données d'apprentissage est **stocké en mémoire**, et utilisé au moment de la prédiction.
+
+L'idée est la suivante : pour classer un nouvel individu, on va calculer sa **distance aux $k$ individus les plus proches** dans les données d'entrainement.
+On attibura alors à l'individu la classe **la plus représentée** parmi ses $k$ "plus proches voisins".
+
+
+
+Prédire la classe d'un individu avec cette méthode implique :
+
+(1) De mesurer la distance entre l'individu à classifier et **tous les individus du jeu d'entrainement**.
+C'est ce que l'on appelle "l'approche brute". 
+Et plus le jeu d'entrainement est grand, plus le temps de calcul sera long.
+Pour cette raison, on choisi de stocker le jeu d'entrainement dans une **structure de donnée la plus efficace à parcourir** possible (exemple : KD-Tree).
+
+(2) De choisir une **mesure de distance** adaptée au problème.
+
+(3) De choisir le **nombre de "plus proches voisins"** à l'individu à considérer.
+
+(4) De choisir de quelle manière on va affecter une classe à l'individu à partir de classe des voisins : Un **vote majoritaire** ? 
+S'il y a un gros déséquilibre entre classe, ce type de vote risque d'être biaisé.
+On préférera alors un vote avec des **poids différents** suivant les classes.
+
 #### Choix de la distance
 
 #### Choix du paramètre K
