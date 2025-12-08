@@ -760,12 +760,37 @@ print(knn.score(df_features_train,df_labels_train))
 print(knn.score(df_features_test,df_labels_test))
 ~~~
 
-On obtient environ 99.4% de précision en entrainement, et environ 98.8% de précision en test.
-Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation, mais il nous faut une matrice de confusion complète pour conclure.
+Pour $k=3$, on obtient environ 99.4% de précision en entrainement, et environ 98.8% de précision en test.
+Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation, mais il nous faut une matrice de confusion complète pour conclure :
 
+![Exemple de matrice de confusion](img/Chap2_exemple_matrice_confusion_2.png)
 
+On observe qu'à l'entrainement comme en test, le hautbois est très bien séparé des autres instruments, alors que la trompette et la flute sont parfois confondus.
+Ce résultat était prévisible au vu de la matrice de corrélations que nous avions obtenue lors de notre étude préliminaire.
+Les proportions d'erreurs restent cependant relativement faibles comparées aux nombres d'observations.
+
+Nous n'avons pour l'instant testé qu'une valeur de $k$.
+Pour visualiser l'effet de cet hyperparamètre, nous pouvons utiliser les affichages graphiques de la bibliothèque MLxtend.
+
+Voici les graphiques obtenus pour $k=3$ (volontairement faible) et $k=31$ (volontairement élevé) :
 
 ![Frontières de décision pour notre exemple](img/Chap2_exemple_KPPV_frontieres_decision.png)
+
+On peut noter que comme attendu, le choix de $k$ a le plus d'effet à la frontière entre "flute" et "trompette".
+En effet, comme il y a du recouvrement entre ces 2 classes, on sait qu'il vaut mieux choisir un $k$ élevé pour éviter le sur-apprentissage.
+Ceci est confirmé par le "lissage" de la frontière de décision lorsque l'on utilise $k=31$.
+
+Le choix d'un $k$ élevé a donc l'air plus approprié ici, mais il faudrait réaliser une réelle optimisation de cet hyperparamètre.
+
+Par défaut, la distance utilisée par l'implémentation Scikit-Learn des KPPV est la distance Euclidienne.
+Nous pouvons également réaliser des affichages pour visualiser l'impact de différentes distances pour une même valeur de $k$.
+
+Voici le résultat pour la distance Euclidienne et la distance de Manhattan, avec $k=31$.
+
+![Frontières de décision pour notre exemple](img/Chap2_exemple_KPPV_frontieres_decision_2.png)
+
+On observe en effet que le choix de la distance impacte significativement les frontières de décision obtenues, même s'il est difficile ici de juger de la pertinence d'une des 2 distances essayées.
+Tout comme pour $k$, il faudrait réaliser une véritable optimisation de cet hyperparamètre.
 
 #### Remarques
 
