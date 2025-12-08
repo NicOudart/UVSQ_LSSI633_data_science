@@ -625,17 +625,48 @@ Il s'agit du cosinus de l'angle entre les 2 vecteurs.
 Cette mesure de distance est couramment utilisée lorsque l'on doit comparer des vecteurs de haute dimensionnalité, et où la norme du vecteur a peu d'importance.
 Par exemple, c'est la mesure de distance privilégiée pour de la "fouille de texte" (comparaison mot à mot de chaines de caractère).
 
-![](img/.png)
+![Exemples de distances](img/Chap2_distances.png)
 
-La distance est donc un hyperparamètre à optimiser lorsque l'on utiliser les KPPV.
+La distance est donc un **hyperparamètre à optimiser** lorsque l'on utilise les KPPV.
 
 #### Choix du paramètre K
+
+Il est évident que le choix de $k$ va avoir un impact sur les prédictions obtenues à partir des données d'entrainement.
+C'est donc également un **hyperparamètre à optimiser**.
+
+Pour choisir des valeurs de $k$ à tester, on peut partir des grands principes suivants :
+
+* S'il y a un fort **déséquilibre** entre classes, il vaut mieux ne pas choisir un $k$ **faible**.
+
+* S'il y a beaucoup de **recouvrement** entre les classes, il vaut mieux choisir un $k$ **élevé**.
+
+* Avec un $k$ trop **faible** on risque le **sur-apprentissage**.
+
+* Avec un $k$ trop **grand** on risque le **sous-apprentissage**.
+
+Pour éviter les cas d'égalité, on va en général choisir une valeur de $k$ impaire.
 
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
 
 #### Remarques
+
+La méthode des KPPV a les **avantages** suivants :
+
+* Il s'agit d'une méthode non-paramétrique, qui ne fait **aucune hypothèse** sur la structure des données.
+
+* Elle est relativement simple, et n'a **que 2 hyperparamètres** ($k$ et la distance), ce qui est peu comparé à certaines méthodes.
+
+* Si de nouvelles observations doivent être ajoutées au jeu d'entrainement, **la mise à jour du modèle est directe**.
+
+Mais cette méthode a aussi les **limites** suivantes :
+
+* Le modèle ayant besoin de stocker les données d'entrainement, il peut vite devenir **très lourd**.
+
+* Elle fonctionne mal avec des données de **grande dimension**.
+
+* Elle est très sujette au **sur-apprentissage**.
 
 ### Perceptron
 
