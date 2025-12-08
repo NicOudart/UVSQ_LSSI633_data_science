@@ -239,7 +239,7 @@ On cherchera alors les paramètres $\theta = (\mu,\sigma)$ vérifiant :
 
 $\frac{\partial}{\partial{\theta}} \sum_{k=1}^{n} (-log(\sigma) - log(\sqrt{2 \pi}) - \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
-soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt{2 \pi} - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
+soit $\frac{\partial}{\partial{\theta}} (- n log(\sigma) - n log(\sqrt{2 \pi}) - \sum_{k=1}^{n} \frac{1}{2} (\frac{x - \mu}{\sigma})^2) = 0$
 
 soit pour chaque paramètre :
 
@@ -536,7 +536,7 @@ Le jeu de données d'apprentissage est **stocké en mémoire**, et utilisé au m
 L'idée est la suivante : pour classer un nouvel individu, on va calculer sa **distance aux $k$ individus les plus proches** dans les données d'entrainement.
 On attibura alors à l'individu la classe **la plus représentée** parmi ses $k$ "plus proches voisins".
 
-
+![K plus proches voisins](img/Chap2_kppv.png)
 
 Prédire la classe d'un individu avec cette méthode implique :
 
@@ -555,11 +555,87 @@ On préférera alors un vote avec des **poids différents** suivant les classes.
 
 #### Choix de la distance
 
+Suivant le problème de classification auquel on est confronté, la "distance" entre 2 individus n'a pas le même sens.
+
+En effet, on comprend bien qu'on utilisera pas les mêmes critères pour mesurer la distance entre 2 valeurs réelles, entre 2 images, ou entre 2 mots du dictionnaire.
+
+D'où l'importance lorsqu'on utilise les KPPV de **choisir une mesure de distance pertinente** pour notre problème.
+
+Parmi les mesures de distances classiques, on peut citer :
+
+* **Distance Euclidienne** : 
+
+Si on veut mesurer la distance Euclidienne entre $x$ et $y$, 2 vecteurs de dimension $n$ :
+
+$D(x,y) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}$
+
+Il s'agit de la mesure de distance la plus connue et la plus utilisée.
+Elle fonctionne bien lorsque l'on est confrontés à des valeurs réelles continues, normalisées, et avec une dimensionnalité faible.
+
+Cette distance peut être vue comme la mesure de distance associée à la norme 2.
+
+* **Distance de Manhattan** :
+
+Si on veut mesurer la distance de Manhattan entre $x$ et $y$, 2 vecteurs de dimension $n$ :
+
+$D(x,y) = \sum_{i=1}^{n} \mid x_i - y_i \mid$
+
+Suivant l'espace des features de notre problème, tracer une "ligne droite" entre individus peut ne pas avoir de sens.
+La distance de Manhattan est alors une alternative à la distance Euclidienne.
+
+Cette distance peut être vue comme la mesure de distance associée à la norme 1.
+
+* **Distance de Chebychev** :
+
+Si on veut mesurer la distance de Chebychev entre $x$ et $y$, 2 vecteurs de dimension $n$ :
+
+$D(x,y) = max(\mid x_i - y_i \mid)$
+
+La distance de Chebychev est assez peu utilisée, car elle a des cas d'applications très spécifiques.
+(Par exemple, les déplacements d'un roi sur un jeu d'échec ou les automates cellulaires).
+
+Cette distance peut être vue comme la mesure de distance associée à la norme infinie.
+
+* **Minkowski** :
+
+Si on veut mesurer la distance de Minkowski entre $x$ et $y$, 2 vecteurs de dimension $n$ :
+
+$D(x,y) = (\sum_{i=1}^{n} \mid x_i - y_i \mid^p)^{1/p}$
+
+La distance de Minkowski est une généralisation des 3 distances précédentes.
+En effet, on remarque que si $p=1$ elle revient à la distance de Manhattan, si $p=2$ elle revient à la distance Euclidienne, et si $p$ tend vers l'infini elle revient à la distance de Chebychev.
+
+Elle permet donc de chercher un compromis entre ces différentes distances.
+
+* **Hamming** :
+
+Soit 2 chaines de caractères de même taille. 
+La distance de Hamming entre ces 2 chaines est alors égale au nombre de positions pour lesquelles les caractères sont différents.
+
+Cette mesure de distance est couramment utilisée lorsque l'on veut comparer des morceaux de textes caractère par caractère, ou de manière générale pour des données qualitatives.
+
+* **Similarité cosinus** :
+
+Si on veut mesurer la "similarité cosinus" entre 2 vecteurs $x$ et $y$ :
+
+$D(x,y) = cos(\theta) = \frac{x.y}{\|x\| \|y\|}$
+
+Il s'agit du cosinus de l'angle entre les 2 vecteurs.
+
+Cette mesure de distance est couramment utilisée lorsque l'on doit comparer des vecteurs de haute dimensionnalité, et où la norme du vecteur a peu d'importance.
+Par exemple, c'est la mesure de distance privilégiée pour de la "fouille de texte" (comparaison mot à mot de chaines de caractère).
+
+![](img/.png)
+
+La distance est donc un hyperparamètre à optimiser lorsque l'on utiliser les KPPV.
+
 #### Choix du paramètre K
 
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
+
+#### Remarques
 
 ### Perceptron
 
