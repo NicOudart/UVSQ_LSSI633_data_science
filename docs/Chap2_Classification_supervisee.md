@@ -6,13 +6,15 @@ Ce chapitre est une introduction à la classification supervisée : principe, me
 
 ---
 
-## Problème de classification
-
-### Principe de la classification supervisée
+## Problème de classification supervisée
 
 Comme mentionné lors du Chapitre I, par "**classifier**" on entend associer une réalisation d'une variable **quantitative discrète** ou **qualitative** à un individu (labels), à partir des réalisations d'autres variables (features).
+On appelle ces labels des "**classes**".
 
+On parlera ici de "classification supervisée" car on va entrainer un modèle (aussi appelé "classifieur") à associer une classe à des individus, en se basant sur des données déjà labélisées.
+Il s'agit donc bien d'un **apprentissage supervisé**.
 
+L'idée est que le classifieur soit ensuite capable de **généraliser** : prédire la "classe" d'un nouvel individu.
 
 ### Les différents types de classification
 
@@ -96,9 +98,29 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 
 ## Mesures de performance
 
+Nous allons passer en revue dans cette section les principaux indicateurs de performances applicables à tous les types de classification.
+
 ### Matrice de confusion
 
-### Précision / rappel
+Pour chaque classe $C$ possible, lorsqu'un classifieur réalise une prédiction sur un individu, il y a 4 possibilités :
+
+* Le classifieur a prédit $C$, et l'individu appartient bien à $C$ : c'est un **vrai positif** (noté TP).
+
+* Le classifieur a prédit $C$, et l'individu n'appartient pas à $C$ : c'est un **faux positif** (noté FP).
+
+* Le classifieur n'a pas prédit $C$, et l'individu n'appartient pas à $C$ : c'est un **vrai négatif** (noté TN).
+
+* Le classifieur n'a pas prédit $C$, et l'individu appartient bien à $C$ : c'est un **faux négatif** (noté FN).
+
+Tous les scores de performance pour la classification que nous allons voir se basent sur le nombre de TP, FP, TN, FN obtenus par le modèle sur un jeu d'individus labélisé.
+
+Les indicateurs brutes que sont le nombre de TP, FP, TN et FN sont en général mis sous la forme d'un tableau, que l'on appelle **matrice de confusion**.
+
+
+
+### Exactitude et précision
+
+### Précision-rappel et score F1
 
 ### Courbe ROC
 
@@ -676,7 +698,7 @@ On peut à présent réaliser des prédictions `label_test` à partir de feature
 label_test = knn.predict(feature_test)
 ~~~
 
-Si on veut effectuer un test de notre classifieur sur un jeu de données labéliser, on peut obtenir un score de précision avec la commande :
+Si on veut effectuer un test de notre classifieur sur un jeu de données labéliser, on peut obtenir un score d'exactitude avec la commande :
 
 ~~~
 knn.score(feature_test,label_test)
@@ -753,14 +775,14 @@ knn.fit(df_features_train,df_labels_train)
 Nous pouvons à présent utiliser notre modèle pour classifier des données.
 Tout d'abord, nous allons évaluer les performances de notre modèle en entrainement et en test.
 
-On peut déjà mesurer la précision de notre classifieur sur ces 2 jeux de données :
+On peut déjà mesurer l'exactitude de notre classifieur sur ces 2 jeux de données :
 
 ~~~
 print(knn.score(df_features_train,df_labels_train))
 print(knn.score(df_features_test,df_labels_test))
 ~~~
 
-Pour $k=3$, on obtient environ 99.4% de précision en entrainement, et environ 98.8% de précision en test.
+Pour $k=3$, on obtient environ 99.4% d'exactitude en entrainement, et environ 98.8% d'exactitude en test.
 Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation, mais il nous faut une matrice de confusion complète pour conclure :
 
 ![Exemple de matrice de confusion](img/Chap2_exemple_matrice_confusion_2.png)
