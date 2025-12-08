@@ -70,6 +70,7 @@ Voyons d'abord si une telle classification est possible à partir de ces donnée
 Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :
 
 ~~~
+import pandas as pd
 df_dataset = pd.read_csv(input_path)
 ~~~
 
@@ -79,6 +80,7 @@ Ce type de représentation permet de vérifier la séparabilité des différente
 Voici la commande Seaborn :
 
 ~~~
+import seaborn as sns
 sns.pairplot(df_dataset,hue='instrument')
 ~~~
 
@@ -143,7 +145,7 @@ On va en général chercher à **modéliser** ces densités de probabilité cond
 ![Décision Bayesienne](img/Chap2_decision_bayesienne.png)
 
 **NB :** Il est à noter que rechercher la classe $C_i$ maximisant $p(C_i \mid x)$ **est équivalent** à rechercher $C_i$ maximisant $p(x \mid C_i)p(C_i)$.
-Il n'est donc en théorie pas utile de calculer $p(x)$ pour obtenir le classificateur.
+Il n'est donc en théorie pas utile de calculer $p(x)$ pour obtenir le classifieur.
 Mais il est nécessaire d'avoir $p(x)$ pour obtenir des probabilités d'appartenance à une classe.
 
 **Attention !** En général, il y a des recouvrements entre les différentes densités de probabilité conditionnelle.
@@ -319,7 +321,7 @@ Afin de rendre la visualisation plus facile, nous allons simplifier le problème
 
 Mettons que nous voulons juste effectuer une classification binaire de nos enregistrements, entre les classes "flute" ou "trompette", en utilisant comme unique feature l'amplitude relative de la 1ère harmonique.
 
-Pour ce faire, nous importons le fichier CSV sous la forme d'un DataFrame, et nous sélectionnons les variables et les individus qui nous intéressent :
+Pour ce faire, nous importons le fichier CSV depuis son chemin `input_path` sous la forme d'un DataFrame, et nous sélectionnons les variables et les individus qui nous intéressent :
 
 ~~~
 df_dataset = pd.read_csv(input_path)
@@ -454,7 +456,7 @@ class binary_bayes:
         return proba_bayes_true
 ~~~
 
-On peut alors facilement définir un classificateur binaire "est-ce une flute ?" utilisant la loi normale telle qu'implémentée par Scipy :
+On peut alors facilement définir un classifieur binaire "est-ce une flute ?" utilisant la loi normale telle qu'implémentée par Scipy :
 
 ~~~
 from scipy.stats import norm
@@ -648,7 +650,122 @@ Pour éviter les cas d'égalité, on va en général choisir une valeur de $k$ i
 
 #### Implémentation Scikit-Learn
 
+Il existe une implémentation Scikit-Learn de la méthode des KPPV.
+
+Elle peut être importée avec :
+
+~~~
+from sklearn.neighbors import KNeighborsClassifier
+~~~
+
+On peut ensuite initialiser un classifieur KPPV avec un objet "KNeighborsClassifier" de paramètre `k` correspondant au nombre de plus proches voisins :
+
+~~~
+knn = KNeighborsClassifier(n_neighbors=k)
+~~~
+
+Pour donner le jeu d'entrainement (features avec `feature_train` et labels avec `label_train`) à ce classifieur, on utilise la méthode :
+
+~~~
+knn.fit(feature_train,label_train)
+~~~
+
+On peut à présent réaliser des prédictions `label_test` à partir de features de test `feature_test` :
+
+~~~
+label_test = knn.predict(feature_test)
+~~~
+
+Si on veut effectuer un test de notre classifieur sur un jeu de données labéliser, on peut obtenir un score de précision avec la commande :
+
+~~~
+knn.score(feature_test,label_test)
+~~~
+
+#### Outils de visualisation MLxtend
+
+Pour afficher les frontières de décision données par un classifieur dans un cas 1D ou 2D, il existe une fonction de la bibliothèque "MLxtend".
+
+Une fois la bibliothèque installée, vous pouvez importer la fonction avec :
+
+~~~
+from mlxtend.plotting import plot_decision_regions
+~~~
+
+Pour afficher les frontières de décision d'une classifieur `model`, avec les données d'entrainement `feature_train` et `label_train`, on utilisera la méthode :
+
+~~~
+plot_decision_regions(feature_train, label_train, clf=model)
+~~~
+
+Pour un problème de dimensionnalité plus élevée que 2, la visualisation des frontières de décision est toujours difficile.
+
 #### Application à notre exemple
+
+Nous allons à présent appliquer les KPPV à notre problème exemple.
+
+Afin de rendre la visualisation plus facile, nous allons simplifier le problème :
+
+Mettons que nous voulons effectuer une classification de nos enregistrements entre les classes "flute", "hautbois" ou "trompette", en utilisant en features l'amplitude relative de la 1ère harmonique et de la 2ème harmonique.
+
+Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame, depuis le chemin `input_path` :
+~~~
+df_dataset = pd.read_csv(input_path)
+~~~
+
+Même si en théorie les KPPV n'ont pas besoin de labels numériques pour fonctionner, certaines des fonctions que nous utiliserons dans la suite ne fonctionnent qu'avec des valeurs numériques.
+Nous allons donc encoder les labels "par étiquette" :
+
+~~~
+from sklearn.preprocessing import LabelEncoder
+encoder = LabelEncoder()
+df_dataset['instrument'] = encoder.fit_transform(df_dataset['instrument'])
+~~~
+
+Nous récupérons ensuite les features et les labels que nous allons utiliser dans 2 DataFrames :
+
+~~~
+df_features = df_dataset[['harmo1','harmo2']]
+df_labels = df_dataset['instrument']
+~~~
+
+Nous séparons ensuite nos données en un jeu d'entrainement (80%) et un jeu de test (20%), sous la forme de 4 DataFrames (2 pour les features, 2 pour les labels) : 
+
+~~~
+from sklearn.model_selection import train_test_split
+df_features_train, df_features_test, df_labels_train, df_labels_test = train_test_split(df_features,df_labels,test_size=0.2,random_state=0)
+~~~
+
+Maintenant que les données sont prêtes, nous pouvons créer notre classifieur.
+Voici comment initialiser un classifieur KPPV avec $k=3$ :
+
+~~~
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=3)
+~~~
+
+Pour lui fournir les données d'entrainement, comme vu précédemment, il nous suffit d'utiliser la commande suivante :
+
+~~~
+knn.fit(df_features_train,df_labels_train)
+~~~
+
+Nous pouvons à présent utiliser notre modèle pour classifier des données.
+Tout d'abord, nous allons évaluer les performances de notre modèle en entrainement et en test.
+
+On peut déjà mesurer la précision de notre classifieur sur ces 2 jeux de données :
+
+~~~
+print(knn.score(df_features_train,df_labels_train))
+print(knn.score(df_features_test,df_labels_test))
+~~~
+
+On obtient environ 99.4% de précision en entrainement, et environ 98.8% de précision en test.
+Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation, mais il nous faut une matrice de confusion complète pour conclure.
+
+
+
+![Frontières de décision pour notre exemple](img/Chap2_exemple_KPPV_frontieres_decision.png)
 
 #### Remarques
 
