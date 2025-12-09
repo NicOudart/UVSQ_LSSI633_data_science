@@ -24,7 +24,8 @@ Le type de classification le plus basique, et pour lequel tous les modèles de c
 
 Comme son nom l'indique, l'idée est simplement de résoudre un problème où l'on veut séparer les individus en **2 classes**.
 
-Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles (exexmple : "pile ou face ?"), ou bien de prédire l'appartenance ou la non appartenance à une classe (exemple : "L'oiseau sur la photo est-il un colibri ?").
+Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles, par exexmple : "La pièce sur la photo est-elle côté pile ou face ?".
+Ou alors il peut s'agir de prédire l'appartenance ou la non appartenance à une classe parmi d'autres, par exemple : "L'oiseau sur la photo est-il un colibri ?".
 
 Beaucoup des méthodes et des critères de performances qui sont présentées dans ce cours ont d'abord été définis pour des problèmes binaires, avant d'être généralisés.
 
@@ -32,17 +33,37 @@ Beaucoup des méthodes et des critères de performances qui sont présentées da
 
 Si on veut classer des individus dans **plus de 2 classes**, on va parler de **classification multi-classes**.
 
+Par exemple, "L'animal sur la photo est-il un oiseau ou une chauve-souris" est un problème de classification binaire, alors que "La planète sur la photo est-elle Vénus, la Terre ou Mars ?" est un problème de classification multi-classes.
+
 Or, si toutes les méthodes sont capables de réaliser une classification binaires, toutes ne sont pas capables de réaliser une classification multi-classes.
 
 Pour contourner ce problème, on va ramener ce problème à de **multiples classifications binaires**, avec une stratégie pour choisir la prédiction à retourner :
 
-* **One-versus-all** : 
+* **One-versus-all** : on entraine un classifieur binaire par classe, et la classe prédite pour un individu donné sera celle dont le classifieur aura retourné la probabilité la plus élevée.
 
-* **One-versus-one** :
+* **One-versus-one** : on entraine un classifieur pour chaque couple de classes possible, et la classe prédite est celle qui aura gagné le plus de "duels" parmi les sorties des différents classifieurs.
+
+![](img/.png)
+
+Pour $N$ classes, la stratégie "one-versus-one" implique d'entrainer $N(N-1)/2$ classifieurs, là où la stratégie "one-versus-all" n'a besoin d'en entrainer que $N$.
+Mais chaque modèle est entrainé sur un plus petit jeu de données pour la méthode "one-versus-one" que pour la méthode "one-versus-all"
+
+**Le choix de stratégie dépendra donc de l'application**.
+
+Les méthodes disponibles sous Scikit-Learn font un choix par défaut, mais il est possible de le modifier.
 
 #### Multi-étiquettes
 
-#### Multi-sorties
+Dans les types de classification précédents, on ne pouvait associer qu'une seule classe à un individu.
+
+Cependant, pour certains problèmes il est possible qu'**un individu puisse faire partie de plusieurs classes à la fois**.
+
+Par exemple, si le problème est "Quel instrument joue sur ce morceau ?", et qu'un morceau contient de la bombarde et du biniou, alors le morceau appartient à la fois à la classe "bombarde" et à la classe "biniou".
+
+Certaines méthode implémentées dans Scikit-Learn accèptent une matrices de labels en entrainement au lieu d'un vecteur, et d'autres non.
+Il faut donc vérifier si la méthode que vous voulez utiliser supporte bien la classification multi-étiquettes.
+
+Si un classifieur est multi-étiquettes, et que chaque étiquette est multi-classes, on dira le classifieur "**multi-sorties**".
 
 ### Exemple de problème
 
