@@ -142,7 +142,7 @@ On peut également représenter les résultats d'une classification multi-classe
 
 Voici un exemple pour 5 classes $C_1$, $C_2$, $C_3$, $C_4$ et $C_5$ :
 
-![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_binaire.png)
+![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_multiclasses.png)
 
 On peut alors lire ce tableau d'un point de vue général : la diagonale correspond aux vrais positifs à maximiser.
 Mais on peut aussi le lire du point de vue d'une classe ($C_3$ dans notre illustration), et calculer les nombres de TP, FP, TN et FN correspondant.
