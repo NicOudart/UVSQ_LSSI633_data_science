@@ -140,24 +140,83 @@ Le score d'**exactitude** ("accuracy" en anglais) est le plus classique pour év
 
 |Définition|
 |:-|
-|L'**exactitude** est la ratio du nombre d'individus classés correctement sur le nombre total d'individus classés.|
+|L'**exactitude** : est la taux d'individus classés correctement parmi tous les individus classés.|
 
 Dans le cas d'une classification binaire, il s'agit donc de :
 
 $\frac{TP+TN}{TP+FP+TN+FN}$
+
+![Exactitude](img/Chap2_exactitude.png)
 
 Dans le cas d'une classification multi-classes, il s'agira de la trace de la matrice de confusion divisée par le nombre total d'individus classés.
 
 Si cet indicateur est intuitif et permet de condenser l'information en un score unique, il aura tendance à être biaisé s'il y a un fort déséquilibre entre classes.
 En effet, comme on somme TP et TN, l'exactitude aura tendance à **favoriser la classe majoritaire**.
 
-C'est pourquoi dans un cas déséquilibré, on préfèrera utiliser un duo de scores de performances : précision-rappel ou rappel-sensibilité.
+C'est pourquoi dans un cas déséquilibré, on préfèrera utiliser un duo de scores de performances : précision-rappel ou rappel-fausse alarme.
 
 ### Précision-rappel et score F1
 
+Si la classe considérée est **majoritaire**, ou si pour notre application nous préférons **réduire les faux positifs** quitte à augmenter les faux négatifs, on utilisera plutôt les indicateurs de **précision** et de **rappel**.
 
+|Définitions|
+|:-|
+|- La **précision** : est le taux d'individus attribués correctement à une classe parmi toutes les prédictions de cette classe.|
+|- Le **rappel** ("sensibilité" ou "recall" en anglais) : est le taux d'individus attribués correctement à une classe tous les individus appartenant réellement à cette classe.|
+
+Dans un cas binaire, il s'agit donc de :
+
+* Précision : $\frac{TP}{TP+FP}$
+
+* Rappel : $\frac{TP}{TP+FN}$
+
+![Précision-rappel](img/Chap2_precision_rappel.png)
+
+Ces 2 scores sont **antagonistes** : on doit donc choisir un **compromis** entre les 2 suivant notre application.
+
+Si on veut obtenir un compromis donnant une précision et un rappel similaires, on peut utiliser la moyenne harmonique de ces 2 scores :
+
+$F_1 = \frac{2}{\frac{1}{precision}+\frac{1}{rappel}}$
+
+C'est ce que l'on appelle le **score F1**.
+
+Mais si on veut trouver un compromis donnant une précision et un rappel en particulier, il faut utiliser une **courbe précision-rappel**.
+
+L'idée est de faire varier le seuil de décision pour chaque classe, et d'afficher les compromis entre précision et rappel obtenus pour chaque seuil :
+
+![Courbe précision-rappel](img/Chap2_courbe_precision_rappel.png)
+
+La ligne diagonale correspond à la performance théorique d'un classifieur aléatoire.
 
 ### Courbe ROC
+
+Si la classe considérée est **minoritaire**, ou si pour notre application nous préférons **réduire les faux négatifs** quitte à augmenter les faux positifs, on utilisera plutôt les indicateurs de **rappel** et de **fausse alarme**.
+
+|Définitions|
+|:-|
+|- Le taux de **fausse alarme** : est taux d'individus attribués incorrectement à une classe parmi tous les individus n'appartenant pas à cette classe.|
+
+Pour des raisons historiques, on appelle souvent dans ce contexte le rappel "**taux de vrais positifs**" (TPR) et le taux de fausse alarme "**taux de faux positifs**" (FPR).
+
+Dans un cas binaire, il s'agit donc de :
+
+* TPR : $\frac{TP}{TP+FN}$
+
+* FPR : $\frac{FP}{FP+TN}$
+
+![ROC](img/Chap2_ROC.png)
+
+Ces 2 scores sont également **antagonistes** : on doit donc aussi choisir un **compromis** entre les 2 suivant notre application.
+
+Une fois encore, pour trouver un compromis donnant un TPR et un FPR en particulier, on peut tracer les compromis obtenus pour différents seuils de décision.
+
+On appelle ce type de courbe "Reicever Operating Caracteristic" (ROC) :
+
+![ROC](img/Chap2_ROC.png)
+
+Le nom étrange de cette courbe a une origine historique : elle aurait été inventée durant la 2nde guerre mondiale, dans le cadre de la classification binaire de signaux radar entre "avion ennemi" et "bruit".  
+
+![Courbe ROC](img/Chap2_courbe_ROC.png)
 
 ## Méthodes de base
 
