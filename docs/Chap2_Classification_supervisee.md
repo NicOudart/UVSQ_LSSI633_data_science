@@ -112,15 +112,50 @@ Pour chaque classe $C$ possible, lorsqu'un classifieur réalise une prédiction 
 
 * Le classifieur n'a pas prédit $C$, et l'individu appartient bien à $C$ : c'est un **faux négatif** (noté FN).
 
-Tous les scores de performance pour la classification que nous allons voir se basent sur le nombre de TP, FP, TN, FN obtenus par le modèle sur un jeu d'individus labélisé.
+Tous les scores de performance pour la classification que nous allons voir se basent sur le nombre de TP, FP, TN et FN obtenus par le modèle sur un jeu d'individus labélisé.
 
 Les indicateurs brutes que sont le nombre de TP, FP, TN et FN sont en général mis sous la forme d'un tableau, que l'on appelle **matrice de confusion**.
 
+Voici à quoi ressemble ce tableau pour une seule classe d'un problème multi-classes, ou pour un problème de classification binaire :
 
+![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_binaire.png)
 
-### Exactitude et précision
+On peut également représenter les résultats d'une classification multi-classes pour toutes les classes sous la forme d'une matrice de confusion.
+
+Voici un exemple pour 5 classes $C_1$, $C_2$, $C_3$, $C_4$ et $C_5$ :
+
+![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_binaire.png)
+
+On peut alors lire ce tableau d'un point de vue général : la diagonale correspond aux vrais positifs à maximiser.
+Mais on peut aussi le lire du point de vue d'une classe ($C_3$ dans notre illustration), et calculer les nombres de TP, FP, TN et FN correspondant.
+
+La matrice de confusion est la représentation **la plus exhaustive possible** des performances d'un classifieur, mais elle est **d'autant plus difficile à lire que le nombre de classes est grand**.
+Ceci peut rendre complexe la comparaison entre 2 classifieurs.
+
+Pour cette raison, on va souvent utilisé des scores dérivés du tableau de confusion.
+
+### Exactitude
+
+Le score d'**exactitude** ("accuracy" en anglais) est le plus classique pour évaluer les performances d'un classifieur.
+
+|Définition|
+|:-|
+|L'**exactitude** est la ratio du nombre d'individus classés correctement sur le nombre total d'individus classés.|
+
+Dans le cas d'une classification binaire, il s'agit donc de :
+
+$\frac{TP+TN}{TP+FP+TN+FN}$
+
+Dans le cas d'une classification multi-classes, il s'agira de la trace de la matrice de confusion divisée par le nombre total d'individus classés.
+
+Si cet indicateur est intuitif et permet de condenser l'information en un score unique, il aura tendance à être biaisé s'il y a un fort déséquilibre entre classes.
+En effet, comme on somme TP et TN, l'exactitude aura tendance à **favoriser la classe majoritaire**.
+
+C'est pourquoi dans un cas déséquilibré, on préfèrera utiliser un duo de scores de performances : précision-rappel ou rappel-sensibilité.
 
 ### Précision-rappel et score F1
+
+
 
 ### Courbe ROC
 
@@ -783,7 +818,12 @@ print(knn.score(df_features_test,df_labels_test))
 ~~~
 
 Pour $k=3$, on obtient environ 99.4% d'exactitude en entrainement, et environ 98.8% d'exactitude en test.
-Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation, mais il nous faut une matrice de confusion complète pour conclure :
+
+Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation. 
+Mais n'oublions pas que l'exactitude peut être biaisée en cas de déséquilibre entre classes.
+Dans de tels cas, d'autres indicateurs doivent être utilisés.
+
+Voici une matrice de confusion complète pour nous aider à conclure :
 
 ![Exemple de matrice de confusion](img/Chap2_exemple_matrice_confusion_2.png)
 
@@ -832,14 +872,16 @@ Mais cette méthode a aussi les **limites** suivantes :
 
 * Elle est très sujette au **sur-apprentissage**.
 
-### Perceptron
+### Perceptron multicouche
 
-#### Neurone artificiel
+#### Perceptron : un neurone artificiel
+
+#### Perceptron multicouches : un réseau de neurones artificiels
 
 #### Apprentissage et descente de gradient
-
-#### Réseau de neurones
 
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
+
+#### Pour aller plus loin
