@@ -20,7 +20,25 @@ L'idée est que le classifieur soit ensuite capable de **généraliser** : préd
 
 #### Binaire
 
+Le type de classification le plus basique, et pour lequel tous les modèles de classification peuvent être entrainés, est la **classification binaire**.
+
+Comme son nom l'indique, l'idée est simplement de résoudre un problème où l'on veut séparer les individus en **2 classes**.
+
+Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles (exexmple : "pile ou face ?"), ou bien de prédire l'appartenance ou la non appartenance à une classe (exemple : "L'oiseau sur la photo est-il un colibri ?").
+
+Beaucoup des méthodes et des critères de performances qui sont présentées dans ce cours ont d'abord été définis pour des problèmes binaires, avant d'être généralisés.
+
 #### Multi-classes
+
+Si on veut classer des individus dans **plus de 2 classes**, on va parler de **classification multi-classes**.
+
+Or, si toutes les méthodes sont capables de réaliser une classification binaires, toutes ne sont pas capables de réaliser une classification multi-classes.
+
+Pour contourner ce problème, on va ramener ce problème à de **multiples classifications binaires**, avec une stratégie pour choisir la prédiction à retourner :
+
+* **One-versus-all** : 
+
+* **One-versus-one** :
 
 #### Multi-étiquettes
 
