@@ -18,14 +18,18 @@ L'idée est que le classifieur soit ensuite capable de **généraliser** : préd
 
 ### Les différents types de classification
 
+Plutôt que de parler de "la" classification, on devrait par "des" classifications, car il existe plusieurs types de problèmes de classification.
+
+Nous allons donc commencer par parler des différents types de classification, en illustrant avec un exemple : reconnaitre sur une photo un instrument de musique breton.
+
 #### Binaire
 
 Le type de classification le plus basique, et pour lequel tous les modèles de classification peuvent être entrainés, est la **classification binaire**.
 
 Comme son nom l'indique, l'idée est simplement de résoudre un problème où l'on veut séparer les individus en **2 classes**.
 
-Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles, par exexmple : "La pièce sur la photo est-elle côté pile ou face ?".
-Ou alors il peut s'agir de prédire l'appartenance ou la non appartenance à une classe parmi d'autres, par exemple : "L'oiseau sur la photo est-il un colibri ?".
+Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles, par exexmple : "L'instrument sur la photo est-il une bombarde ou un biniou ?".
+Ou alors il peut s'agir de prédire l'appartenance ou la non appartenance à une classe parmi d'autres, par exemple : "L'instrument sur la photo est-il une bombarde ou un autre instrument ?".
 
 Beaucoup des méthodes et des critères de performances qui sont présentées dans ce cours ont d'abord été définis pour des problèmes binaires, avant d'être généralisés.
 
@@ -33,7 +37,7 @@ Beaucoup des méthodes et des critères de performances qui sont présentées da
 
 Si on veut classer des individus dans **plus de 2 classes**, on va parler de **classification multi-classes**.
 
-Par exemple, "L'animal sur la photo est-il un oiseau ou une chauve-souris" est un problème de classification binaire, alors que "La planète sur la photo est-elle Vénus, la Terre ou Mars ?" est un problème de classification multi-classes.
+Par exemple, "L'instrument sur la photo est-il une bombarde ou un biniou" est un problème de classification binaire, alors que "L'instrument sur la photo est-il une bombarde, un biniou ou un tambour ?" est un problème de classification multi-classes.
 
 Or, si toutes les méthodes sont capables de réaliser une classification binaires, toutes ne sont pas capables de réaliser une classification multi-classes.
 
@@ -58,7 +62,7 @@ Dans les types de classification précédents, on ne pouvait associer qu'une seu
 
 Cependant, pour certains problèmes il est possible qu'**un individu puisse faire partie de plusieurs classes à la fois**.
 
-Par exemple, si le problème est "Quel instrument joue sur ce morceau ?", et qu'un morceau contient de la bombarde et du biniou, alors le morceau appartient à la fois à la classe "bombarde" et à la classe "biniou".
+Par exemple, si le problème est "Quel instrument est sur cette photo ?", et que la photo contient une bombarde et un biniou, alors le morceau appartient à la fois à la classe "bombarde" et à la classe "biniou".
 
 Certaines méthode implémentées dans Scikit-Learn accèptent une matrices de labels en entrainement au lieu d'un vecteur, et d'autres non.
 Il faut donc vérifier si la méthode que vous voulez utiliser supporte bien la classification multi-étiquettes.
