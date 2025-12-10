@@ -33,6 +33,12 @@ Ou alors il peut s'agir de prédire l'appartenance ou la non appartenance à une
 
 Beaucoup des méthodes et des critères de performances qui sont présentées dans ce cours ont d'abord été définis pour des problèmes binaires, avant d'être généralisés.
 
+|Nota Bene :|
+|:-|
+|En général, un classifieur binaire ne retourne pas directement une prédiction de la classe de l'individu, mais une **probabilité d'appartenance à la classe** : un score entre 0 et 1.|
+|Il faut alors placer un **seuil** sur cette probabilité pour choisir si l'individu appartient à la classe ou non (souvent 0.5 par défaut).|
+|Les implémentations Scikit-Learn des méthodes de classification peuvent souvent retourner soit directement la classe prédite, soit la probabilité d'appartenance à la classe.|
+
 #### Multi-classes
 
 Si on veut classer des individus dans **plus de 2 classes**, on va parler de **classification multi-classes**.
@@ -43,11 +49,13 @@ Or, si toutes les méthodes sont capables de réaliser une classification binair
 
 Pour contourner ce problème, on va ramener ce problème à de **multiples classifications binaires**, avec une stratégie pour choisir la prédiction à retourner :
 
-* **One-versus-all** : on entraine un classifieur binaire par classe, et la classe prédite pour un individu donné sera celle dont le classifieur aura retourné la probabilité la plus élevée.
+* **One-versus-All** : on entraine un classifieur binaire par classe, et la classe prédite pour un individu donné sera celle dont le classifieur aura retourné la probabilité la plus élevée.
 
-* **One-versus-one** : on entraine un classifieur pour chaque couple de classes possible, et la classe prédite est celle qui aura gagné le plus de "duels" parmi les sorties des différents classifieurs.
+![One-versus-All](img/Chap2_One_vs_All.png)
 
-![](img/.png)
+* **One-versus-One** : on entraine un classifieur pour chaque couple de classes possible, et la classe prédite est celle qui aura gagné le plus de "duels" parmi les sorties des différents classifieurs.
+
+![One-versus-One](img/Chap2_One_vs_One.png)
 
 Pour $N$ classes, la stratégie "one-versus-one" implique d'entrainer $N(N-1)/2$ classifieurs, là où la stratégie "one-versus-all" n'a besoin d'en entrainer que $N$.
 Mais chaque modèle est entrainé sur un plus petit jeu de données pour la méthode "one-versus-one" que pour la méthode "one-versus-all"
@@ -64,7 +72,7 @@ Cependant, pour certains problèmes il est possible qu'**un individu puisse fair
 
 Par exemple, si le problème est "Quel instrument est sur cette photo ?", et que la photo contient une bombarde et un biniou, alors le morceau appartient à la fois à la classe "bombarde" et à la classe "biniou".
 
-Certaines méthode implémentées dans Scikit-Learn accèptent une matrices de labels en entrainement au lieu d'un vecteur, et d'autres non.
+Certaines méthodes implémentées dans Scikit-Learn accèptent une matrices de labels en entrainement au lieu d'un vecteur, et d'autres non.
 Il faut donc vérifier si la méthode que vous voulez utiliser supporte bien la classification multi-étiquettes.
 
 Si un classifieur est multi-étiquettes, et que chaque étiquette est multi-classes, on dira le classifieur "**multi-sorties**".
