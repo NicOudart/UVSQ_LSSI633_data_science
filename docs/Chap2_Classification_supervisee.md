@@ -987,11 +987,29 @@ Mais cette méthode a aussi les **limites** suivantes :
 
 ### Perceptron multicouche
 
+La méthode de classification que nous allons voir à présent est une ouverture vers les **réseaux de neurones artificiels**, et la discipline qui leur est associée : l'**apprentissag profond** (ou "Deep Learning" en anglais).
+
 #### Perceptron : un neurone artificiel
+
+Lorsque l'on parle d'apprentissage pour un humain, on pense tout de suite à son cerveau, et plus particulièrement à ses **neurones**.
+
+Un neurone est en effet une **machine à apprendre** : 
+
+Il prend plusieurs signaux électriques en entrée, donne plus ou moins d'importance à chacun, et transmet ou non un signal électrique en sortie en fonction de ces entrées pondérées avec un seuil.
+Le neurone apprendra les poids à donner à chaque entrée pour fournir une sortie pertinente pour une application.
+
+D'où l'idée séduisante de s'inspirer des neurones pour l'apprentissage automatique.
+
+Le 1er modèle mathématique d'un neurone, appelé "neurone formel" ou "neurone artificiel", est proposé par McCulloch et Pitts en 1943.
+Dans le cadre de l'apprentissage automatique, il est plus connu sous le nom de "**perceptron**".
+
+Voici son principe :
+
+![Perceptron](img/Chap2_perceptron.png)
 
 #### Perceptron multicouches : un réseau de neurones artificiels
 
-#### Apprentissage et descente de gradient
+#### Retropropagation du gradient
 
 #### Implémentation Scikit-Learn
 
