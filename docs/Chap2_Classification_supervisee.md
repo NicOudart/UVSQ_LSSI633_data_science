@@ -31,6 +31,8 @@ Comme son nom l'indique, l'idée est simplement de résoudre un problème où l'
 Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles, par exexmple : "L'instrument sur la photo est-il une bombarde ou un biniou ?".
 Ou alors il peut s'agir de prédire l'appartenance ou la non appartenance à une classe parmi d'autres, par exemple : "L'instrument sur la photo est-il une bombarde ou un autre instrument ?".
 
+![Classification binaire](img/Chap2_classification_binaire.png)
+
 Beaucoup des méthodes et des critères de performances qui sont présentées dans ce cours ont d'abord été définis pour des problèmes binaires, avant d'être généralisés.
 
 |Nota Bene :|
