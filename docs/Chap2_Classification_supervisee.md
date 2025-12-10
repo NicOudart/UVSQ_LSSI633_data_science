@@ -60,12 +60,12 @@ Pour contourner ce problème, on va ramener ce problème à de **multiples class
 
 ![One-versus-One](img/Chap2_One_vs_One.png)
 
-Pour $N$ classes, la stratégie "one-versus-one" implique d'entrainer $N(N-1)/2$ classifieurs, là où la stratégie "one-versus-all" n'a besoin d'en entrainer que $N$.
+Pour $N$ classes, la stratégie "One-versus-One" implique d'entrainer $N(N-1)/2$ classifieurs, là où la stratégie "One-versus-All" n'a besoin d'en entrainer que $N$.
 Mais chaque modèle est entrainé sur un plus petit jeu de données pour la méthode "one-versus-one" que pour la méthode "one-versus-all"
 
 **Le choix de stratégie dépendra donc de l'application**.
 
-Les méthodes disponibles sous Scikit-Learn font un choix par défaut, mais il est possible de le modifier.
+Les méthodes disponibles sous Scikit-Learn choisissent une stratégie par défaut, mais il est possible de la modifier.
 
 #### Multi-étiquettes
 
