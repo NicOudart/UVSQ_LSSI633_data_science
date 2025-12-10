@@ -28,7 +28,7 @@ Le type de classification le plus basique, et pour lequel tous les modèles de c
 
 Comme son nom l'indique, l'idée est simplement de résoudre un problème où l'on veut séparer les individus en **2 classes**.
 
-Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles, par exexmple : "L'instrument sur la photo est-il une bombarde ou un biniou ?".
+Il peut s'agir de prédire l'appartenance à 2 classes exclusives dans un cas où il n'y a que 2 labels possibles, par exemple : "L'instrument sur la photo est-il une bombarde ou un biniou ?".
 Ou alors il peut s'agir de prédire l'appartenance ou la non appartenance à une classe parmi d'autres, par exemple : "L'instrument sur la photo est-il une bombarde ou un autre instrument ?".
 
 ![Classification binaire](img/Chap2_classification_binaire.png)
@@ -39,6 +39,7 @@ Beaucoup des méthodes et des critères de performances qui sont présentées da
 |:-|
 |En général, un classifieur binaire ne retourne pas directement une prédiction de la classe de l'individu, mais une **probabilité d'appartenance à la classe** : un score entre 0 et 1.|
 |Il faut alors placer un **seuil** sur cette probabilité pour choisir si l'individu appartient à la classe ou non (souvent 0.5 par défaut).|
+|On appelle ce seuil **frontière de décision**.|
 |Les implémentations Scikit-Learn des méthodes de classification peuvent souvent retourner soit directement la classe prédite, soit la probabilité d'appartenance à la classe.|
 
 #### Multi-classes
