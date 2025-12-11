@@ -1030,19 +1030,39 @@ On utilisera le processus d'entrainement suivant :
 
 * On répète les 2 étapes précédentes jusqu'à convergence.
 
-Reste alors à choisir **comment mettre à jour les paramètres** du modèle en fonction des erreurs commises sur le jeu d'entrainement.
-
-
-
 On appelle la fonction apprise $f(x_1,x_2,...,x_p) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_p x_p$ la **fonction discriminante**.
 
 Comme cette fonction est linéaire, le modèle ne pourra établir que des **frontières de décision linéaires** (une droite en 1D, un plan en 2D, un hyperplan dans le cas général).
 Nous verrons que ceci est assez limitant en pratique.
 
-Aussi, suivant l'application on peut vouloir en sortie un score qui estime la **probabilité d'appartenance** à la classe plutôt qu'un booléen.
-Dans ces cas-là, on va remplacer le seuil en sortie par une autre **fonction d'activation**.
+Il reste à choisir une méthode pour **mettre à jour les paramètres** du modèle à partir des erreurs de prédiction.
 
-Il existe de nombreuses fonctions d'activation 
+On aimerait bien pouvoir utiliser la méthode de **descente de gradient** vue lors du Chapitre 1, mais elle **nécessite une fonction de coût différentiable**, impossible à obtenir avec un seuil.
+
+Aussi, suivant l'application on peut vouloir en sortie un score qui estime la **probabilité d'appartenance** à la classe plutôt qu'un simple booléen comme retourne notre seuil.
+
+C'est pourquoi dans la version moderne du perceptron, on va remplacer le seuil en sortie par une autre **fonction d'activation**.
+
+Bien qu'il existe de nombreuses fonctions d'activation, nos ne verrons dans ce chapitre que la **sigmoïde**, définie par :
+
+$g(u) = \frac{1}{1+e^{-1}}$
+
+![](img/.png)
+
+Cette fonction est intéressante pour 2 raisons : elle est différentiable, et elle varie entre 0 et 1.
+On peut donc utiliser la méthode de la descente de gradient avec, et elle nous fournira un score entre 0 et 1 en sortie.
+
+|Nota Bene|
+|:-|
+|Comme nous l'avons expliqué précédemment, on peut réaliser de la classification multi-classes à partir de plusieurs classifieurs binaires, avec une stratégie One-versus-All ou One-Versus-One.|
+|Pour un perceptron, il suffira donc d'utiliser **plusieurs neurones en parallèle** avec les mêmes entrées.|
+
+#### Descente de gradient stochastique
+
+Nous avons dit que pour mettre à jour les paramètres du modèle pendant l'apprentissage, nous allons utilise la méthode de la descente de gradient.
+Mais comment s'implémente-t-elle exactement ?
+
+Tout d'abord, il nous faut une mesure de l'erreur entre les prédictions et la réalité.
 
 
 
