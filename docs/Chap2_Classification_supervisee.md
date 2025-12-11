@@ -998,7 +998,8 @@ Un neurone est en effet une **machine à apprendre** :
 Il prend plusieurs signaux électriques en entrée, donne plus ou moins d'importance à chacun, et transmet ou non un signal électrique en sortie en fonction de ces entrées pondérées avec un seuil.
 Le neurone apprendra les poids à donner à chaque entrée pour fournir une sortie pertinente pour une application.
 
-D'où l'idée séduisante de s'inspirer des neurones pour l'apprentissage automatique.
+Un neurone se comporte donc comme un **classifieur binaire**.
+D'où l'idée séduisante de s'inspirer des neurones pour l'apprentissage de ce type de modèle.
 
 Le 1er modèle mathématique d'un neurone, appelé "neurone formel" ou "neurone artificiel", est proposé par McCulloch et Pitts en 1943.
 Dans le cadre de l'apprentissage automatique, il est plus connu sous le nom de "**perceptron**".
@@ -1006,6 +1007,44 @@ Dans le cadre de l'apprentissage automatique, il est plus connu sous le nom de "
 Voici son principe :
 
 ![Perceptron](img/Chap2_perceptron.png)
+
+* Les $p$ réalisations de nos $p$ features correspondant à un individu sont fournies comme $p$ **entrées** à notre neurone.
+Une entrée supplémentaire toujours fixée à 1 sera également fournie, on la nommera "**biais**".
+
+* On applique à chaque entrée $x_i$ un coefficient $w_i$.
+C'est ce que l'on appellera les **paramètres** du modèle.
+
+* Toutes les entrées $x_i$ pondérées par $w_i$ sont **sommées**, donnant la combinaison **linéaire** $w_0 + w_1 x_1 + w_2 x_2 + ... + w_p x_p$.
+
+* Un **seuil** est finalement appliqué à cette somme : suivant si elle dépasse ou non une certaine valeur, la **sortie** sera 0 ou 1.
+
+L'apprentissage de ce modèle consistera en l'**optimisation des paramètres**, afin qu'à partir des features il soit capable d'associer ou non l'individu à une classe (0 ou 1 en sortie).
+
+On utilisera le processus d'entrainement suivant :
+
+* On initialise les paramètres aléatoirement.
+
+* On fait passer un à un les individus du jeu d'entrainement à travers le modèle.
+
+* Pour chaque individu on compare la sortie du modèle à celle attendue, et on met à jour les paramètres en conséquence.
+
+* On répète les 2 étapes précédentes jusqu'à convergence.
+
+Reste alors à choisir **comment mettre à jour les paramètres** du modèle en fonction des erreurs commises sur le jeu d'entrainement.
+
+
+
+On appelle la fonction apprise $f(x_1,x_2,...,x_p) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_p x_p$ la **fonction discriminante**.
+
+Comme cette fonction est linéaire, le modèle ne pourra établir que des **frontières de décision linéaires** (une droite en 1D, un plan en 2D, un hyperplan dans le cas général).
+Nous verrons que ceci est assez limitant en pratique.
+
+Aussi, suivant l'application on peut vouloir en sortie un score qui estime la **probabilité d'appartenance** à la classe plutôt qu'un booléen.
+Dans ces cas-là, on va remplacer le seuil en sortie par une autre **fonction d'activation**.
+
+Il existe de nombreuses fonctions d'activation 
+
+
 
 #### Perceptron multicouches : un réseau de neurones artificiels
 
