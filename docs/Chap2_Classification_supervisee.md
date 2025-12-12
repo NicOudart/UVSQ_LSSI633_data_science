@@ -1047,7 +1047,7 @@ Pour pouvoir entrainer un perceptron, il reste à choisir une méthode pour **me
 La "règle d'apprentissage du perceptron" proposée par Rosenblatt est la suivante.
 A l'itération $n$, pour le $i$-ème paramètre, on applique :
 
-$w_i^{(n+1)} = w_i^{(n+1)} - \gamma (y^{n}-\hat{y^{(n)}})$
+$w_i^{(n+1)} = w_i^{(n)} - \gamma (y^{(n)}-\hat{y}^{(n)})$
 
 avec $y$ la sortie attendue, et $\hat{y}$ la prédiction.
 
@@ -1069,17 +1069,18 @@ Mais il n'est applicable en pratique que pour les problèmes linéairement sépa
 C'est pourquoi dans les années 1960, a émergé l'idée de relier plusieurs perceptron en sens direct.
 On appellera ce type de **réseau de neurones** un **perceptron multicouche** (PMC).
 
-L'idée est la suivante : si une combinaison linéaire ne peut produire que des frontières de décisions linéaires, mais **une combinaison de séparateurs linéaires peut donner un séparateur non-linéaire**. 
+L'idée est la suivante : si une combinaison linéaire avec un seuil ne peut produire que des frontières de décisions linéaires, une combinaison de séparateurs linéaires avec chacun un seuil peut donner un **séparateur non-linéaire**. 
 
-Le PMC le plus basique possède 3 couches totalement connectées :
+Le PMC le plus basique possède **3 couches** totalement connectées :
 
 ![Perceptron multicouche](img/Chap2_perceptron_multicouche.png)
 
-* La **couche d'entrée** : 
+* La **couche d'entrée** : il s'agit simplement des différentes features d'entrée du modèle.
 
-* La **couche cachée** :
+* La **couche cachée** : une couche de neurones (perceptrons), chacun ayant ses paramètres, son biais, son seuil.
+Elle est "cachée" car ses sorties sont invisibles pour l'utilisateur.
 
-* La **couche de sortie** :
+* La **couche de sortie** : une couche de neurone en fin de réseau, chacun ayant ses paramètres, son biais, son seuil, qui va renvoyer la sortie du modèle pour chaque classe.
 
 On peut ajouter plusieurs couches cachées entre les couches d'entrée et de sortie : plus on aura de couches, et plus complexes les frontières de décisions pourront être.
 Dès que l'on a plus d'une couche cachée, on parle d'**apprentissage profond** ("Deep Learning").
@@ -1093,10 +1094,81 @@ La méthode qu'ils ont proposée pour entrainer un PMC, encore utilisée aujourd
 
 #### Retropropagation du gradient
 
+Voici le principe sur lequel fonctionne l'algorithme de la propagation du gradient :
+
+|Algorithme de retropropagation du gradient|
+|:-|
+|Les paramètres du modèle sont initialisés aléatoirement.|
+|A chaque itération (époque) de l'algorithme :|
+|- Un échantillon d'individus est sélectionné.|
+|- **Passage direct** : cet échantillon est fourni en entrée du modèle, et la sortie est récupérée.|
+|- Une **fonction de coût** est utilisée pour évaluer l'erreur entre la sortie du modèle et ce qui était attendu.|
+|- **Passage inverse** : le gradient de l'erreur associée à chaque paramètre est calculé en évaluant la contribution de chaque paramètre à l'erreur, en allant de la sortie vers l'entrée.|
+|- Ces gradients sont fournis à l'algorithme de **descente de gradient** (voir Chapitre 1), qui va mettre à jour les paramètres du modèle.|
+
+On en déduit que plus le nombre de couches cachée et de neurones par couche cachée sera élevé, plus l'apprentissage sera long.
+Aussi, un nombre de couches trop élevé peut rendre difficile l'apprentissage des couches les plus en amont : un phénomène connu sous le nom de "problème de la disparition du grandient".
+
+Pour que cet algorithme fonctionne avec le PMC, il a fallu modifier la fonction de sortie des neurones.
+
+En effet, la fonction "seuil" ne permet pas de calculer un gradient : elle a un problème de différentiabilité, et une pente nulle partout sauf en un point.
+
+C'est pourquoi d'autres "**fonctions d'activation**" sont utilisées en sortie des neurones d'un PMC.
+
+On peut citer les 3 plus utilisées :
+
+* **Sigmoïde** : $g(u) = \frac{1}{1+exp(-u)}$
+
+Il s'agit de la fonction historique, directement inspirée de la fonction d'activation d'un neurone biologique.
+Elle a l'avantage d'être continue et à dérivée non nulle partout.
+Elle retourne un score entre 0 et 1.
+
+* **Tangente hyperbolique** : $g(u) = tanh(u)$
+
+Tout comme la sigmoïde, elle a une forme proche de la fonction d'activation d'un neurone biologique.
+Elle est également continue et à dérivée non nulle partout.
+Elle retourne un score entre -1 et 1.
+
+* **ReLU** : $g(u) = max(0,u)$
+Très utilisée depuis les années 2010, cette fonction n'a aucune inspiration biologique.
+Elle a un problème de dérivabilité en 0, et elle ne retourne pas un score borné.
+Par contre, elle permet de lutter contre les problème de "disparition du gradient".
+
+Lorsque l'on veut résoudre un problème de classification multi-classe (mais pas multi-sorties) avec un PMC, au lieu d'une approche One-versus-All ou One-versus-One, on peut utiliser la fonction d'activation suivante :
+
+* **Softmax** : pour chaque neurone de sortie $i$ on calcule $g(y_i) = \frac{e^{y_i}}{\sum_{i=1}^{n} y_i}$ et on retient la classe correspondant à la sortie maximisant cette fonction.
+
+L'idée est que cette fonction prend en entrée les scores renvoyés par chaque neurone de sortie, et les transforme en probabilité d'appartenance à chaque classe (la somme donnant 1).
+
+|Nota Bene|
+|:-|
+|Pour que l'apprentissage d'un perceptron ou d'un PMC se déroule correctement, il est recommandé d'effectuer une **transformation des données** (voir Chapitre 1), afin d'éviter que le modèle donne artificiellement plus de poids à une feature juste parce qu'elle varie sur une plus grande plage de valeurs.|
+
 #### Choix des hyperparamètres
+
+Une des difficulté de l'apprentissage d'un PMC est le nombre élevé d'hyperparamètres à optimiser.
+
+On peut citer :
+
+* Le nombre de couches cachées.
+
+* Le nombre de neurones par couche cachée.
+
+* La fenêtre d'activation pour les couches cachées.
+
+* La fenêtre d'activation pour la couche de sortie.
+
+* Le taux d'apprentissage pour la descente de gradient.
+
+* Le nombre d'époques d'apprentissage.
+
+De plus, l'initialisation des paramètre du modèle se faisant de manière aléatoire, 2 apprentissages ne donneront pas le même modèle.
+Il convient donc de tester plusieurs initialisations.
+
+
 
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
 
-#### Pour aller plus loin
+#### Remarques
