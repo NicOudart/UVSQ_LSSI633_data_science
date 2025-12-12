@@ -1045,9 +1045,9 @@ Voici un exemple de $n$ perceptrons $N$ en parallèle pour $n$ classes :
 Pour pouvoir entrainer un perceptron, il reste à choisir une méthode pour **mettre à jour les paramètres** du modèle à partir des erreurs de prédiction.
 
 La "règle d'apprentissage du perceptron" proposée par Rosenblatt est la suivante.
-A l'itération $n$, pour le $i$-ème paramètre, on applique :
+A l'itération $k$, pour le $i$-ème paramètre, on applique :
 
-$w_i^{(n+1)} = w_i^{(n)} - \gamma (y^{(n)}-\hat{y}^{(n)})$
+$w_i^{(k+1)} = w_i^{(k)} - \gamma (y^{(k)}-\hat{y}^{(k)})$
 
 avec $y$ la sortie attendue, et $\hat{y}$ la prédiction.
 
@@ -1136,7 +1136,7 @@ Par contre, elle permet de lutter contre les problème de "disparition du gradie
 
 Lorsque l'on veut résoudre un problème de classification multi-classe (mais pas multi-sorties) avec un PMC, au lieu d'une approche One-versus-All ou One-versus-One, on peut utiliser la fonction d'activation suivante :
 
-* **Softmax** : pour chaque neurone de sortie $i$ on calcule $g(y_i) = \frac{e^{y_i}}{\sum_{i=1}^{n} y_i}$ et on retient la classe correspondant à la sortie maximisant cette fonction.
+* **Softmax** : pour chaque neurone de sortie $i$ on calcule $g(y_i) = \frac{e^{y_i}}{\sum_{j=1}^{n} e^{y_j}}$ et on retient la classe correspondant à la sortie maximisant cette fonction.
 
 L'idée est que cette fonction prend en entrée les scores renvoyés par chaque neurone de sortie, et les transforme en probabilité d'appartenance à chaque classe (la somme donnant 1).
 
