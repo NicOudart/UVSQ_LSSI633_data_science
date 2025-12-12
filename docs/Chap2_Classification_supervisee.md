@@ -42,13 +42,13 @@ Beaucoup des méthodes et des critères de performances qui sont présentées da
 |On appelle ce seuil **frontière de décision**.|
 |Les implémentations Scikit-Learn des méthodes de classification peuvent souvent retourner soit directement la classe prédite, soit la probabilité d'appartenance à la classe.|
 
-#### Multi-classes
+#### Multi-classe
 
-Si on veut classer des individus dans **plus de 2 classes**, on va parler de **classification multi-classes**.
+Si on veut classer des individus dans **plus de 2 classes**, on va parler de **classification multi-classe**.
 
-Par exemple, "L'instrument sur la photo est-il une bombarde ou un biniou" est un problème de classification binaire, alors que "L'instrument sur la photo est-il une bombarde, un biniou ou un tambour ?" est un problème de classification multi-classes.
+Par exemple, "L'instrument sur la photo est-il une bombarde ou un biniou" est un problème de classification binaire, alors que "L'instrument sur la photo est-il une bombarde, un biniou ou un tambour ?" est un problème de classification multi-classe.
 
-Or, si toutes les méthodes sont capables de réaliser une classification binaires, toutes ne sont pas capables de réaliser une classification multi-classes.
+Or, si toutes les méthodes sont capables de réaliser une classification binaires, toutes ne sont pas capables de réaliser une classification multi-classe.
 
 Pour contourner ce problème, on va ramener ce problème à de **multiples classifications binaires**, avec une stratégie pour choisir la prédiction à retourner :
 
@@ -78,7 +78,7 @@ Par exemple, si le problème est "Quel instrument est sur cette photo ?", et que
 Certaines méthodes implémentées dans Scikit-Learn accèptent une matrices de labels en entrainement au lieu d'un vecteur, et d'autres non.
 Il faut donc vérifier si la méthode que vous voulez utiliser supporte bien la classification multi-étiquettes.
 
-Si un classifieur est multi-étiquettes, et que chaque étiquette est multi-classes, on dira le classifieur "**multi-sorties**".
+Si un classifieur est multi-étiquettes, et que chaque étiquette est multi-classe, on dira le classifieur "**multi-sorties**".
 
 ### Exemple de problème
 
@@ -170,15 +170,15 @@ Tous les scores de performance pour la classification que nous allons voir se ba
 
 Les indicateurs brutes que sont le nombre de TP, FP, TN et FN sont en général mis sous la forme d'un tableau, que l'on appelle **matrice de confusion**.
 
-Voici à quoi ressemble ce tableau pour une seule classe d'un problème multi-classes, ou pour un problème de classification binaire :
+Voici à quoi ressemble ce tableau pour une seule classe d'un problème multi-classe, ou pour un problème de classification binaire :
 
 ![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_binaire.png)
 
-On peut également représenter les résultats d'une classification multi-classes pour toutes les classes sous la forme d'une matrice de confusion.
+On peut également représenter les résultats d'une classification multi-classe pour toutes les classes sous la forme d'une matrice de confusion.
 
 Voici un exemple pour 5 classes $C_1$, $C_2$, $C_3$, $C_4$ et $C_5$ :
 
-![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_multiclasses.png)
+![Matrice de confusion binaire](img/Chap2_matrice_de_confusion_multiclasse.png)
 
 On peut alors lire ce tableau d'un point de vue général : la diagonale correspond aux vrais positifs à maximiser.
 Mais on peut aussi le lire du point de vue d'une classe ($C_3$ dans notre illustration), et calculer les nombres de TP, FP, TN et FN correspondant.
@@ -202,7 +202,7 @@ $\frac{TP+TN}{TP+FP+TN+FN}$
 
 ![Exactitude](img/Chap2_exactitude.png)
 
-Dans le cas d'une classification multi-classes, il s'agira de la trace de la matrice de confusion divisée par le nombre total d'individus classés.
+Dans le cas d'une classification multi-classe, il s'agira de la trace de la matrice de confusion divisée par le nombre total d'individus classés.
 
 Si cet indicateur est intuitif et permet de condenser l'information en un score unique, il aura tendance à être biaisé s'il y a un fort déséquilibre entre classes.
 En effet, comme on somme TP et TN, l'exactitude aura tendance à **favoriser la classe majoritaire**.
@@ -397,7 +397,7 @@ L'idée est donc de rechercher les $\theta$ maximisant $L(x_1,x_2,...,x_n,\theta
 
 Souvent, pour simplifier les calculs, on ne va pas rechercher le maximum de la vraisemblance, mais de la log-vraisemblance :
 
-$logL(x_1,x_2,...,x_n,\theta) = \sum_{k=1}^{n} log(f(x_k,\theta))$
+$log(L(x_1,x_2,...,x_n,\theta)) = \sum_{k=1}^{n} log(f(x_k,\theta))$
 
 En effet, rechercher les paramètres $\theta$ maximisant $L$ ou $logL$ est équivalent, et rechercher un maximum implique un calcul de dérivée, ce qui est plus simple pour des sommes que pour des produits.
 
@@ -1002,9 +1002,9 @@ Un neurone se comporte donc comme un **classifieur binaire**.
 D'où l'idée séduisante de s'inspirer des neurones pour l'apprentissage de ce type de modèle.
 
 Le 1er modèle mathématique d'un neurone, appelé "neurone formel" ou "neurone artificiel", est proposé par McCulloch et Pitts en 1943.
-Dans le cadre de l'apprentissage automatique, il est plus connu sous le nom de "**perceptron**".
+Dans le cadre de l'apprentissage automatique, il est plus connu sous le nom de "**perceptron**", concept inventé par Rosenblatt en 1957.
 
-Voici son principe :
+Voici le principe du perceptron "historique" de 1957 :
 
 ![Perceptron](img/Chap2_perceptron.png)
 
@@ -1016,7 +1016,7 @@ C'est ce que l'on appellera les **paramètres** du modèle.
 
 * Toutes les entrées $x_i$ pondérées par $w_i$ sont **sommées**, donnant la combinaison **linéaire** $w_0 + w_1 x_1 + w_2 x_2 + ... + w_p x_p$.
 
-* Un **seuil** est finalement appliqué à cette somme : suivant si elle dépasse ou non une certaine valeur, la **sortie** sera 0 ou 1.
+* Un **seuil** est finalement appliqué à cette somme : suivant si elle dépasse ou non une certaine valeur, la **sortie** sera soit 0 ou 1, soit -1 ou 1 suivant la fonction de seuil choisie.
 
 L'apprentissage de ce modèle consistera en l'**optimisation des paramètres**, afin qu'à partir des features il soit capable d'associer ou non l'individu à une classe (0 ou 1 en sortie).
 
@@ -1028,47 +1028,69 @@ On utilisera le processus d'entrainement suivant :
 
 * Pour chaque individu on compare la sortie du modèle à celle attendue, et on met à jour les paramètres en conséquence.
 
-* On répète les 2 étapes précédentes jusqu'à convergence.
+* On repète les 2 étapes précédentes jusqu'à convergence.
 
 On appelle la fonction apprise $f(x_1,x_2,...,x_p) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_p x_p$ la **fonction discriminante**.
 
 Comme cette fonction est linéaire, le modèle ne pourra établir que des **frontières de décision linéaires** (une droite en 1D, un plan en 2D, un hyperplan dans le cas général).
 Nous verrons que ceci est assez limitant en pratique.
 
-Il reste à choisir une méthode pour **mettre à jour les paramètres** du modèle à partir des erreurs de prédiction.
+Comme nous l'avons expliqué précédemment, on peut réaliser de la classification multi-classe à partir de plusieurs classifieurs binaires, avec une stratégie One-versus-All ou One-Versus-One.
+Pour un perceptron, il suffira donc d'utiliser **plusieurs neurones en parallèle** avec les mêmes entrées.
 
-On aimerait bien pouvoir utiliser la méthode de **descente de gradient** vue lors du Chapitre 1, mais elle **nécessite une fonction de coût différentiable**, impossible à obtenir avec un seuil.
+Voici un exemple de $n$ perceptrons $N$ en parallèle pour $n$ classes :
 
-Aussi, suivant l'application on peut vouloir en sortie un score qui estime la **probabilité d'appartenance** à la classe plutôt qu'un simple booléen comme retourne notre seuil.
+![Perceptron multi-classe](img/Chap2_perceptron_multiclasse.png)
 
-C'est pourquoi dans la version moderne du perceptron, on va remplacer le seuil en sortie par une autre **fonction d'activation**.
+Pour pouvoir entrainer un perceptron, il reste à choisir une méthode pour **mettre à jour les paramètres** du modèle à partir des erreurs de prédiction.
 
-Bien qu'il existe de nombreuses fonctions d'activation, nos ne verrons dans ce chapitre que la **sigmoïde**, définie par :
+La "règle d'apprentissage du perceptron" proposée par Rosenblatt est la suivante.
+A l'itération $n$, pour le $i$-ème paramètre, on applique :
 
-$g(u) = \frac{1}{1+e^{-1}}$
+$w_i^{(n+1)} = w_i^{(n+1)} - \gamma (y^{n}-\hat{y^{(n)}}) $
 
-![](img/.png)
+avec $y$ la sortie attendue, et $\hat{(y)}$ la prédiction.
 
-Cette fonction est intéressante pour 2 raisons : elle est différentiable, et elle varie entre 0 et 1.
-On peut donc utiliser la méthode de la descente de gradient avec, et elle nous fournira un score entre 0 et 1 en sortie.
+On reconnait une méthode type **descente de gradient** (voir Chapitre 1) très simple.
 
-|Nota Bene|
-|:-|
-|Comme nous l'avons expliqué précédemment, on peut réaliser de la classification multi-classes à partir de plusieurs classifieurs binaires, avec une stratégie One-versus-All ou One-Versus-One.|
-|Pour un perceptron, il suffira donc d'utiliser **plusieurs neurones en parallèle** avec les mêmes entrées.|
+On peut montrer que **si les classes sont linéairement séparables** alors la méthode **convergence forcément**.
+C'est le "théorème de convergence du perceptron".
 
-#### Descente de gradient stochastique
+Par contre, dans les cas **non-linéairement séparables**, cette méthode **ne donnera pas de résultats satisfaisants**.
 
-Nous avons dit que pour mettre à jour les paramètres du modèle pendant l'apprentissage, nous allons utilise la méthode de la descente de gradient.
-Mais comment s'implémente-t-elle exactement ?
+#### Perceptron multicouche : un réseau de neurones artificiels
 
-Tout d'abord, il nous faut une mesure de l'erreur entre les prédictions et la réalité.
+Le perceptron est une 1ère approche simple à mettre en place et à entrainer.
+Mais il n'est applicable en pratique que pour les problèmes linéairement séparables.
 
+C'est pourquoi dans les années 1960, a émergé l'idée de relier plusieurs perceptron en sens direct.
+On appellera ce type de **réseau de neurones** un **perceptron multicouche** (PMC).
 
+L'idée est la suivante : si une combinaison linéaire ne peut produire que des frontières de décisions linéaires, mais **une combinaison de séparateurs linéaires peut donner un séparateur non-linéaire**. 
 
-#### Perceptron multicouches : un réseau de neurones artificiels
+Le PMC le plus basique possède 3 couches totalement connectées :
+
+![Perceptron multicouche](img/Chap2_perceptron_multicouche.png)
+
+* La **couche d'entrée** : 
+
+* La **couche cachée** :
+
+* La **couche de sortie** :
+
+On peut ajouter plusieurs couches cachées entre les couches d'entrée et de sortie : plus on aura de couches, et plus complexes les frontières de décisions pourront être.
+Dès que l'on a plus d'une couche cachée, on parle d'**apprentissage profond** ("Deep Learning").
+
+Nous comprenons bien le potentiel du PMC... à condition de pouvoir l'entrainer !
+
+En effet, comment réussir à optimiser efficacement les paramètres de nos différentes couches, sachant que les couches sont totalement connectées ?
+
+Ce problème est resté un point de blocage jusqu'en 1985, grâce aux travaux de Rumlhart et son équipe.
+La méthode qu'ils ont proposée pour entrainer un PMC, encore utilisée aujourd'hui, est connue sous le nom de **rétropropagation du gradient**.
 
 #### Retropropagation du gradient
+
+#### Choix des hyperparamètres
 
 #### Implémentation Scikit-Learn
 
