@@ -1047,7 +1047,7 @@ Pour pouvoir entrainer un perceptron, il reste à choisir une méthode pour **me
 La "règle d'apprentissage du perceptron" proposée par Rosenblatt est la suivante.
 A l'itération $n$, pour le $i$-ème paramètre, on applique :
 
-$w_i^{(n+1)} = w_i^{(n+1)} - \gamma (y^{n}-\hat{y^{(n)}}) $
+$w_i^{(n+1)} = w_i^{(n+1)} - \gamma (y^{n}-\hat{y^{(n)}})$
 
 avec $y$ la sortie attendue, et $\hat{(y)}$ la prédiction.
 
