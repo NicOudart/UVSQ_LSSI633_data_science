@@ -1049,11 +1049,14 @@ A l'itération $n$, pour le $i$-ème paramètre, on applique :
 
 $w_i^{(n+1)} = w_i^{(n+1)} - \gamma (y^{n}-\hat{y^{(n)}})$
 
-avec $y$ la sortie attendue, et $\hat{(y)}$ la prédiction.
+avec $y$ la sortie attendue, et $\hat{y}$ la prédiction.
 
-On reconnait une méthode type **descente de gradient** (voir Chapitre 1) très simple.
+On reconnait une méthode type **descente de gradient** (voir Chapitre 1), mais très simple.
 
-On peut montrer que **si les classes sont linéairement séparables** alors la méthode **convergence forcément**.
+Ici, on ne calcule pas le gradient de la fonction de coût à partir de la totalité du jeu d'entrainement, mais à partir d'un seul individu.
+Ce qui rend cet algorithme d'optimisation rapide, mais aussi sensible aux minima locaux.
+
+Néanmoins, on peut montrer que **si les classes sont linéairement séparables** alors la méthode **convergence forcément**.
 C'est le "théorème de convergence du perceptron".
 
 Par contre, dans les cas **non-linéairement séparables**, cette méthode **ne donnera pas de résultats satisfaisants**.
