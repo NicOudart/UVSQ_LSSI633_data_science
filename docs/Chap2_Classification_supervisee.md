@@ -1146,9 +1146,12 @@ L'idée est que cette fonction prend en entrée les scores renvoyés par chaque 
 
 #### Choix des hyperparamètres
 
-Une des difficulté de l'apprentissage d'un PMC est le nombre élevé d'hyperparamètres à optimiser.
+Une des difficulté de l'apprentissage d'un PMC est le nombre élevé de paramètres et d'hyperparamètres à optimiser.
+Ceci rend le PMC particulièrement **sensible au sur-apprentissage**.
 
-On peut citer :
+Une stratégie de validation par exclusion ou de validation croisée est donc plus que recommandée !
+
+Parmi les **hyperparamètres** à optimiser, on peut citer :
 
 * Le nombre de couches cachées.
 
@@ -1160,14 +1163,34 @@ On peut citer :
 
 * Le taux d'apprentissage pour la descente de gradient.
 
-* Le nombre d'époques d'apprentissage.
+* Le nombre d'époques d'apprentissage, et pratiquer ou non de l'arrêt prématuré.
+
+* La fonction de coût utilisée pour l'apprentissage.
 
 De plus, l'initialisation des paramètre du modèle se faisant de manière aléatoire, 2 apprentissages ne donneront pas le même modèle.
 Il convient donc de tester plusieurs initialisations.
 
-
-
 #### Implémentation Scikit-Learn
+
+
+
+Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC :
+
+* Nombre de couches cachées : 1
+
+* Nombre de neurones par couche cachée : 100
+
+* La fenêtre d'activation pour les couches cachées : ReLU
+
+* La fenêtre d'activation pour la couche de sortie : Sigmoïde si binaire, Softmax si multi-classe (non modifiable)
+
+* Le taux d'apprentissage pour la descente de gradient : 0.001
+
+* Le nombre d'époques d'apprentissage : 200 (par défaut sans early-stopping, mais on peut l'activer)
+
+* La fonction de coût : Log-loss (non modifiable)
+
+Tous ces hyperparamètres sont modifiables par l'utilisateur.
 
 #### Application à notre exemple
 
