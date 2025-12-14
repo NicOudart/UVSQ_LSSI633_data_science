@@ -1165,7 +1165,7 @@ Parmi les **hyperparamètres** à optimiser, on peut citer :
 
 * Le taux d'apprentissage pour la descente de gradient.
 
-* Le nombre d'époques d'apprentissage, et pratiquer ou non de l'arrêt prématuré.
+* Le nombre maximum d'époques d'apprentissage, et pratiquer ou non de l'arrêt prématuré.
 
 * La fonction de coût utilisée pour l'apprentissage.
 
@@ -1220,7 +1220,7 @@ Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC 
 
 * Le taux d'apprentissage pour la descente de gradient : 0.001
 
-* Le nombre d'époques d'apprentissage : 200 (par défaut sans early-stopping, mais on peut l'activer)
+* Le nombre maximum d'époques d'apprentissage : 200 (par défaut sans arrêt prématuré, mais on peut l'activer)
 
 * La fonction de coût : Log-loss (non modifiable)
 
@@ -1296,6 +1296,16 @@ print(mlp.score(df_features_train,df_labels_train))
 print(mlp.score(df_features_test,df_labels_test))
 ~~~
 
+On obtient facilement plus de 99% d'exactitude en entrainement, et plus de 98.5% d'exactitude en test.
+Ces résultats laissent à pense que les performances en généralisation de notre modèle seront plutôt bonnes.
 
+Mais comme nous l'avons fait remarquer plus tôt, le PMC est sensible au sur-apprentissage.
+Pour cette raison, on peut vouloir appliquer la méthode de régularisation par "arrêt prématuré" (voir Chapitre 1).
+
+
+
+~~~
+mlp = MLPClassifier(early_stopping=True,validation_fraction=0.2)
+~~~
 
 #### Remarques
