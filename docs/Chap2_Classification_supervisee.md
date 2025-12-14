@@ -676,6 +676,7 @@ Suivant les applications, on peut vouloir choisir une frontière de décision di
 Afin de voir les effets d'un tel choix, on tracer une courbe ROC à partir des probabilités prédites par notre modèle :
 
 ~~~
+from sklearn.metrics import roc_curve
 fp_rate_train, tp_rate_train, thresholds_train = roc_curve(ground_truth_train, prediction_train)
 fp_rate_test, tp_rate_test, thresholds_test = roc_curve(ground_truth_test, prediction_test)
 ~~~
@@ -1034,8 +1035,13 @@ On utilisera le processus d'entrainement suivant :
 
 On appelle la fonction apprise $f(x_1,x_2,...,x_p) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_p x_p$ la **fonction discriminante**.
 
-Comme cette fonction est linéaire, le modèle ne pourra établir que des **frontières de décision linéaires** (une droite en 1D, un plan en 2D, un hyperplan dans le cas général).
-Nous verrons que ceci est assez limitant en pratique.
+Comme cette fonction est linéaire, le modèle ne pourra établir que des **frontières de décision linéaires** (un point en 1D, une droite en 2D, un plan en 3D, un hyperplan dans le cas général).
+
+Nous verrons que ceci est assez limitant en pratique : **tous les problèmes ne sont pas linéairement séparables !**
+
+Voici une représentation schématique d'une frontière de décision 2D :
+
+![Frontière de décision d'un perceptron 2D](img/Chap2_perceptron_frontiere_decision.png)
 
 Comme nous l'avons expliqué précédemment, on peut réaliser de la classification multi-classe à partir de plusieurs classifieurs binaires, avec une stratégie One-versus-All ou One-Versus-One.
 Pour un perceptron, il suffira donc d'utiliser **plusieurs neurones en parallèle** avec les mêmes entrées.
@@ -1302,10 +1308,70 @@ Ces résultats laissent à pense que les performances en généralisation de not
 Mais comme nous l'avons fait remarquer plus tôt, le PMC est sensible au sur-apprentissage.
 Pour cette raison, on peut vouloir appliquer la méthode de régularisation par "arrêt prématuré" (voir Chapitre 1).
 
+Si on active le paramètre `early_stopping` du classifieur PMC de Scikit-Learn, au moment de l'apprentissage il va automatiquement mettre de côté une partie du jeu d'entrainement pour faire un jeu de validation.
+On peut même choisir la fraction du jeu d'entrainement à utiliser pour la validation, avec le paramètre `validation_fraction`.
 
+Voici un exemple de définition d'un classifieur, avec de l'arrêt prématuré et 20% des données d'entrainement utilisées pour la validation :
 
 ~~~
 mlp = MLPClassifier(early_stopping=True,validation_fraction=0.2)
 ~~~
 
+Il y a aussi une astuce pour afficher l'évaluation de la fonction de coût au cours des époques, pour l'ensemble d'entrainement et de validation.
+Elle se base sur :
+
+* Extraire le jeu de validation avec la méthode `train_test_split` de Scikit-Learn.
+
+* Utiliser la méthode `partial_fit` de notre classifieur PMC, qui permet de réaliser une itération à la fois.
+
+* Récupérer la valeur de la fonction de coût sur le jeu d'entrainement, avec l'attribut `loss_` de notre classifieur.
+
+* Evaluer la valeur de la fonction de coût sur le jeu de validation, en utilisant la fonction `log_loss` de Scikit-Learn.
+
+Voici l'affichage des 2 courbes Matplotlib obtenues sur notre base de données, pour 200 époques :
+
+~~~
+import matplotlib.pyplot as plt
+from sklearn.metrics import log_loss
+
+df_features_train, df_features_validation, df_labels_train, df_labels_validation = train_test_split(df_features_train,df_labels_train,test_size=0.2,random_state=0)
+
+mlp = MLPClassifier()
+
+loss_train = []
+loss_validation = []
+
+for idx in range(50):
+    mlp.partial_fit(df_features_train,df_labels_train,classes=[0,1,2])
+    loss_train.append(mlp.loss_)
+    loss_validation.append(log_loss(df_labels_validation,mlp.predict_proba(df_features_validation)))
+
+plt.plot(loss_train, label="train loss",c='r')
+plt.plot(loss_validation, label="validation loss",c='g')
+plt.xlabel('Epoques')
+plt.ylabel('Fonction de coût')
+plt.legend()
+~~~
+
 #### Remarques
+
+La méthode du Perceptron Multi-Couche a les **avantages** suivants :
+
+* Elle permet de dessiner des **frontières de décision complexes** entre les classes sans faire de grosses hypothèses statistiques au préalable.
+
+* Une fois le modèle entrainé, il prend **moins de mémoire** et est **plus rapide** pour faire des prédiction que les KPPV.
+
+* On peut entrainer ce type de modèle sur de **très grandes bases de données**.
+
+Mais cette méthode a aussi les **limites** suivantes :
+
+* Elle a de **nombreux paramètres et hyperparamètres** à optimiser.
+
+* Elle est **sensible au sur-apprentissage**.
+
+* Les décisions qu'elle prend sont **difficilement expliquées** et **interprétables** : il est difficile voir impossible pour un humain de les comprendre.
+On parle de "boîte noire".
+
+Les réseaux de neurones sont à la base des modèles d'apprentissage modernes, fondant ainsi une nouvelle sous-discipline : l'**apprentissage profond**.
+
+**Nous verrons dans le chapitre suivant que le PMC peut aussi être utilisé pour résoudre des problèmes de régression...**
