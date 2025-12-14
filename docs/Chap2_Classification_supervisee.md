@@ -148,7 +148,9 @@ On observe que les classes "flute", "oboe" et "trumpet" sont plutôt bien sépar
 Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de ces données à donc du sens.
 
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
-**Nous verrons cet exemple plus en détails en TP.**
+**Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
+
+**L'idée est que nous verrons cet exemple plus en détails en TP.**
 
 ## Mesures de performance
 
@@ -930,7 +932,7 @@ print(knn.score(df_features_train,df_labels_train))
 print(knn.score(df_features_test,df_labels_test))
 ~~~
 
-Pour $k=3$, on obtient environ 99.4% d'exactitude en entrainement, et environ 98.8% d'exactitude en test.
+Pour $k=3$, on obtient plus de 99.4% d'exactitude en entrainement, et environ 98.8% d'exactitude en test.
 
 Ces scores laissent à penser que notre modèle aura de plutôt bonnes performances en généralisation. 
 Mais n'oublions pas que l'exactitude peut être biaisée en cas de déséquilibre entre classes.
@@ -1172,7 +1174,39 @@ Il convient donc de tester plusieurs initialisations.
 
 #### Implémentation Scikit-Learn
 
+Il existe une implémentation Scikit-Learn du PMC pour la classification.
 
+Elle peut être importée avec :
+
+~~~
+from sklearn.neural_network import MLPClassifier
+~~~
+
+On peut ensuite initialiser un classifieur PMC avec les hyperparamètres par défaut en utilisant la commande :
+
+~~~
+mlp = MLPClassifier()
+~~~
+
+Nous verrons plus loin quels sont ces hyperparamètres.
+
+Pour donner le jeu d'entrainement (features avec `feature_train` et labels avec `label_train`) à ce classifieur, on utilise la méthode :
+
+~~~
+mlp.fit(feature_train,label_train)
+~~~
+
+On peut à présent réaliser des prédictions `label_test` à partir de features de test `feature_test` :
+
+~~~
+label_test = mlp.predict(feature_test)
+~~~
+
+Si on veut effectuer un test de notre classifieur sur un jeu de données labéliser, on peut obtenir un score d'exactitude avec la commande :
+
+~~~
+mlp.score(feature_test,label_test)
+~~~
 
 Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC :
 
@@ -1193,5 +1227,75 @@ Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC 
 Tous ces hyperparamètres sont modifiables par l'utilisateur.
 
 #### Application à notre exemple
+
+Nous allons à présent appliquer le PMC par défaut de Scikit-Learn à notre problème exemple.
+
+Cette fois-ci, nous n'allons pas simplifier notre exemple : nous traiterons directement le problème 3D.
+
+Comme pour les exemples précédents, nous importons notre fichier CSV sous la forme d'un DataFrame, depuis le chemin `input_path` :
+
+~~~
+df_dataset = pd.read_csv(input_path)
+~~~
+
+Nous allons ensuite encoder les labels "par étiquette" :
+
+~~~
+from sklearn.preprocessing import LabelEncoder
+encoder = LabelEncoder()
+df_dataset['instrument'] = encoder.fit_transform(df_dataset['instrument'])
+~~~
+
+Nous récupérons ensuite les features et les labels que nous allons utiliser dans 2 DataFrames :
+
+~~~
+df_features = df_dataset[['harmo1','harmo2','harmo3']]
+df_labels = df_dataset['instrument']
+~~~
+
+Nous séparons ensuite nos données en un jeu d'entrainement (80%) et un jeu de test (20%), sous la forme de 4 DataFrames (2 pour les features, 2 pour les labels) : 
+
+~~~
+from sklearn.model_selection import train_test_split
+df_features_train, df_features_test, df_labels_train, df_labels_test = train_test_split(df_features,df_labels,test_size=0.2,random_state=0)
+~~~
+
+Afin d'aider le PMC à converger, nous allons effectuer une transformation min-max (voir Chapitre 1).
+
+**Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
+
+~~~
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(df_features_train)
+scaler.transform(df_features_train)
+scaler.transform(df_features_test)
+~~~
+
+Maintenant que les données sont prêtes, nous pouvons créer notre classifieur.
+Voici comment initialiser un classifieur PMC avec les paramètres par défaut :
+
+~~~
+from sklearn.neural_network import MLPClassifier
+mlp = MLPClassifier()
+~~~
+
+Pour lui fournir les données d'entrainement, il nous suffit d'utiliser la commande suivante :
+
+~~~
+mlp.fit(df_features_train,df_labels_train)
+~~~
+
+Nous pouvons à présent utiliser notre modèle pour classifier des données.
+Tout d'abord, nous allons évaluer les performances de notre modèle en entrainement et en test.
+
+On peut déjà mesurer l'exactitude de notre classifieur sur ces 2 jeux de données :
+
+~~~
+print(mlp.score(df_features_train,df_labels_train))
+print(mlp.score(df_features_test,df_labels_test))
+~~~
+
+
 
 #### Remarques
