@@ -8,3 +8,12 @@ Ce chapitre est une introduction à la régression : principe, mesures de perfor
 
 ## Problème de régression
 
+### Exemple de problème
+
+## Mesures de performances
+
+## Méthodes de base
+
+### Moindres carrés
+
+### Perceptron multicouche
