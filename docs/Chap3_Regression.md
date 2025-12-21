@@ -10,6 +10,10 @@ Ce chapitre est une introduction à la régression : principe, mesures de perfor
 
 ### Exemple de problème
 
+![Taches solaires et TSI en fonction de l'année](img/Chap3_exemple_taches_solaires_tsi_annees.png)
+
+![Taches solaires en fonction du TSI](img/Chap3_exemple_taches_solaires_tsi_annees.png)
+
 ## Mesures de performances
 
 ## Méthodes de base
