@@ -39,6 +39,16 @@ D'où l'idée suivante : **peut-on entrainer un modèle à estimer la TSI à par
 
 Voici les données d'où sont issues les courbes précédentes, au format CSV : [Chap3_sunspots_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap3_sunspots_dataset.csv)
 
+Le tableau de données qu'il contient est de la forme :
+
+
+
+Notre problème de régression sera la suivant :
+
+
+
+Voyons d'abord si une telle régression est possible à partir de ces données.
+
 
 
 ![Taches solaires en fonction du TSI](img/Chap3_exemple_taches_solaires_tsi.png)
