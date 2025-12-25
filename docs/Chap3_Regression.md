@@ -8,9 +8,13 @@ Ce chapitre est une introduction à la régression : principe, mesures de perfor
 
 ## Problème de régression
 
-### Régression linéaire
+### Les différents types de régression
 
-### Régression polynomiale
+#### Régression linéaire simple
+
+#### Régression linéaire multiple
+
+#### Régression polynomiale
 
 ### Exemple de problème
 
