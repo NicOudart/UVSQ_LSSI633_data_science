@@ -29,7 +29,7 @@ Voici l'évolution du nombre de taches solaires et du TSI depuis 1948 jusqu'à 2
 
 ![Taches solaires et TSI en fonction de l'année](img/Chap3_exemple_taches_solaires_tsi_annees.png)
 
-On a ici 20 points par an, avec un filtrage de moyenne glissante sur une 1/2 année, soit 1521 points au total.
+On a ici 20 points par an, avec un filtrage de moyenne glissante sur une 1/2 année, soit 1531 points au total.
 Elles sont issues de l'Observatoire Royal de Belgique (SILSO, Dewitte et al. 2022).
 
 On observe que le nombre de taches solaires comme la TSI suivent les mêmes cycles de 11 ans environ, correspondant aux cycles de l'activité solaire.
@@ -43,16 +43,17 @@ Le tableau de données qu'il contient est de la forme :
 
 |year   |tsi     |sunspots|
 |:-----:|:------:|:------:|
-|1948.50|1363.726|229.934 |
-|1948.55|1363.766|223.497 |
-|1948.60|1363.779|215.781 |
-|1948.65|1363.895|202.475 |
-|1948.70|1363.906|192.546 |
+|1948.25|1363.743|193.667 |
+|1948.30|1363.729|196.541 |
+|1948.35|1363.722|205.891 |
+|1948.40|1363.713|215.623 |
+|1948.45|1363.729|218.060 |
 |...    |...     |...     |
-|2024.45|1363.910|169.164 |
-|2024.50|1363.977|170.995 |
+|2024.65|1364.015|172.536 |
+|2024.70|1364.013|170.525 |
+|2024.75|1364.038|171.563 |
 
-Il contient pour chacun des 1521 points l'année (sous forme décimale), la TSI moyenne (en $W/m^2$) et le nombre de taches solaires moyen sur une fenêtre d'une 1/2 année.
+Il contient pour chacun des 1531 points l'année (sous forme décimale), la TSI moyenne (en $W/m^2$) et le nombre de taches solaires moyen sur une fenêtre d'une 1/2 année.
 
 Notre problème de régression sera la suivant : **prédire la TSI moyenne sur une 1/2 année à partir du nombre de taches solaires moyen sur cette même fenêtre**.
 
@@ -75,7 +76,7 @@ Voici le résultat :
 
 ![Taches solaires en fonction du TSI](img/Chap3_exemple_taches_solaires_tsi.png)
 
-On observe que les 2 grandeurs ont bien l'air **fortement corrélées**.
+On observe comme attendu que les 2 grandeurs ont l'air **fortement corrélées**.
 Cependant, on peut déjà constater que : (1) la relation n'a l'air linéaire que pour des nombres de taches solaires faibles (moins de 150-200), (2) la dispersions des points a l'air d'augmenter avec le nombre de taches solaires.
 
 Ces observations seront importantes dans la suite.
