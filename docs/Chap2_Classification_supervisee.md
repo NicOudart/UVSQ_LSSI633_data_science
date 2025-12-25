@@ -1090,7 +1090,12 @@ Elle est "cachée" car ses sorties sont invisibles pour l'utilisateur.
 
 * La **couche de sortie** : une couche de neurone en fin de réseau, chacun ayant ses paramètres, son biais, son seuil, qui va renvoyer la sortie du modèle pour chaque classe.
 
-On peut ajouter plusieurs couches cachées entre les couches d'entrée et de sortie : plus on aura de couches, et plus complexes les frontières de décisions pourront être.
+On peut démontrer que ce modèle est capable de tracer **n'importe quelle frontière de décision**, à condition d'avoir assez de neurones dans la couche cachée.
+C'est ce que l'on appelle le **théorème de l'approximation universelle**.
+
+Le problème est que plus la frontière de décision à tracer est complexe, et plus il faut de neurones dans la couche limite.
+
+Pour résoudre ce problème, on peut ajouter plusieurs couches cachées entre les couches d'entrée et de sortie : plus on aura de couches, et plus complexes les frontières de décisions pourront être.
 Dès que l'on a plus d'une couche cachée, on parle d'**apprentissage profond** ("Deep Learning").
 
 Nous comprenons bien le potentiel du PMC... à condition de pouvoir l'entrainer !

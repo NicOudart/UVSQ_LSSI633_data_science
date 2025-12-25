@@ -41,17 +41,58 @@ Voici les données d'où sont issues les courbes précédentes, au format CSV : 
 
 Le tableau de données qu'il contient est de la forme :
 
+|year   |tsi     |sunspots|
+|:-----:|:------:|:------:|
+|1948.50|1363.726|229.934 |
+|1948.55|1363.766,223.497 |
+|1948.60|1363.779|215.781 |
+|1948.65|1363.895|202.475 |
+|1948.70|1363.906|192.546 |
+|...    |...     |...     |
+|2024.45|1363.910|169.164 |
+|2024.50|1363.977|170.995 |
 
+Il contient pour chacun des 1521 points l'année (sous forme décimale), la TSI moyenne (en $W/m^2$) et le nombre de taches solaires moyen sur une fenêtre d'une 1/2 année.
 
-Notre problème de régression sera la suivant :
-
-
+Notre problème de régression sera la suivant : **prédire la TSI moyenne sur une 1/2 année à partir du nombre de taches solaires moyen sur cette même fenêtre**.
 
 Voyons d'abord si une telle régression est possible à partir de ces données.
 
+Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :
 
+~~~
+import pandas as pd
+df_dataset = pd.read_csv(input_path)
+~~~
+
+On peut alors utiliser la méthode "plot" des DataFrames pandas pour afficher la TSI en fonction du nombre de taches solaires, sous la forme d'un **nuage de points** :
+
+~~~
+df_dataset.plot(x='sunspots',y='tsi',kind='scatter',c='r',marker='+')
+~~~
+
+Voici le résultat :
 
 ![Taches solaires en fonction du TSI](img/Chap3_exemple_taches_solaires_tsi.png)
+
+On observe que les 2 grandeurs ont bien l'air **fortement corrélées**.
+Cependant, on peut déjà constater que : (1) la relation n'a l'air linéaire que pour des nombres de taches solaires faibles (moins de 150-200), (2) la dispersions des points a l'air d'augmenter avec le nombre de taches solaires.
+
+Ces observations seront importantes dans la suite.
+
+On peut également calculer le coefficient de corrélation entre la TSI et le nombre taches solaires, en utilisant la méthode "corr" des DataFrames Pandas :
+
+~~~
+df_dataset['tsi'].corr(df_dataset['sunspots'])
+~~~
+
+On trouve un coefficient de corrélation de 0.89 environ, ce qui confirme une forte corrélation entre les variables.
+Vouloir entrainer un modèle à prédire la TSI à partir du nombre de taches solaires a donc un sens.
+
+**Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
+**Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
+
+**L'idée est que nous verrons cet exemple plus en détails en TP.**
 
 ## Mesures de performances
 

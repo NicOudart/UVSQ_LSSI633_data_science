@@ -159,7 +159,7 @@ On peut par exemple l'utiliser pour vérifier la répartition de variables quali
 
 |Astuce Python|
 |:-|
-|La bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, propose une méthode "plot" qui permet des affichages graphiques à partir de jeux de données.|
+|La bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, propose une méthode "plot" à ses objets "DataFrame" qui permet des affichages graphiques à partir de jeux de données.|
 |Il suffit donner le bon paramètre "kind" en entrée pour obtenir le type d'affichage voulu :|
 |- "line" : une courbe.|
 |- "scatter" : un nuage de points.|
