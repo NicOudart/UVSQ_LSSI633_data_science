@@ -8,6 +8,10 @@ Ce chapitre est une introduction à la régression : principe, mesures de perfor
 
 ## Problème de régression
 
+### Régression linéaire
+
+### Régression polynomiale
+
 ### Exemple de problème
 
 **Est-il possible de prédire l'intensité du rayonnement solaire à partir du nombre de taches solaires ?**
@@ -99,6 +103,6 @@ Vouloir entrainer un modèle à prédire la TSI à partir du nombre de taches so
 
 ## Méthodes de base
 
-### Moindres carrés
+### Moindres carrés ordinaire
 
 ### Perceptron multicouche
