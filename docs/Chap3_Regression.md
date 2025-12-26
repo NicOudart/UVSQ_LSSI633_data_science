@@ -234,17 +234,19 @@ On a alors l'**écart total** :
 
 $y_i - \overline{y} = (y_i - \hat{y_i}) - (\hat{y_i} - \overline{y})$
 
-On met en général ces écarts sous la forme de variances, en prenant la somme des carrés :
+On met en général ces écarts sous la forme de variances, en prenant la somme des carrés des $p$ individus de cet échantillon :
 
-* SCR :
+* SCR : $\sum_{i=1}^{p} (y_i - \hat{y_i})^2$
 
-* SCE :
+* SCE : $\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2$
 
-* SCT : 
+* SCT : $\sum_{i=1}^{p} (y_i - \overline{y})^2$
+
+avec $SCT = SCR + SCE$
 
 **Un modèle sera d'autant plus performant que la SCR sera faible comparée à la SCT**.
 
-L'idée est la suivante : plus la SCE est grande comparée à la SCR, et plus le modèle explique $y$ à partir des entrées.
+L'idée est la suivante : plus la SCE est grande comparée à la SCR, et plus le modèle **explique** $y$ à partir des entrées.
 
 On range en général ces valeurs sous la forme d'un tableau, nommé "table ANOVA" :
 
