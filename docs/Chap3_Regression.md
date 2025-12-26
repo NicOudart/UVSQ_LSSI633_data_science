@@ -274,11 +274,11 @@ Le $R^2$ s'interprète comme **la proportion de l'écart total expliquée par le
 
 Il s'agit donc d'un score entre 0 et 1 : plus la valeur est proche de 1, et meilleur est le modèle.
 
-Par exemple, metton que l'on utilise la luminosité d'une étoile pour essayer de prédire son rayon, grâce à une régression linéaire.
+Par exemple, mettons que l'on utilise la luminosité d'une étoile pour essayer de prédire son rayon, grâce à une régression linéaire.
 Si le $R^2$ du modèle est de 0.75 sur un échantillon de données, cela veut dire que le modèle explique 75% de la variation du rayon de l'étoile.
 Les 25% restants sont expliqués par les erreurs.
 
-On remarque que le $R^2$ correspond au coefficient de corrélation (voir Chapitre 1) entre les valeurs observées $y_i$ et les valeurs prédites $\hat{y_i}$.
+On remarque que le $R^2$ correspond au carré du coefficient de corrélation (voir Chapitre 1) entre les valeurs observées $y_i$ et les valeurs prédites $\hat{y_i}$.
 
 ### Analyse visuelle des résidus
 
