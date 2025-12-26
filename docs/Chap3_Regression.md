@@ -67,7 +67,7 @@ Nous verrons que l'on fait en général les hypothèses suivantes sur $\epsilon$
 
 * **Ecart-type constant**.
 
-Afin de pouvoir donner un "intervalle de confiance" aux prédictions, on va en plus ajouter une hypothèse de **normalité** : $\espilon$ suit une loi normale.
+Afin de pouvoir donner un "intervalle de confiance" aux prédictions, on va en plus ajouter une hypothèse de **normalité** : $\epsilon$ suit une loi normale.
 Nous en reparlerons plus tard.
 
 #### Régression linéaire multiple
@@ -236,23 +236,39 @@ $y_i - \overline{y} = (y_i - \hat{y_i}) - (\hat{y_i} - \overline{y})$
 
 On met en général ces écarts sous la forme de variances, en prenant la somme des carrés des $p$ individus de cet échantillon :
 
-* SCR : $\sum_{i=1}^{p} (y_i - \hat{y_i})^2$
+* SCR ("somme des carrés des résidus") : $\sum_{i=1}^{p} (y_i - \hat{y_i})^2$
 
-* SCE : $\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2$
+* SCE ("somme des carrés expliqués") : $\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2$
 
-* SCT : $\sum_{i=1}^{p} (y_i - \overline{y})^2$
+* SCT ("somme des carrés totale") : $\sum_{i=1}^{p} (y_i - \overline{y})^2$
 
 avec $SCT = SCR + SCE$
 
 **Un modèle sera d'autant plus performant que la SCR sera faible comparée à la SCT**.
 
-L'idée est la suivante : plus la SCE est grande comparée à la SCR, et plus le modèle **explique** $y$ à partir des entrées.
+L'idée est la suivante : plus la SCE est grande (et donc plus la SCR est faible), et plus le modèle **explique** $y$ à partir des entrées.
 
-On range en général ces valeurs sous la forme d'un tableau, nommé "table ANOVA" :
+On range en général ces valeurs sous la forme d'un tableau, nommé "table ANOVA" (contraction en anglais de "ANalysis Of VAriance") :
 
+|$x_i$|$y_i$|$\hat{y_i}$|$\hat{y_i} - \overline{y}$|$(\hat{y_i} - \overline{y})^2$|$y_i - \hat{y_i}$|$(y_i - \hat{y_i})^2$|
+|:---:|:---:|:---------:|:------------------------:|:----------------------------:|:---------------:|:-------------------:|
+|...  |...  |...        |...                       |...                           |...              |...                  |
 
+|$\overline{x}$|$\overline{y}$|SRE|SCR|
+|:------------:|:------------:|:-:|:-:|
+|...           |...           |...|...|
+
+On peut trouver des variantes de cette table, avec d'autres informations.
 
 ### Coefficient de détermination
+
+La table ANOVA est une représentation plutôt exhaustive des performances en régression linéaire.
+
+Mais comme souvent, on voudrait pouvoir résumer au mieux les performances avec un score unique dérivé de cette table.
+
+Le critère le plus utilisé est le **coefficient de détermination** :
+
+
 
 ### Analyse visuelle des résidus
 
