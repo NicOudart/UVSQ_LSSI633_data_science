@@ -61,7 +61,7 @@ Il s'agit d'un problème d'**inférence statistique** : nous disposons d'un jeu 
 
 Nous verrons que l'on fait en général les hypothèses suivantes sur $\epsilon$ :
 
-* **Indépedance** de ses valeurs.
+* **Indépedance** de ses réalisations.
 
 * **Moyenne nulle**.
 
@@ -84,9 +84,9 @@ On reconnait la formule d'un hyperplan de dimension $n$.
 
 On peut mettre cette formule sous forme matricielle :
 
-$y = A.X + \epsilon$
+$y = a.x + \epsilon$
 
-avec $A = 
+avec $a = 
       \begin{pmatrix}
       a_1\\
       a_2\\
@@ -94,7 +94,7 @@ avec $A =
       a_n 
       \end{pmatrix}$
 	  
-et $X = 
+et $x = 
       \begin{pmatrix}
       x_1\\
       x_2\\
@@ -225,9 +225,11 @@ On note $\hat{y_i}$ la prédiction de ce modèle linéaire pour le i-ème indivi
 Pour juger de la qualité du modèle, on divise les écarts en 2 groupes :
 
 * Les **écarts résiduels**, ou "résidus" : $y_i - \hat{y_i}$
+
 Il s'agit des écarts non-expliqués par le modèle.
 
 * Les écarts **écarts de régression**, ou "écarts expliqués" : $\hat{y_i} - \overline{y}$
+
 Il s'agit des écarts expliqués par le modèle.
 
 On a alors l'**écart total** :
@@ -280,11 +282,26 @@ Les 25% restants sont expliqués par les erreurs.
 
 On remarque que le $R^2$ correspond au carré du coefficient de corrélation (voir Chapitre 1) entre les valeurs observées $y_i$ et les valeurs prédites $\hat{y_i}$.
 
-### Analyse visuelle des résidus
+### Analyse des résidus
 
 Lorsque les performances d'un modèle de régression linéaire ont l'air mauvaises, on a envie de comprendre pourquoi.
 
+La bonne approche est de réaliser une **analyse des résidus**.
 
+Dans un 1er temps, cette analyse peut être **visuelle**.
+On affiche simplement les résidus en fonction de $x$ ou de $y_i$, et on vérifie s'ils ont l'air d'avoir le comportement attendu de $\epsilon$ : 
+
+* Indépendance des observations.
+
+* Moyenne nulle.
+
+* Ecart-type constant.
+
+* Normalité.
+
+En cas de doute, on peut procéder à des tests de ces 4 hypothèses.
+
+Si la nullité de la moyenne est triviale à vérifier, les 3 autres hypothèses ne le sont pas.
 
 #### Normalité
 
