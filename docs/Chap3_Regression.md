@@ -53,11 +53,11 @@ L'erreur est une variable aléatoire notée $\epsilon$.
 
 Le modèle à ajuster est le suivant :
 
-$y = a x + b + \epsilon$
+$y = \alpha x + \beta + \epsilon$
 
-avec les paramètres $a$ et $b$ à déterminer.
+avec les paramètres $\alpha$ et $\beta$ à déterminer.
 
-Il s'agit d'un problème d'**inférence statistique** : nous disposons d'un jeu d'entrainement qui est un **échantillon** de la population totale, et nous voulons en déduire une estimation de $a$ et $b$ nous permettant de réaliser des prédictions.
+Il s'agit d'un problème d'**inférence statistique** : nous disposons d'un jeu d'entrainement qui est un **échantillon** de la population totale, et nous voulons en déduire une estimation de $\alpha$ et $\beta$ nous permettant de réaliser des prédictions.
 
 Nous verrons que l'on fait en général les hypothèses suivantes sur $\epsilon$ :
 
@@ -78,24 +78,26 @@ Si on note $x_1$, $x_2$, ..., $x_n$ les $n$ variables d'entrée, et $y$ notre va
 
 Le modèle à ajuster devient :
 
-$y = a_1 x_1 + a_2 x_2 + ... + a_n x_n + b + \epsilon$
+$y = \alpha_1 x_1 + \alpha_2 x_2 + ... + \alpha_n x_n + \beta + \epsilon$
 
 On reconnait la formule d'un hyperplan de dimension $n$.
 
 On peut mettre cette formule sous forme matricielle :
 
-$y = a.x + \epsilon$
+$y = \Alpha.x + \epsilon$
 
-avec $a = 
+avec $\Alpha = 
       \begin{pmatrix}
-      a_1\\
-      a_2\\
+	  \beta\\
+      \alpha_1\\
+      \alpha_2\\
 	  \vdots\\
-      a_n 
+      \alpha_n 
       \end{pmatrix}$
 	  
 et $x = 
       \begin{pmatrix}
+	  1\\
       x_1\\
       x_2\\
 	  \vdots\\
@@ -112,7 +114,7 @@ Afin de réaliser une **régression non-linéaire**, il y a une astuce : on cher
 
 Pour un ordre $k$, il aura la forme :
 
-$y = a_1 x + a_2 x^2 + ... + a_n x^n + b + \epsilon$
+$y = \alpha_1 x + \alpha_2 x^2 + ... + \alpha_n x^n + b + \epsilon$
 
 Il y a alors une astuce : si on considère $x$, $x^2$, ..., $x^n$ comme $n$ variables d'entrée, alors on reconnait un problème de **régression multiple** !
 
@@ -299,27 +301,141 @@ On affiche simplement les résidus en fonction de $x$ ou de $y_i$, et on vérifi
 
 * Normalité.
 
-En cas de doute, on peut procéder à des tests de ces 4 hypothèses.
+Dans l'idéal, on attend donc **un nuage de points aléatoires**, stationnaire, sans tendances en fonction de $x$ ou des $y_i$.
 
-Si la nullité de la moyenne est triviale à vérifier, les 3 autres hypothèses ne le sont pas.
+Si ce n'est pas le cas, alors il faut soit :
+
+* **Revoir notre modèle** (une régression linéaire n'est peut-être pas adaptée).
+
+* **Nettoyer nos données** (des outliers ou des données abérrantes sont peut-être la cause du mauvais ajustement).
+
+* **Ajouter des variables explicatives** ($x$ n'est peut-être pas suffisant pour expliquer $y$ de manière satisfaisante).
+
+En cas de doute, on peut procéder à des tests de ces hypothèses, mais ils ne sont pas tous simples à mettre en place.
 
 #### Normalité
 
+Pour vérifier si les résidus suivent une loi normale de moyenne nulle, on peut afficher leurs quantiles en fonction ceux attendus d'une loi normale.
+
+On obtient alors un graphique appelé "droite de Henry".
+
+Si les résidus ne suivent pas une loi normale, ils s'éloigneront de la diagonale.
+
 #### Homoscédasticité
 
+On appelle "homoscédasticité" le fait d'avoir un écart-type constant pour toutes les observations.
+Si cette hypothèse n'est pas vérifiée, on parle d'"hétéroscédasticité".
+
+Il existe différents tests d'homoscédasticité, par exemple le test de White, mais le plus simple reste l'interprétation visuelle :
+
+* Si les résidus en fonction de $x$ s'éloignent de plus en plus de 0, on a probablement une hétéroscédasticité.
+
+* Si on observe une tendance dans les résidus en fonction des $y_i$, on a probablement une hétéroscédasticité.
+
 #### Indépendance
+
+Il n'est pas simple de vérifie l'indépendance des résidus en fonction des observations.
+
+Un exemple de test connu est celui de Durbin-Watson.
+Mais encore une fois, le plus simple reste l'interprétation visuelle :
+
+* Si on observe une tendance dans les résidus en fonction de $x$, on a probablement une dépendance des résidus aux observations.
 
 ## Méthodes de base
 
 ### Moindres carrés ordinaire
 
+Les **moindres carrés ordinaire** (MCO) est la méthode de régression linéaire la plus basique qui soit.
+S'il s'agit originellement d'une méthode de **statistiques descriptives**, nous verrons que l'on peut s'en servir pour faire de l'**inférence statistique**.
+
 #### Principe
+
+Comme nous venons de le mentionner, les MCO a originellement un but descriptif.
+
+Si on a un jeu de données contenant une variable explicative $x$ et une variable de réponse $y$, on cherche :  **quelle droite d'équation $y = a x + b$ représente le mieux la distribution des $p$ points $(x_i,y_i)$ de cet échantillon ?**
+
+$a$ et $b$ seront alors 2 indicateurs statistiques caractérisant notre échantillon.
+
+Mais comment déterminer qu'une droite représente au mieux un nuage de points ?
+
+La méthode des MCO considère que la droite d'équation $y = a x + b$ représentant le mieux les $p$ point de notre échantillon est celle qui **minimise** :
+
+$\sum_{k=1}^{p} (y_i - a x_i - b)^2$
+
+D'où le nom de la méthode : on cherche les "moindres carrés".
+
+On peut montrer que les paramètres $a$ et $b$ minimisant cette fonction sont :
+
+$a = \frac{\sum_{k=1}^{p} (x_i-\overline{x})(y_i-\overline{y})}{\sum_{k=1}^{p} (x_i-\overline{x})^2}$
+
+$b = \overline{y} - a \overline{x}$
+
+On notera pour simplifier les expressions :
+
+$sc_{xx} = \sum_{k=1}^{p} (x_i-\overline{x})^2$
+
+$sc_{yy} = \sum_{k=1}^{p} (y_i-\overline{y})^2$
+
+$sc_{xy} = \sum_{k=1}^{p} (x_i-\overline{x})(y_i-\overline{y})$
+
+D'où $a = \frac{sc_{xy}}{sc_{xx}}$
+
+|Nota Bene|
+|:-|
+|La droite déterminée par les MCO passera toujours par le point $(\overline{x},\overline{y})$.|
 
 #### Meilleur Estimateur Linéaire Non-biaisé (BLUE)
 
-#### Intervalles de confiance
+Revenons à notre problème de régression linéaire simple : à partir de notre échantillon, nous voulons trouver un modèle liant nos variables $x$ et $y$, de la forme $y = \alpha x + \beta + \epsilon$.
+
+Sous certaines conditions sur $\espilon$, nous pouvons appliquer le théorème de $Gauss-Markov$ à notre problème :
+
+|Théorème de Gauss-Markov|
+|:-|
+|On cherche à modéliser une relation $y = \alpha x + \beta + \epsilon$ entre 2 variables $x$ et $y$, à partir d'un échantillon de réalisations $(x_i,y_i)$.|
+|Si $\epsilon$ vérifie :|
+|- Une moyenne nulle.|
+|- Un écart-type constant.|
+|- Une non-corrélation de ses réalisations.|
+|Alors, les paramètres $a$ et $b$ de la droite déterminée par les MCO est le **Meilleur Estimateur Linéaire Non-biaisé** ("BLUE" en anglais) de $\alpha$ et $\beta$.|
+
+On peut donc se servir de la méthode des MCO pour estimer $\alpha$ et $\beta$ à partir de notre échantillon de points $(x_i,y_i)$.
+
+Il est même possible d'estimer l'**écart-type de $\epsilon$** avec l'estimateur suivant :
+
+$s = sqrt{\frac{\sum_{k=1}^{p} (y_i-\overline{y_i})^2}{n-2}}$
+
+Reste alors une problématique : 
+
+Si j'utilise mon modèle pour réaliser une prédiction $\overline{y_j}$ à partir d'une nouvelle valeur $x_j$, c'est-à-dire en calculant $\overline{y_j} = \alpha x_j + \beta$, **à quel point puis-je avoir confiance en ma prédiction ?**
+
+#### Intervalles de confiance et de prédiction
+
+Comme pour tout problème d'inférence statistique, lorsque l'on a obtenu notre modèle de régression linéaire, on se pose alors les questions suivantes :
+
+* Quelle est mon **incertitude sur les $\alpha$ et $\beta$** trouvés à partir de mon échantillon ?
+
+* Pour une valeur de $x$ fixée, quelle est mon **incertitude sur la moyenne des $y$** avec mon modèle de régression linéaire ?
+
+* Pour un nouvelle observation de $x$, quelle est mon **incertitude sur la valeur de $y$ prédite** par mon modèle de régression linéaire ?
+
+Pour répondre à ces questions, nous allons utiliser des **intervalles de confiance**.
+
+* Les intervalles de confiance sur $\alpha$ et $\beta$ :
+
+
+
+* L'intervalle de confiance sur la moyenne :
+
+
+
+* L'intervalle de prédiction :
+
+
 
 #### Généralisation à la régression linéaire multiple
+
+#### Application à notre exemple
 
 #### Remarques
 
