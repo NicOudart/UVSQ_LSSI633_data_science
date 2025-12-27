@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap3_Regression/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>III. Régression - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "III. R\u00e9gression";
+        var mkdocs_page_input_path = "Chap3_Regression.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap3_Regression/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap1_Introduction/">I. Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap2_Classification_supervisee/">II. Classification supervisée</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">III. Régression</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#probleme-de-regression">Problème de régression</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#les-differents-types-de-regression">Les différents types de régression</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-lineaire-simple">Régression linéaire simple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-lineaire-multiple">Régression linéaire multiple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-polynomiale">Régression polynomiale</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exemple-de-probleme">Exemple de problème</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesures-de-performances">Mesures de performances</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#table-anova">Table ANOVA</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coefficient-de-determination">Coefficient de détermination</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#analyse-des-residus">Analyse des résidus</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#normalite">Normalité</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#homoscedasticite">Homoscédasticité</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#independance">Indépendance</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methodes-de-base">Méthodes de base</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#moindres-carres-ordinaire">Moindres carrés ordinaire</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#meilleur-estimateur-lineaire-non-biaise-blue">Meilleur Estimateur Linéaire Non-biaisé (BLUE)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#intervalles-de-confiance-et-de-prediction">Intervalles de confiance et de prédiction</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#generalisation-a-la-regression-lineaire-multiple">Généralisation à la régression linéaire multiple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple">Application à notre exemple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#remarques">Remarques</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#perceptron-multicouche">Perceptron multicouche</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap4_Partitionnement/">IV. Partitionnement</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">III. Régression</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-iii-regression">Chapitre III : Régression</h1>
+<p>Ce chapitre est une introduction à la régression : principe, mesures de performances et méthodes de base.</p>
+<p><img alt="En-tête chapitre III" src="../img/Chap3_header.png" /></p>
+<hr />
+<h2 id="probleme-de-regression">Problème de régression</h2>
+<p>Comme mentionné lors du Chapitre I, par "<strong>régression</strong>" on entend associer une réalisation d'une variable <strong>quantitative continue</strong> à un individu (labels), à partir des réalisations d'autres variables (features).</p>
+<p>On cherche donc une <strong>relation entre les variables</strong> d'entrée (aussi appelées "variables explicatives") et la variable de sortie (aussi appelée "variable de réponse").</p>
+<p>Il existe 2 grands types de relations entre variables :</p>
+<ul>
+<li>La relation est <strong>déterministe</strong> si on considère que la variable de sortie peut être <strong>connue exactement</strong> à partir des variables d'entrée.</li>
+</ul>
+<p>Par exemple, si je veux déterminer le rayon <span class="arithmatex">\(R\)</span> d'une étoile par rapport à sa luminosité <span class="arithmatex">\(L\)</span> et sa température <span class="arithmatex">\(T\)</span>, en m'appuyant sur la théorie du corps noir, j'utilise la formule <span class="arithmatex">\(R = \sqrt{\frac{L}{4 \pi \sigma T^4}}\)</span>.</p>
+<ul>
+<li>La relation est <strong>probabiliste</strong> si on considère que d'<strong>autres facteurs</strong> que les variables d'entrée vont influer sur la valeur de la variable de sortie.</li>
+</ul>
+<p>Dans ce cas, une même réalisation des variables d'entrée pourra être associée à plusieurs valeurs de la variable de sortie, et inversement.</p>
+<p>Mais si les variables d'entrée et de sortie sont <strong>corrélées</strong>, la relation sera tout de même utile pour réaliser des <strong>prédictions</strong> avec une certaine marge d'erreur.</p>
+<p>C'est souvent le cas en Physique, lorsque l'on réalise des mesures pour expliquer un phénomène.
+Si on reprend notre exemple précédent : la théorie du corps noir n'explique pas parfaitement la rayonnement d'une étoile, et on peut avoir des erreurs de mesures de <span class="arithmatex">\(L\)</span>, <span class="arithmatex">\(T\)</span> et <span class="arithmatex">\(R\)</span>.
+Mais si <span class="arithmatex">\(L\)</span>, <span class="arithmatex">\(T\)</span> et <span class="arithmatex">\(R\)</span> sont correlées, alors on peut essayer de prédire <span class="arithmatex">\(R\)</span> à partir de <span class="arithmatex">\(L\)</span> et <span class="arithmatex">\(T\)</span>, moyennant une certaine erreur.</p>
+<p>C'est tout le principe de la régression : <strong>déterminer une relation probabiliste entre les variables d'entrée et la variable de sortie</strong>.</p>
+<p>Nous avions aussi mentionné lors du Chapitre I qu'entrainer un modèle de régression ne peut se faire que par <strong>apprentissage supervisé</strong>.
+L'idée est encore une fois que le modèle soit ensuite capable de <strong>généraliser</strong> à de nouvelles observations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Anecdote historique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Le nom de "régression" vient du généticien Francis Galton, qui l'utilisa pour son étude sur la "régression vers la moyenne".</td>
+</tr>
+<tr>
+<td style="text-align: left;">En fait, Galton cherchait à modéliser un phénomène d'hérédité qu'il observait dans la population humaine :</td>
+</tr>
+<tr>
+<td style="text-align: left;">La taille des fils avait tendance à se rapprocher de la moyenne de la population par rapport à celle de leur père.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="les-differents-types-de-regression">Les différents types de régression</h3>
+<p>Suivant le nombre d'entrées et le type de modèle à ajuster aux données, on a différents types de problèmes de régression.
+Nous allons voir ici les 3 plus courants.</p>
+<h4 id="regression-lineaire-simple">Régression linéaire simple</h4>
+<p>La <strong>régression linéaire simple</strong> est le problème de régression le plus basique qui soit.</p>
+<p>On recherche une relation linéaire entre une variable d'entrée <span class="arithmatex">\(x\)</span> et une variable de sortie <span class="arithmatex">\(y\)</span>.
+L'erreur est une variable aléatoire notée <span class="arithmatex">\(\epsilon\)</span>.</p>
+<p>Le modèle à ajuster est le suivant :</p>
+<p><span class="arithmatex">\(y = \alpha x + \beta + \epsilon\)</span></p>
+<p>avec les paramètres <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> à déterminer.</p>
+<p>Il s'agit d'un problème d'<strong>inférence statistique</strong> : nous disposons d'un jeu d'entrainement qui est un <strong>échantillon</strong> de la population totale, et nous voulons en déduire une estimation de <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> nous permettant de réaliser des prédictions.</p>
+<p>Nous verrons que l'on fait en général les hypothèses suivantes sur <span class="arithmatex">\(\epsilon\)</span> :</p>
+<ul>
+<li>
+<p><strong>Indépedance</strong> de ses réalisations.</p>
+</li>
+<li>
+<p><strong>Moyenne nulle</strong>.</p>
+</li>
+<li>
+<p><strong>Ecart-type constant</strong>.</p>
+</li>
+</ul>
+<p>Afin de pouvoir donner un "intervalle de confiance" aux prédictions, on va en plus ajouter une hypothèse de <strong>normalité</strong> : <span class="arithmatex">\(\epsilon\)</span> suit une loi normale.
+Nous en reparlerons plus tard.</p>
+<h4 id="regression-lineaire-multiple">Régression linéaire multiple</h4>
+<p>On peut généraliser le modèle de la section précédente aux problèmes avec <strong>plusieurs variables d'entrée</strong>.</p>
+<p>Si on note <span class="arithmatex">\(x_1\)</span>, <span class="arithmatex">\(x_2\)</span>, ..., <span class="arithmatex">\(x_n\)</span> les <span class="arithmatex">\(n\)</span> variables d'entrée, et <span class="arithmatex">\(y\)</span> notre variable de sortie.</p>
+<p>Le modèle à ajuster devient :</p>
+<p><span class="arithmatex">\(y = \alpha_1 x_1 + \alpha_2 x_2 + ... + \alpha_n x_n + \beta + \epsilon\)</span></p>
+<p>On reconnait la formule d'un hyperplan de dimension <span class="arithmatex">\(n\)</span>.</p>
+<p>On peut mettre cette formule sous forme matricielle :</p>
+<p><span class="arithmatex">\(y = \Alpha.x + \epsilon\)</span></p>
+<p>avec <span class="arithmatex">\(\Alpha = 
+      \begin{pmatrix}
+      \beta\\
+      \alpha_1\\
+      \alpha_2\\
+      \vdots\\
+      \alpha_n 
+      \end{pmatrix}\)</span></p>
+<p>et <span class="arithmatex">\(x = 
+      \begin{pmatrix}
+      1\\
+      x_1\\
+      x_2\\
+      \vdots\\
+      x_n 
+      \end{pmatrix}\)</span></p>
+<p>Nous verrons dans la suite comment généraliser les méthodes aux problèmes multiples.</p>
+<h4 id="regression-polynomiale">Régression polynomiale</h4>
+<p>Comment faire lorsqu'un modèle linéaire n'est pas pertinent pour représenter la relation entre nos variables ?</p>
+<p>Afin de réaliser une <strong>régression non-linéaire</strong>, il y a une astuce : on cherche à ajuster un modèle <strong>polynomial</strong>.</p>
+<p>Pour un ordre <span class="arithmatex">\(k\)</span>, il aura la forme :</p>
+<p><span class="arithmatex">\(y = \alpha_1 x + \alpha_2 x^2 + ... + \alpha_n x^n + b + \epsilon\)</span></p>
+<p>Il y a alors une astuce : si on considère <span class="arithmatex">\(x\)</span>, <span class="arithmatex">\(x^2\)</span>, ..., <span class="arithmatex">\(x^n\)</span> comme <span class="arithmatex">\(n\)</span> variables d'entrée, alors on reconnait un problème de <strong>régression multiple</strong> !</p>
+<p>On peut donc le traiter avec les mêmes méthodes qu'un problème linéaire.</p>
+<p>Il existe d'autres techniques d'ajustement de modèles non-linéaires, que nous ne traiterons pas dans le cadre de ce cours.</p>
+<h3 id="exemple-de-probleme">Exemple de problème</h3>
+<p><strong>Est-il possible de prédire l'intensité du rayonnement solaire à partir du nombre de taches solaires ?</strong></p>
+<p>Les taches solaires sont des zones de "faible" température (4500 K contre 5800 K) la surface du soleil (photosphère).
+Elles apparaissent lorsque l'apport de chaleur à la surface par convection est inhibé par une concentration de lignes de champs magnétique.</p>
+<p>On sait observer les taches solaires depuis l'antiquité, et on a des mesures du nombre taches solaires depuis le XVIIème, qui varie entre 0 et 350 environ.
+On l'utilise comme un marqueur de l'activité solaire depuis le milieu XIXème siècle.</p>
+<p>Un autre marqueur connu de l'activité solaire est l'"irradiance solaire" totale ou TSI en anglais.
+Il s'agit de la puissance du rayonnement solaire reçue en haut de l'atmosphère ter restre, par unité de surface.
+Sa valeur est d'environ 1363 <span class="arithmatex">\(W/m^2\)</span>, avec de légères variations suivant l'activité solaire.</p>
+<p>La TSI est un paramètre clé en climatologie, puisqu'il correspond à l'énergie apportée par le soleil à la Terre.
+Mais sa mesure n'est pas aisée : il ne peut être obtenu que par des satellites.</p>
+<p>Voici l'évolution du nombre de taches solaires et du TSI depuis 1948 jusqu'à 2024 :</p>
+<p><img alt="Taches solaires et TSI en fonction de l'année" src="../img/Chap3_exemple_taches_solaires_tsi_annees.png" /></p>
+<p>On a ici 20 points par an, avec un filtrage de moyenne glissante sur une 1/2 année, soit 1531 points au total.
+Elles sont issues de l'Observatoire Royal de Belgique (SILSO, Dewitte et al. 2022).</p>
+<p>On observe que le nombre de taches solaires comme la TSI suivent les mêmes cycles de 11 ans environ, correspondant aux cycles de l'activité solaire.
+On imagine alors que la corrélation entre les 2 grandeurs doit être forte.</p>
+<p>D'où l'idée suivante : <strong>peut-on entrainer un modèle à estimer la TSI à partir du nombre de taches solaires ?</strong></p>
+<p>Voici les données d'où sont issues les courbes précédentes, au format CSV : <a href="https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap3_sunspots_dataset.csv">Chap3_sunspots_dataset</a></p>
+<p>Le tableau de données qu'il contient est de la forme :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">year</th>
+<th style="text-align: center;">tsi</th>
+<th style="text-align: center;">sunspots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1948.25</td>
+<td style="text-align: center;">1363.743</td>
+<td style="text-align: center;">193.667</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.30</td>
+<td style="text-align: center;">1363.729</td>
+<td style="text-align: center;">196.541</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.35</td>
+<td style="text-align: center;">1363.722</td>
+<td style="text-align: center;">205.891</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.40</td>
+<td style="text-align: center;">1363.713</td>
+<td style="text-align: center;">215.623</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.45</td>
+<td style="text-align: center;">1363.729</td>
+<td style="text-align: center;">218.060</td>
+</tr>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+<tr>
+<td style="text-align: center;">2024.65</td>
+<td style="text-align: center;">1364.015</td>
+<td style="text-align: center;">172.536</td>
+</tr>
+<tr>
+<td style="text-align: center;">2024.70</td>
+<td style="text-align: center;">1364.013</td>
+<td style="text-align: center;">170.525</td>
+</tr>
+<tr>
+<td style="text-align: center;">2024.75</td>
+<td style="text-align: center;">1364.038</td>
+<td style="text-align: center;">171.563</td>
+</tr>
+</tbody>
+</table>
+<p>Il contient pour chacun des 1531 points l'année (sous forme décimale), la TSI moyenne (en <span class="arithmatex">\(W/m^2\)</span>) et le nombre de taches solaires moyen sur une fenêtre d'une 1/2 année.</p>
+<p>Notre problème de régression sera la suivant : <strong>prédire la TSI moyenne sur une 1/2 année à partir du nombre de taches solaires moyen sur cette même fenêtre</strong>.</p>
+<p>Voyons d'abord si une telle régression est possible à partir de ces données.</p>
+<p>Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :</p>
+<pre><code>import pandas as pd
+df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>On peut alors utiliser la méthode "plot" des DataFrames pandas pour afficher la TSI en fonction du nombre de taches solaires, sous la forme d'un <strong>nuage de points</strong> :</p>
+<pre><code>df_dataset.plot(x='sunspots',y='tsi',kind='scatter',c='r',marker='+')
+</code></pre>
+<p>Voici le résultat :</p>
+<p><img alt="Taches solaires en fonction du TSI" src="../img/Chap3_exemple_taches_solaires_tsi.png" /></p>
+<p>On observe comme attendu que les 2 grandeurs ont l'air <strong>fortement corrélées</strong>.
+Cependant, on peut déjà constater que : (1) la relation n'a l'air linéaire que pour des nombres de taches solaires faibles (moins de 150-200), (2) la dispersions des points a l'air d'augmenter avec le nombre de taches solaires.</p>
+<p>Ces observations seront importantes dans la suite.</p>
+<p>On peut également calculer le coefficient de corrélation entre la TSI et le nombre taches solaires, en utilisant la méthode "corr" des DataFrames Pandas :</p>
+<pre><code>df_dataset['tsi'].corr(df_dataset['sunspots'])
+</code></pre>
+<p>On trouve un coefficient de corrélation de 0.89 environ, ce qui confirme une forte corrélation entre les variables.
+Vouloir entrainer un modèle à prédire la TSI à partir du nombre de taches solaires a donc un sens.</p>
+<p><strong>Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.</strong>
+<strong>Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée</strong>.</p>
+<p><strong>L'idée est que nous verrons cet exemple plus en détails en TP.</strong></p>
+<h2 id="mesures-de-performances">Mesures de performances</h2>
+<p>Nous allons passer en revue dans cette section les principaux indicateurs de performances applicables à la régression linéaire.</p>
+<h3 id="table-anova">Table ANOVA</h3>
+<p>Soit un problème de régression dont la variable de sortie est notée <span class="arithmatex">\(y\)</span>.
+On veut évaluer les performances d'un modèle de régression sur un jeu de données issu de ce problème.</p>
+<p>La moyenne des valeurs de <span class="arithmatex">\(y\)</span> au sein de cet échantillon est notée <span class="arithmatex">\(\overline{y}\)</span>.
+La valeur de <span class="arithmatex">\(y\)</span> pour le i-ème individu de cet échantillon sera notée <span class="arithmatex">\(y_i\)</span>.</p>
+<p>Admettons que l'on a ait déterminé un modèle de regression linéaire pour ces données.
+On note <span class="arithmatex">\(\hat{y_i}\)</span> la prédiction de ce modèle linéaire pour le i-ème individu.</p>
+<p>Pour juger de la qualité du modèle, on divise les écarts en 2 groupes :</p>
+<ul>
+<li>Les <strong>écarts résiduels</strong>, ou "résidus" : <span class="arithmatex">\(y_i - \hat{y_i}\)</span></li>
+</ul>
+<p>Il s'agit des écarts non-expliqués par le modèle.</p>
+<ul>
+<li>Les écarts <strong>écarts de régression</strong>, ou "écarts expliqués" : <span class="arithmatex">\(\hat{y_i} - \overline{y}\)</span></li>
+</ul>
+<p>Il s'agit des écarts expliqués par le modèle.</p>
+<p>On a alors l'<strong>écart total</strong> :</p>
+<p><span class="arithmatex">\(y_i - \overline{y} = (y_i - \hat{y_i}) - (\hat{y_i} - \overline{y})\)</span></p>
+<p>On met en général ces écarts sous la forme de variances, en prenant la somme des carrés des <span class="arithmatex">\(p\)</span> individus de cet échantillon :</p>
+<ul>
+<li>
+<p>SCR ("somme des carrés des résidus") : <span class="arithmatex">\(\sum_{i=1}^{p} (y_i - \hat{y_i})^2\)</span></p>
+</li>
+<li>
+<p>SCE ("somme des carrés expliqués") : <span class="arithmatex">\(\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2\)</span></p>
+</li>
+<li>
+<p>SCT ("somme des carrés totale") : <span class="arithmatex">\(\sum_{i=1}^{p} (y_i - \overline{y})^2\)</span></p>
+</li>
+</ul>
+<p>avec <span class="arithmatex">\(SCT = SCR + SCE\)</span></p>
+<p><strong>Un modèle sera d'autant plus performant que la SCR sera faible comparée à la SCT</strong>.</p>
+<p>L'idée est la suivante : plus la SCE est grande (et donc plus la SCR est faible), et plus le modèle <strong>explique</strong> <span class="arithmatex">\(y\)</span> à partir des entrées.</p>
+<p>On range en général ces valeurs sous la forme d'un tableau, nommé "table ANOVA" (contraction en anglais de "ANalysis Of VAriance") :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span class="arithmatex">\(x_i\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(y_i\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(\hat{y_i}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(\hat{y_i} - \overline{y}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\((\hat{y_i} - \overline{y})^2\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(y_i - \hat{y_i}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\((y_i - \hat{y_i})^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span class="arithmatex">\(\overline{x}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(\overline{y}\)</span></th>
+<th style="text-align: center;">SRE</th>
+<th style="text-align: center;">SCR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+</tbody>
+</table>
+<p>On peut trouver des variantes de cette table, avec d'autres informations.</p>
+<h3 id="coefficient-de-determination">Coefficient de détermination</h3>
+<p>La table ANOVA est une représentation plutôt exhaustive des performances en régression linéaire.</p>
+<p>Mais comme souvent, on voudrait pouvoir résumer au mieux les performances avec un score unique dérivé de cette table.</p>
+<p>Le critère le plus utilisé est le <strong>coefficient de détermination</strong>, noté <span class="arithmatex">\(R^2\)</span> :</p>
+<p><span class="arithmatex">\(R^2 = \frac{SCE}{SCT} = \frac{\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2}{\sum_{i=1}^{p} (y_i - \overline{y})^2} = 1 - \frac{SCR}{SCT} = 1 - \frac{\sum_{i=1}^{p} (y_i - \hat{y_i})^2}{\sum_{i=1}^{p} (y_i - \overline{y})^2}\)</span></p>
+<p>Le <span class="arithmatex">\(R^2\)</span> s'interprète comme <strong>la proportion de l'écart total expliquée par le modèle</strong>.</p>
+<p>Il s'agit donc d'un score entre 0 et 1 : plus la valeur est proche de 1, et meilleur est le modèle.</p>
+<p>Par exemple, mettons que l'on utilise la luminosité d'une étoile pour essayer de prédire son rayon, grâce à une régression linéaire.
+Si le <span class="arithmatex">\(R^2\)</span> du modèle est de 0.75 sur un échantillon de données, cela veut dire que le modèle explique 75% de la variation du rayon de l'étoile.
+Les 25% restants sont expliqués par les erreurs.</p>
+<p>On remarque que le <span class="arithmatex">\(R^2\)</span> correspond au carré du coefficient de corrélation (voir Chapitre 1) entre les valeurs observées <span class="arithmatex">\(y_i\)</span> et les valeurs prédites <span class="arithmatex">\(\hat{y_i}\)</span>.</p>
+<h3 id="analyse-des-residus">Analyse des résidus</h3>
+<p>Lorsque les performances d'un modèle de régression linéaire ont l'air mauvaises, on a envie de comprendre pourquoi.</p>
+<p>La bonne approche est de réaliser une <strong>analyse des résidus</strong>.</p>
+<p>Dans un 1er temps, cette analyse peut être <strong>visuelle</strong>.
+On affiche simplement les résidus en fonction de <span class="arithmatex">\(x\)</span> ou de <span class="arithmatex">\(y_i\)</span>, et on vérifie s'ils ont l'air d'avoir le comportement attendu de <span class="arithmatex">\(\epsilon\)</span> : </p>
+<ul>
+<li>
+<p>Indépendance des observations.</p>
+</li>
+<li>
+<p>Moyenne nulle.</p>
+</li>
+<li>
+<p>Ecart-type constant.</p>
+</li>
+<li>
+<p>Normalité.</p>
+</li>
+</ul>
+<p>Dans l'idéal, on attend donc <strong>un nuage de points aléatoires</strong>, stationnaire, sans tendances en fonction de <span class="arithmatex">\(x\)</span> ou des <span class="arithmatex">\(y_i\)</span>.</p>
+<p>Si ce n'est pas le cas, alors il faut soit :</p>
+<ul>
+<li>
+<p><strong>Revoir notre modèle</strong> (une régression linéaire n'est peut-être pas adaptée).</p>
+</li>
+<li>
+<p><strong>Nettoyer nos données</strong> (des outliers ou des données abérrantes sont peut-être la cause du mauvais ajustement).</p>
+</li>
+<li>
+<p><strong>Ajouter des variables explicatives</strong> (<span class="arithmatex">\(x\)</span> n'est peut-être pas suffisant pour expliquer <span class="arithmatex">\(y\)</span> de manière satisfaisante).</p>
+</li>
+</ul>
+<p>En cas de doute, on peut procéder à des tests de ces hypothèses, mais ils ne sont pas tous simples à mettre en place.</p>
+<h4 id="normalite">Normalité</h4>
+<p>Pour vérifier si les résidus suivent une loi normale de moyenne nulle, on peut afficher leurs quantiles en fonction ceux attendus d'une loi normale.</p>
+<p>On obtient alors un graphique appelé "droite de Henry".</p>
+<p>Si les résidus ne suivent pas une loi normale, ils s'éloigneront de la diagonale.</p>
+<h4 id="homoscedasticite">Homoscédasticité</h4>
+<p>On appelle "homoscédasticité" le fait d'avoir un écart-type constant pour toutes les observations.
+Si cette hypothèse n'est pas vérifiée, on parle d'"hétéroscédasticité".</p>
+<p>Il existe différents tests d'homoscédasticité, par exemple le test de White, mais le plus simple reste l'interprétation visuelle :</p>
+<ul>
+<li>
+<p>Si les résidus en fonction de <span class="arithmatex">\(x\)</span> s'éloignent de plus en plus de 0, on a probablement une hétéroscédasticité.</p>
+</li>
+<li>
+<p>Si on observe une tendance dans les résidus en fonction des <span class="arithmatex">\(y_i\)</span>, on a probablement une hétéroscédasticité.</p>
+</li>
+</ul>
+<h4 id="independance">Indépendance</h4>
+<p>Il n'est pas simple de vérifie l'indépendance des résidus en fonction des observations.</p>
+<p>Un exemple de test connu est celui de Durbin-Watson.
+Mais encore une fois, le plus simple reste l'interprétation visuelle :</p>
+<ul>
+<li>Si on observe une tendance dans les résidus en fonction de <span class="arithmatex">\(x\)</span>, on a probablement une dépendance des résidus aux observations.</li>
+</ul>
+<h2 id="methodes-de-base">Méthodes de base</h2>
+<h3 id="moindres-carres-ordinaire">Moindres carrés ordinaire</h3>
+<p>Les <strong>moindres carrés ordinaire</strong> (MCO) est la méthode de régression linéaire la plus basique qui soit.
+S'il s'agit originellement d'une méthode de <strong>statistiques descriptives</strong>, nous verrons que l'on peut s'en servir pour faire de l'<strong>inférence statistique</strong>.</p>
+<h4 id="principe">Principe</h4>
+<p>Comme nous venons de le mentionner, les MCO a originellement un but descriptif.</p>
+<p>Si on a un jeu de données contenant une variable explicative <span class="arithmatex">\(x\)</span> et une variable de réponse <span class="arithmatex">\(y\)</span>, on cherche :  <strong>quelle droite d'équation <span class="arithmatex">\(y = a x + b\)</span> représente le mieux la distribution des <span class="arithmatex">\(p\)</span> points <span class="arithmatex">\((x_i,y_i)\)</span> de cet échantillon ?</strong></p>
+<p><span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span> seront alors 2 indicateurs statistiques caractérisant notre échantillon.</p>
+<p>Mais comment déterminer qu'une droite représente au mieux un nuage de points ?</p>
+<p>La méthode des MCO considère que la droite d'équation <span class="arithmatex">\(y = a x + b\)</span> représentant le mieux les <span class="arithmatex">\(p\)</span> point de notre échantillon est celle qui <strong>minimise</strong> :</p>
+<p><span class="arithmatex">\(\sum_{k=1}^{p} (y_i - a x_i - b)^2\)</span></p>
+<p>D'où le nom de la méthode : on cherche les "moindres carrés".</p>
+<p>On peut montrer que les paramètres <span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span> minimisant cette fonction sont :</p>
+<p><span class="arithmatex">\(a = \frac{\sum_{k=1}^{p} (x_i-\overline{x})(y_i-\overline{y})}{\sum_{k=1}^{p} (x_i-\overline{x})^2}\)</span></p>
+<p><span class="arithmatex">\(b = \overline{y} - a \overline{x}\)</span></p>
+<p>On notera pour simplifier les expressions :</p>
+<p><span class="arithmatex">\(sc_{xx} = \sum_{k=1}^{p} (x_i-\overline{x})^2\)</span></p>
+<p><span class="arithmatex">\(sc_{yy} = \sum_{k=1}^{p} (y_i-\overline{y})^2\)</span></p>
+<p><span class="arithmatex">\(sc_{xy} = \sum_{k=1}^{p} (x_i-\overline{x})(y_i-\overline{y})\)</span></p>
+<p>D'où <span class="arithmatex">\(a = \frac{sc_{xy}}{sc_{xx}}\)</span></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La droite déterminée par les MCO passera toujours par le point <span class="arithmatex">\((\overline{x},\overline{y})\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="meilleur-estimateur-lineaire-non-biaise-blue">Meilleur Estimateur Linéaire Non-biaisé (BLUE)</h4>
+<p>Revenons à notre problème de régression linéaire simple : à partir de notre échantillon, nous voulons trouver un modèle liant nos variables <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span>, de la forme <span class="arithmatex">\(y = \alpha x + \beta + \epsilon\)</span>.</p>
+<p>Sous certaines conditions sur <span class="arithmatex">\(\espilon\)</span>, nous pouvons appliquer le théorème de <span class="arithmatex">\(Gauss-Markov\)</span> à notre problème :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Théorème de Gauss-Markov</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">On cherche à modéliser une relation <span class="arithmatex">\(y = \alpha x + \beta + \epsilon\)</span> entre 2 variables <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span>, à partir d'un échantillon de réalisations <span class="arithmatex">\((x_i,y_i)\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Si <span class="arithmatex">\(\epsilon\)</span> vérifie :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Une moyenne nulle.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Un écart-type constant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Une non-corrélation de ses réalisations.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alors, les paramètres <span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span> de la droite déterminée par les MCO est le <strong>Meilleur Estimateur Linéaire Non-biaisé</strong> ("BLUE" en anglais) de <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>On peut donc se servir de la méthode des MCO pour estimer <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> à partir de notre échantillon de points <span class="arithmatex">\((x_i,y_i)\)</span>.</p>
+<p>Il est même possible d'estimer l'<strong>écart-type de <span class="arithmatex">\(\epsilon\)</span></strong> avec l'estimateur suivant :</p>
+<p><span class="arithmatex">\(s = sqrt{\frac{\sum_{k=1}^{p} (y_i-\overline{y_i})^2}{n-2}}\)</span></p>
+<p>Reste alors une problématique : </p>
+<p>Si j'utilise mon modèle pour réaliser une prédiction <span class="arithmatex">\(\overline{y_j}\)</span> à partir d'une nouvelle valeur <span class="arithmatex">\(x_j\)</span>, c'est-à-dire en calculant <span class="arithmatex">\(\overline{y_j} = \alpha x_j + \beta\)</span>, <strong>à quel point puis-je avoir confiance en ma prédiction ?</strong></p>
+<h4 id="intervalles-de-confiance-et-de-prediction">Intervalles de confiance et de prédiction</h4>
+<p>Comme pour tout problème d'inférence statistique, lorsque l'on a obtenu notre modèle de régression linéaire, on se pose alors les questions suivantes :</p>
+<ul>
+<li>
+<p>Quelle est mon <strong>incertitude sur les <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span></strong> trouvés à partir de mon échantillon ?</p>
+</li>
+<li>
+<p>Pour une valeur de <span class="arithmatex">\(x\)</span> fixée, quelle est mon <strong>incertitude sur la moyenne des <span class="arithmatex">\(y\)</span></strong> avec mon modèle de régression linéaire ?</p>
+</li>
+<li>
+<p>Pour un nouvelle observation de <span class="arithmatex">\(x\)</span>, quelle est mon <strong>incertitude sur la valeur de <span class="arithmatex">\(y\)</span> prédite</strong> par mon modèle de régression linéaire ?</p>
+</li>
+</ul>
+<p>Pour répondre à ces questions, nous allons utiliser des <strong>intervalles de confiance</strong>.</p>
+<ul>
+<li>
+<p>Les intervalles de confiance sur <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> :</p>
+</li>
+<li>
+<p>L'intervalle de confiance sur la moyenne :</p>
+</li>
+<li>
+<p>L'intervalle de prédiction :</p>
+</li>
+</ul>
+<h4 id="generalisation-a-la-regression-lineaire-multiple">Généralisation à la régression linéaire multiple</h4>
+<h4 id="application-a-notre-exemple">Application à notre exemple</h4>
+<h4 id="remarques">Remarques</h4>
+<h3 id="perceptron-multicouche">Perceptron multicouche</h3>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Chap2_Classification_supervisee/" class="btn btn-neutral float-left" title="II. Classification supervisée"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Chap4_Partitionnement/" class="btn btn-neutral float-right" title="IV. Partitionnement">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Chap2_Classification_supervisee/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Chap4_Partitionnement/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
