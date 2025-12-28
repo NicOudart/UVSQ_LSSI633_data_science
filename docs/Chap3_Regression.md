@@ -84,9 +84,9 @@ On reconnait la formule d'un hyperplan de dimension $n$.
 
 On peut mettre cette formule sous forme matricielle :
 
-$y = \Alpha.x + \epsilon$
+$y = \A.x + \epsilon$
 
-avec $\Alpha = 
+avec $A = 
       \begin{pmatrix}
 	  \beta\\
       \alpha_1\\
@@ -258,11 +258,11 @@ On range en général ces valeurs sous la forme d'un tableau, nommé "table ANOV
 |:---:|:---:|:---------:|:------------------------:|:----------------------------:|:---------------:|:-------------------:|
 |...  |...  |...        |...                       |...                           |...              |...                  |
 
-|$\overline{x}$|$\overline{y}$|SRE|SCR|
-|:------------:|:------------:|:-:|:-:|
-|...           |...           |...|...|
+|$\overline{x}$|$\overline{y}$|SCE|SCR|SCT|
+|:------------:|:------------:|:-:|:-:|:-:|
+|...           |...           |...|...|...|
 
-On peut trouver des variantes de cette table, avec d'autres informations.
+On peut trouver des variantes de cette table, mais elle contient toujours au moins la SCE, la SCR et la SCT.
 
 ### Coefficient de détermination
 
@@ -388,7 +388,7 @@ D'où $a = \frac{sc_{xy}}{sc_{xx}}$
 
 Revenons à notre problème de régression linéaire simple : à partir de notre échantillon, nous voulons trouver un modèle liant nos variables $x$ et $y$, de la forme $y = \alpha x + \beta + \epsilon$.
 
-Sous certaines conditions sur $\espilon$, nous pouvons appliquer le théorème de $Gauss-Markov$ à notre problème :
+Sous certaines conditions sur $\epsilon$, nous pouvons appliquer le **théorème de Gauss-Markov** à notre problème :
 
 |Théorème de Gauss-Markov|
 |:-|
@@ -403,11 +403,11 @@ On peut donc se servir de la méthode des MCO pour estimer $\alpha$ et $\beta$ �
 
 Il est même possible d'estimer l'**écart-type de $\epsilon$** avec l'estimateur suivant :
 
-$s = sqrt{\frac{\sum_{k=1}^{p} (y_i-\overline{y_i})^2}{n-2}}$
+$s = \sqrt{\frac{\sum_{k=1}^{p} (y_i-\overline{y_i})^2}{n-2}}$
 
 Reste alors une problématique : 
 
-Si j'utilise mon modèle pour réaliser une prédiction $\overline{y_j}$ à partir d'une nouvelle valeur $x_j$, c'est-à-dire en calculant $\overline{y_j} = \alpha x_j + \beta$, **à quel point puis-je avoir confiance en ma prédiction ?**
+Si j'utilise mon modèle pour réaliser une prédiction $\overline{y_{p+1}}$ à partir d'une nouvelle valeur $x_{p+1}$, c'est-à-dire en calculant $\overline{y_{p+1}} = \alpha x_{p+1} + \beta$, **à quel point puis-je avoir confiance en ma prédiction ?**
 
 #### Intervalles de confiance et de prédiction
 
@@ -421,19 +421,70 @@ Comme pour tout problème d'inférence statistique, lorsque l'on a obtenu notre 
 
 Pour répondre à ces questions, nous allons utiliser des **intervalles de confiance**.
 
-* Les intervalles de confiance sur $\alpha$ et $\beta$ :
+L'hypothèse de **normalité** de $\epsilon$ implique que les estimations de $\alpha$ et de $\beta$ à partir d'un échantillon **suivent une loi normale**.
+Mais nous ne pouvons qu'estimer son écart-type, puisque nous ne disposons que d'un échantillon.
+
+Il nous faut donc utiliter la **loi de Student**, et plus particulièrement le "t de Student".
+
+|Rappels sur le t de Student|
+|:-|
+|Soit une population de moyenne $\mu$ et d'écart-type inconnu, dont on récupère un échantillon de $p$ points, de moyenne estimée $\overline{x}$ et d'écart-type estimé $s$.|
+|Alors la variable aléatoire $t = \frac{\overline{x}-\mu}{s/\sqrt{p}}$ suit une loi de Student, dont on peut se servir pour établir un intervalle de confiance sur l'estimation $\overline{x}$ de $\mu$.|
+||
+|On note $t_{\gamma}^{k}$ le **quantile** de seuil d'erreur $\gamma$ de la loi de Student à $k$ **degrés de liberté**.|
+|Le **seuil de confiance** est alors $1-\gamma$ : pour seuil de confiance à 99% on prendra $\gamma = 0.01$.|
+|La loi normale étant symétrique, pour déterminer un **intervalle de confiance** de seuil $1-\gamma$, il faut en réalité utiliser $t_{\gamma/2}^{k}$.|
+|Donc pour un intervalle de confiance à 99% on prendra $\gamma = 0.005$.|
+||
+|On a alors :|
+|$p(\overline{x} - t_{\gamma/2}^{p-1} \frac{s}{\sqrt{p}} \leq \mu \leq \overline{x} + t_{\gamma/2}^{p-1} \frac{s}{\sqrt{p}}) = 1 - \gamma$|
+|avec $k = p-1$ car on a utilisé 1 degré de liberté pour estimer $\mu$.|
+||
+|Nota Bene :|
+|Il est à noter que plus $p$ est grand (et donc plus $k$ est grand) et plus le $t$ se rapproche d'une loi normale.|
+
+Dans notre cas, nous avons utilisé 2 degrés de liberté pour estimer $\alpha$ et $\beta$, nous utiliserons donc le t de Student pour $p-2$ degrés de liberté.
+
+On peut donc établir les **intervalles de confiance** à $1-\gamma$ suivants **sur $a$ et $b$** :
+
+$\alpha \in [a - \t_{\gamma/2}^{p-2} s(a) ; a + \t_{\gamma/2}^{p-2} s(a)]$
+
+$\beta \in [b - \t_{\gamma/2}^{p-2} s(b) ; b + \t_{\gamma/2}^{p-2} s(b)]$
+
+avec les écart-types estimés :
+
+$s(a) = \frac{s}{\sqrt{sc_{xx}}}$
+
+$s(b) = s \sqrt{\frac{1}{p} + \frac{\overline{x}^2}{sc_{xx}}}$
+
+|Nota Bene|
+|:-|
+|Il est à noter que si tous les $x_i$ de l'échantillon sont égaux, alors $x_i = \overline{x}$, d'où $sc_{xx} = 0$ et donc les intervalles de confiance deviennent infinis.|
+|Ce résultat est attendu, puisqu'on ne peut pas tirer d'information sur la relation entre $x$ et $y$ avec des points pour un seul $x_i$.|
+
+De la même manière, on peut estimer pour une valeur de $x$ donnée $x=u$ l'**intervalle de confiance** à $1-\gamma$ **sur la moyenne des $y$** :
+
+$\alpha u + \beta \in [a u + b - t_{\gamma/2}^{p-2} s(\hat{y}) ; a u + b + t_{\gamma/2}^{p-2} s(\hat{y})]$
+
+avec
 
 
 
-* L'intervalle de confiance sur la moyenne :
+Enfin, on peut estimer l'**intervalle de prédiction** sur $y_{p+1}$ pour une **nouvelle donnée** $x_{p+1}$ : 
 
 
 
-* L'intervalle de prédiction :
+|Nota Bene|
+|:-|
+|Il est à noter que :|
+|- Les intervalles de confiance sur la moyenne des $y$ sont toujours plus petits que les intervalles de prévision.|
+|- La droite obtenue par MCO passe toujours par $(\overline{x},\overline{y})$, donc plus on s'éloigne de ce point, plus les intervalles de confiance et de prédiction vont augmenter.|
 
-
+#### Implémentation Scipy
 
 #### Généralisation à la régression linéaire multiple
+
+#### Implémentation Scikit-Learn
 
 #### Application à notre exemple
 
