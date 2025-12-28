@@ -84,7 +84,7 @@ On reconnait la formule d'un hyperplan de dimension $n$.
 
 On peut mettre cette formule sous forme matricielle :
 
-$y = \A.x + \epsilon$
+$y = A.x + \epsilon$
 
 avec $A = 
       \begin{pmatrix}
@@ -360,23 +360,23 @@ Mais comment déterminer qu'une droite représente au mieux un nuage de points ?
 
 La méthode des MCO considère que la droite d'équation $y = a x + b$ représentant le mieux les $p$ point de notre échantillon est celle qui **minimise** :
 
-$\sum_{k=1}^{p} (y_i - a x_i - b)^2$
+$\sum_{i=1}^{p} (y_i - a x_i - b)^2$
 
 D'où le nom de la méthode : on cherche les "moindres carrés".
 
 On peut montrer que les paramètres $a$ et $b$ minimisant cette fonction sont :
 
-$a = \frac{\sum_{k=1}^{p} (x_i-\overline{x})(y_i-\overline{y})}{\sum_{k=1}^{p} (x_i-\overline{x})^2}$
+$a = \frac{\sum_{i=1}^{p} (x_i-\overline{x})(y_i-\overline{y})}{\sum_{i=1}^{p} (x_i-\overline{x})^2}$
 
 $b = \overline{y} - a \overline{x}$
 
 On notera pour simplifier les expressions :
 
-$sc_{xx} = \sum_{k=1}^{p} (x_i-\overline{x})^2$
+$sc_{xx} = \sum_{i=1}^{p} (x_i-\overline{x})^2$
 
-$sc_{yy} = \sum_{k=1}^{p} (y_i-\overline{y})^2$
+$sc_{yy} = \sum_{i=1}^{p} (y_i-\overline{y})^2$
 
-$sc_{xy} = \sum_{k=1}^{p} (x_i-\overline{x})(y_i-\overline{y})$
+$sc_{xy} = \sum_{i=1}^{p} (x_i-\overline{x})(y_i-\overline{y})$
 
 D'où $a = \frac{sc_{xy}}{sc_{xx}}$
 
@@ -403,11 +403,11 @@ On peut donc se servir de la méthode des MCO pour estimer $\alpha$ et $\beta$ �
 
 Il est même possible d'estimer l'**écart-type de $\epsilon$** avec l'estimateur suivant :
 
-$s = \sqrt{\frac{\sum_{k=1}^{p} (y_i-\overline{y_i})^2}{n-2}}$
+$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{n-2}}$
 
 Reste alors une problématique : 
 
-Si j'utilise mon modèle pour réaliser une prédiction $\overline{y_{p+1}}$ à partir d'une nouvelle valeur $x_{p+1}$, c'est-à-dire en calculant $\overline{y_{p+1}} = \alpha x_{p+1} + \beta$, **à quel point puis-je avoir confiance en ma prédiction ?**
+Si j'utilise mon modèle pour réaliser une prédiction $\hat{y_{p+1}}$ à partir d'une nouvelle valeur $x_{p+1}$, c'est-à-dire en calculant $\hat{y_{p+1}} = \alpha x_{p+1} + \beta$, **à quel point puis-je avoir confiance en ma prédiction ?**
 
 #### Intervalles de confiance et de prédiction
 
@@ -447,9 +447,9 @@ Dans notre cas, nous avons utilisé 2 degrés de liberté pour estimer $\alpha$ 
 
 On peut donc établir les **intervalles de confiance** à $1-\gamma$ suivants **sur $a$ et $b$** :
 
-$\alpha \in [a - \t_{\gamma/2}^{p-2} s(a) ; a + \t_{\gamma/2}^{p-2} s(a)]$
+$\alpha \in [a - t_{\gamma/2}^{p-2} s(a) ; a + t_{\gamma/2}^{p-2} s(a)]$
 
-$\beta \in [b - \t_{\gamma/2}^{p-2} s(b) ; b + \t_{\gamma/2}^{p-2} s(b)]$
+$\beta \in [b - t_{\gamma/2}^{p-2} s(b) ; b + t_{\gamma/2}^{p-2} s(b)]$
 
 avec les écart-types estimés :
 
@@ -468,9 +468,18 @@ $\alpha u + \beta \in [a u + b - t_{\gamma/2}^{p-2} s(\hat{y}) ; a u + b + t_{\g
 
 avec
 
-
+$s(\hat{y}) = s \sqrt{\frac{1}{p} + \frac{(u-\overline{x})^2}{sc_{xx}}}$
 
 Enfin, on peut estimer l'**intervalle de prédiction** sur $y_{p+1}$ pour une **nouvelle donnée** $x_{p+1}$ : 
+
+$y_{p+1} \in [a x_{p+1} + b - t_{\gamma/2}^{p-2} s(y_{p+1}) ; a x_{p+1} + b + t_{\gamma/2}^{p-2} s(y_{p+1})]$
+
+avec
+
+$s(y_{p+1}) = s \sqrt{1 + \frac{1}{p} + \frac{(x_{p+1}-\overline{x})^2}{sc_{xx}}}$
+
+En général, lorsque l'on affiche par-dessus le nuage de points la droite du modèle obtenu par MCO, on affiche aussi l'intervalle de confiance sur la moyenne des $y$, et l'intervalle de prédiction.
+Le graphique obtenu est de la forme suivante :
 
 
 
@@ -484,6 +493,56 @@ Enfin, on peut estimer l'**intervalle de prédiction** sur $y_{p+1}$ pour une **
 
 #### Généralisation à la régression linéaire multiple
 
+$\begin{cases}
+y_1 = \alpha_1 x_{1,1} + \alpha_2 x_{1,2} + ... + \alpha_n x_{1,n} + \beta + \epsilon_1\\
+y_2 = \alpha_1 x_{2,1} + \alpha_2 x_{2,2} + ... + \alpha_n x_{2,n} + \beta + \epsilon_2\\
+...\\
+y_p = \alpha_1 x_{p,1} + \alpha_2 x_{p,2} + ... + \alpha_n x_{p,n} + \beta + \epsilon_p\\
+\end{cases}$
+
+
+
+$Y = X A + E$
+
+avec
+
+$Y = 
+    \begin{pmatrix}
+	\y_1\\
+    \y_2\\
+	\vdots\\
+    \y_p	
+    \end{pmatrix}$
+	
+$X = 
+    \begin{pmatrix}
+    1 & x_{1,1} & x_{1,2} & \cdots & x_{1,n} \\
+    1 & x_{2,1} & x_{2,2} & \cdots & x_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    1 & x_{p,1} & x_{p,2} &\cdots & x_{p,n} 
+    \end{pmatrix}$
+
+$A = 
+    \begin{pmatrix}
+	\beta\\
+    \alpha_1\\
+    \alpha_2\\
+	\vdots\\
+    \alpha_n 
+    \end{pmatrix}$
+	
+$E = 
+    \begin{pmatrix}
+	\epsilon_1\\
+    \epsilon_2\\
+	\vdots\\
+    \epsilon_p 
+    \end{pmatrix}$
+	
+$MSE = \frac{1}{p} \sum_{i=1}^{p} (y_i - \sum_{j=1}^{n} \alpha_j x_{i,j} - \beta)^2$
+	
+$\hat{A} = (X^T X)^{-1} X^T Y$
+	
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
