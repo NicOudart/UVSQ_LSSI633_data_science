@@ -689,7 +689,7 @@ La méthode de la classification de Bayes a les **avantages** suivants :
 
 * Elle est relativement **simple** à mettre en place, avec **peu de paramètres**.
 
-* Les décisions qu'elle prend sont complément **expliquées** et **interprétables** : un humain peut les comprendre.
+* Les décisions qu'elle prend sont complètement **expliquées** et **interprétables** : un humain peut les comprendre.
 
 Mais cette méthode a aussi les **limites** suivantes :
 

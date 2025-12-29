@@ -493,6 +493,14 @@ Le graphique obtenu est de la forme suivante :
 
 #### Généralisation à la régression linéaire multiple
 
+Les MCO peut être généralisée pour les problèmes à plus d'une variable explicative (nombre de variables explicatives $n>1$).
+
+Rappelons que le modèle de régression linéaire multiple à ajuster est le suivant :
+
+$y = \alpha_1 x_1 + \alpha_2 x_2 + ... + \alpha_n x_n + \beta + \epsilon$
+
+Si nous disposons de $p$ observations dans notre jeu de données d'entrainement, il faut que nos paramètres $\alpha_1$, ..., $\alpha_n$ et $\beta$ vérifient : 
+
 $\begin{cases}
 y_1 = \alpha_1 x_{1,1} + \alpha_2 x_{1,2} + ... + \alpha_n x_{1,n} + \beta + \epsilon_1\\
 y_2 = \alpha_1 x_{2,1} + \alpha_2 x_{2,2} + ... + \alpha_n x_{2,n} + \beta + \epsilon_2\\
@@ -500,7 +508,7 @@ y_2 = \alpha_1 x_{2,1} + \alpha_2 x_{2,2} + ... + \alpha_n x_{2,n} + \beta + \ep
 y_p = \alpha_1 x_{p,1} + \alpha_2 x_{p,2} + ... + \alpha_n x_{p,n} + \beta + \epsilon_p\\
 \end{cases}$
 
-
+Un système d'équations linéaires que l'on peut mettre sous la forme matricielle suivante :
 
 $Y = X A + E$
 
@@ -508,10 +516,10 @@ avec
 
 $Y = 
     \begin{pmatrix}
-	\y_1\\
-    \y_2\\
+	y_1\\
+    y_2\\
 	\vdots\\
-    \y_p	
+    y_p	
     \end{pmatrix}$
 	
 $X = 
@@ -539,14 +547,49 @@ $E =
     \epsilon_p 
     \end{pmatrix}$
 	
+Avec les mêmes hypothèses sur $\epsilon$ que pour la régression linéaire simple, on peut appliquer les MCO pour trouver le **meilleur estimateur linéaire non-biaisé de $A$**.
+
+Cette fois-ci, il s'agit de la matrice $\hat{A}$ minimisant l'**erreur quadratique moyenne** (ou "MSE" en anglais) :
+	
 $MSE = \frac{1}{p} \sum_{i=1}^{p} (y_i - \sum_{j=1}^{n} \alpha_j x_{i,j} - \beta)^2$
+
+On peut montrer que ce minimum est obtenu pour $\hat{A}$ vérifiant l'**équation normale** suivante :
 	
 $\hat{A} = (X^T X)^{-1} X^T Y$
+
+En pratique, il est rare que l'on résolve directement l'équation normale : (1) sa résolution est complexe, (2) la matrice $X^T X$ peut ne pas être inversible (si $p<n$ ou si certaines equations sont redondantes).
+
+C'est pourquoi la plupart des implémentations des MCO pour de la régression linéaire multiple calculent plutôt :
+
+$\hat{A} = X^{+} Y$
+
+avec $X^{+}$ le pseudo-inverse de $X$.
+
+Celui-ci est calculé en utilisant la décomposition en valeurs singulières (SVD) de $X$.
+
+Cette méthode à l'avantage d'être plus rapide que de résoudre l'équation normale directement, et que le pseudo-inverse de $X$ existe toujours.
 	
 #### Implémentation Scikit-Learn
 
 #### Application à notre exemple
 
 #### Remarques
+
+La méthode des Moindres Carrés Ordinaire a les **avantages** suivants :
+
+* Elle est relativement **simple** à mettre en place, avec **peu de paramètres**.
+
+* Les prédictions qu'elle réalise sont complètement **expliquées** et **interprétables** : un humain peut les comprendre.
+On peut établir des **intervalles de confiance** sur les prédictions.
+
+* Une fois le modèle entrainé, le temps de **calcul des prédictions** est **rapide** (linéaire par rapport au nombre de prédictions).
+
+Mais cette méthode a aussi les **limites** suivantes :
+
+* Le temps de calcul de la SVD **augmente quadratiquement avec le nombre de variables explicatives !**
+
+* Elle demande **beaucoup de mémoire** pour manipuler la matrice $X$.
+
+Ces 2 désavantages sont les raisons pour lesquelles on utilise très peu les MCO dans les cas où le nombre de variables explicatives est grand.
 
 ### Perceptron multicouche
