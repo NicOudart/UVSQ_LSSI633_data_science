@@ -577,7 +577,7 @@ Cette méthode à l'avantage d'être plus rapide que de résoudre l'équation no
 
 La méthode des Moindres Carrés Ordinaire a les **avantages** suivants :
 
-* Elle est relativement **simple** à mettre en place, avec **peu de paramètres**.
+* Elle est relativement **simple** à mettre en place, avec **peu de paramètres**, et **aucun hyperparamètre**.
 
 * Les prédictions qu'elle réalise sont complètement **expliquées** et **interprétables** : un humain peut les comprendre.
 On peut établir des **intervalles de confiance** sur les prédictions.
