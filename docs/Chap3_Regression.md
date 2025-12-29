@@ -590,6 +590,9 @@ Mais cette méthode a aussi les **limites** suivantes :
 
 * Elle demande **beaucoup de mémoire** pour manipuler la matrice $X$.
 
-Ces 2 désavantages sont les raisons pour lesquelles on utilise très peu les MCO dans les cas où le nombre de variables explicatives est grand.
+Ces 2 désavantages sont les raisons pour lesquelles **on utilise très peu les MCO dans les cas où le nombre de variables explicatives est grand**.
+
+Même s'il est possible d'utiliser les MCO pour de la régression non-linéaire, avec l'astuce de la régression polynomiale, plus l'ordre du polynôme est grand et plus le nombre de variables explicatives est grand.
+**On utilise donc rarement les MCO pour des modèles non-linéaires complexes**.
 
 ### Perceptron multicouche
