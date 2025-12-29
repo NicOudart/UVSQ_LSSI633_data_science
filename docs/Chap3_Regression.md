@@ -284,6 +284,11 @@ Les 25% restants sont expliqués par les erreurs.
 
 On remarque que le $R^2$ correspond au carré du coefficient de corrélation (voir Chapitre 1) entre les valeurs observées $y_i$ et les valeurs prédites $\hat{y_i}$.
 
+|Nota Bene|
+|:-|
+|En régression linéaire simple, le $R^2$ est égal au carré du coefficient de corrélation entre $x$ et $y$.|
+|Ce n'est pas vrai pour la régression linéaire multiple.|
+
 ### Analyse des résidus
 
 Lorsque les performances d'un modèle de régression linéaire ont l'air mauvaises, on a envie de comprendre pourquoi.
