@@ -24,6 +24,8 @@ Dans ce cas, une même réalisation des variables d'entrée pourra être associ�
 
 Mais si les variables d'entrée et de sortie sont **corrélées**, la relation sera tout de même utile pour réaliser des **prédictions** avec une certaine marge d'erreur.
 
+![Relations déterministe et probabiliste](img/Chap3_relation_deterministe_probabiliste.png)
+
 C'est souvent le cas en Physique, lorsque l'on réalise des mesures pour expliquer un phénomène.
 Si on reprend notre exemple précédent : la théorie du corps noir n'explique pas parfaitement la rayonnement d'une étoile, et on peut avoir des erreurs de mesures de $L$, $T$ et $R$.
 Mais si $L$, $T$ et $R$ sont correlées, alors on peut essayer de prédire $R$ à partir de $L$ et $T$, moyennant une certaine erreur.
@@ -408,7 +410,7 @@ On peut donc se servir de la méthode des MCO pour estimer $\alpha$ et $\beta$ �
 
 Il est même possible d'estimer l'**écart-type de $\epsilon$** avec l'estimateur suivant :
 
-$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{n-2}}$
+$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{p-2}} = \sqrt{\frac{sc_{yy}}{p-2}}$
 
 Reste alors une problématique : 
 
