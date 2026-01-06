@@ -67,10 +67,12 @@ Nous verrons que l'on fait en général les hypothèses suivantes sur $\epsilon$
 
 * **Moyenne nulle**.
 
-* **Ecart-type constant**.
+* **Ecart-type constant** avec $x$.
 
 Afin de pouvoir donner un "intervalle de confiance" aux prédictions, on va en plus ajouter une hypothèse de **normalité** : $\epsilon$ suit une loi normale.
 Nous en reparlerons plus tard.
+
+![Modèle linéaire simple](img/Chap3_modele_lineaire.png)
 
 #### Régression linéaire multiple
 
@@ -402,7 +404,7 @@ Sous certaines conditions sur $\epsilon$, nous pouvons appliquer le **théorème
 |On cherche à modéliser une relation $y = \alpha x + \beta + \epsilon$ entre 2 variables $x$ et $y$, à partir d'un échantillon de réalisations $(x_i,y_i)$.|
 |Si $\epsilon$ vérifie :|
 |- Une moyenne nulle.|
-|- Un écart-type constant.|
+|- Un écart-type constant avec $x$.|
 |- Une non-corrélation de ses réalisations.|
 |Alors, les paramètres $a$ et $b$ de la droite déterminée par les MCO est le **Meilleur Estimateur Linéaire Non-biaisé** ("BLUE" en anglais) de $\alpha$ et $\beta$.|
 

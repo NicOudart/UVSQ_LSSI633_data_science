@@ -827,7 +827,7 @@ On va donc en général choisir par sécurité un **nombre d'époques maximal** 
 
 Un autre problème courant est le fait que l'espace des valeurs de la fonction de coût a souvent des **minima locaux**, dans lesquels l'algorithme peut se retrouver **bloqué**.
 
-![Problème de minimum local](img/Minimum_local.png)
+![Problème de minimum local](img/Chap1_minimum_local.png)
 
 C'est pourquoi en général, on ne va pas lancer un seul entrainement pour un jeu d'hyperparamètres, mais **plusieurs avec des initialisations différentes**.
 
