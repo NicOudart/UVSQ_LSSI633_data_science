@@ -477,10 +477,10 @@ avec
 
 $s(y_{p+1}) = s \sqrt{1 + \frac{1}{p} + \frac{(x_{p+1}-\overline{x})^2}{sc_{xx}}}$
 
-En général, lorsque l'on affiche par-dessus le nuage de points la droite du modèle obtenu par MCO, on affiche aussi l'intervalle de confiance sur la moyenne des $y$, et l'intervalle de prédiction.
+En général, lorsque l'on affiche par-dessus le nuage de points la droite du modèle obtenu par MCO, on affiche aussi l'intervalle de confiance sur la moyenne des $y$, et l'intervalle de prédiction choisis.
 Le graphique obtenu est de la forme suivante :
 
-
+![Modèle des MCO avec intervalles de confiance et de prédiction](img/Chap3_intervalles_confiance_prédiction.png)
 
 |Nota Bene|
 |:-|
