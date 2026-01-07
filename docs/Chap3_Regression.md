@@ -491,6 +491,41 @@ Le graphique obtenu est de la forme suivante :
 
 #### Implémentation Scipy
 
+Afin de réaliser une régression linéaire simple avec la méthode des MCO, on peut utiliser la bibliothèque de calculs scientifiques Scipy, et en particulier son module de statistiques "scipy.stat".
+
+Il suffit d'importer l'objet "linregress" avec :
+
+~~~
+from scipy.stats import linregress
+~~~
+
+Pour ajuster un modèle de régression linéaire `mco` à une variable d'entrée `x` et une variable de sortie `y` on utilise la commande :
+
+~~~
+mco = linregress(x,y)
+~~~
+
+On peut alors récupérer le coefficient directeur `a` et l'ordonnée à l'origine `b` de ce modèle linéaire avec :
+
+~~~
+a = mco.slope
+b = mco.intercept
+~~~
+
+Il suffit alors d'utiliser ces 2 paramètres pour réaliser une prédiction.
+
+Pour déterminer les intervalles de confiance et de prédiction, la bibliothèque Scipy propose aussi une implémentation de la loi de Student, que l'on peut importer avec :
+
+~~~
+from scipy.stats import t
+~~~
+
+Pour obtenir le quantile `tq` de seuil `s` correspondant à $1-\gamma$, de la loi de Student de à `k` degrés de libertés, on alors simple utiliser la méthode :
+
+~~~
+tq = t.ppf(s,k)
+~~~
+
 #### Généralisation à la régression linéaire multiple
 
 Les MCO peut être généralisée pour les problèmes à plus d'une variable explicative (nombre de variables explicatives $n>1$).
