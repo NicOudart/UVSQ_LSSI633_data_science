@@ -232,7 +232,8 @@ Pour juger de la qualité du modèle, on divise les écarts en 2 groupes :
 
 * Les **écarts résiduels**, ou "résidus" : $y_i - \hat{y_i}$
 
-Il s'agit des écarts non-expliqués par le modèle.
+Il s'agit des écarts non-expliqués par le modèle. 
+On remarque qu'ils correspondent aux $\epsilon_i$ de notre modèle.
 
 * Les écarts **écarts de régression**, ou "écarts expliqués" : $\hat{y_i} - \overline{y}$
 
@@ -241,6 +242,8 @@ Il s'agit des écarts expliqués par le modèle.
 On a alors l'**écart total** :
 
 $y_i - \overline{y} = (y_i - \hat{y_i}) - (\hat{y_i} - \overline{y})$
+
+![Ecarts](img/Chap3_ecarts.png)
 
 On met en général ces écarts sous la forme de variances, en prenant la somme des carrés des $p$ individus de cet échantillon :
 
@@ -253,6 +256,8 @@ On met en général ces écarts sous la forme de variances, en prenant la somme 
 avec $SCT = SCR + SCE$
 
 **Un modèle sera d'autant plus performant que la SCR sera faible comparée à la SCT**.
+
+![SCR et SCT](img/Chap3_SCR_SCT.png)
 
 L'idée est la suivante : plus la SCE est grande (et donc plus la SCR est faible), et plus le modèle **explique** $y$ à partir des entrées.
 
@@ -300,55 +305,36 @@ Lorsque les performances d'un modèle de régression linéaire ont l'air mauvais
 La bonne approche est de réaliser une **analyse des résidus**.
 
 Dans un 1er temps, cette analyse peut être **visuelle**.
-On affiche simplement les résidus en fonction de $x$ ou de $y_i$, et on vérifie s'ils ont l'air d'avoir le comportement attendu de $\epsilon$ : 
+On affiche simplement les résidus en fonction de $x$, ou sous la forme d'un histogramme, et on vérifie s'ils ont l'air d'avoir le comportement attendu de $\epsilon$ : 
 
 * Indépendance des observations.
 
 * Moyenne nulle.
 
-* Ecart-type constant.
+* Ecart-type constant, aussi appelé "homoscédasticité".
 
 * Normalité.
 
-Dans l'idéal, on attend donc **un nuage de points aléatoires**, stationnaire, sans tendances en fonction de $x$ ou des $y_i$.
+Dans l'idéal, on attend donc **un nuage de points aléatoires**, d'écart-type constant, sans tendances en fonction de $x$.
+
+![Résidus](img/Chap3_residus.png)
 
 Si ce n'est pas le cas, alors il faut soit :
 
-* **Revoir notre modèle** (une régression linéaire n'est peut-être pas adaptée).
+* **Revoir notre modèle** (une régression linéaire simple n'est peut-être pas adaptée).
 
 * **Nettoyer nos données** (des outliers ou des données abérrantes sont peut-être la cause du mauvais ajustement).
 
 * **Ajouter des variables explicatives** ($x$ n'est peut-être pas suffisant pour expliquer $y$ de manière satisfaisante).
 
 En cas de doute, on peut procéder à des tests de ces hypothèses, mais ils ne sont pas tous simples à mettre en place.
+En voici quelques exemples :
 
-#### Normalité
-
-Pour vérifier si les résidus suivent une loi normale de moyenne nulle, on peut afficher leurs quantiles en fonction ceux attendus d'une loi normale.
-
-On obtient alors un graphique appelé "droite de Henry".
-
-Si les résidus ne suivent pas une loi normale, ils s'éloigneront de la diagonale.
-
-#### Homoscédasticité
-
-On appelle "homoscédasticité" le fait d'avoir un écart-type constant pour toutes les observations.
-Si cette hypothèse n'est pas vérifiée, on parle d'"hétéroscédasticité".
-
-Il existe différents tests d'homoscédasticité, par exemple le test de White, mais le plus simple reste l'interprétation visuelle :
-
-* Si les résidus en fonction de $x$ s'éloignent de plus en plus de 0, on a probablement une hétéroscédasticité.
-
-* Si on observe une tendance dans les résidus en fonction des $y_i$, on a probablement une hétéroscédasticité.
-
-#### Indépendance
-
-Il n'est pas simple de vérifie l'indépendance des résidus en fonction des observations.
-
-Un exemple de test connu est celui de Durbin-Watson.
-Mais encore une fois, le plus simple reste l'interprétation visuelle :
-
-* Si on observe une tendance dans les résidus en fonction de $x$, on a probablement une dépendance des résidus aux observations.
+|Hypothèse       |Test                                                                        |
+|:--------------:|:--------------------------------------------------------------------------:|
+|Normalité       |Droite de Henry (quantiles des résidus en fonction de ceux attendus)        |
+|Homoscédasticité|Test de White (hypothèse nulle : variance des résidus sachant $x$ constante)|
+|Indépendance    |Test de Durbin-Watson (hypothèse nulle : non-corrélation des résidus)       |
 
 ## Méthodes de base
 
@@ -371,7 +357,11 @@ La méthode des MCO considère que la droite d'équation $y = a x + b$ représen
 
 $\sum_{i=1}^{p} (y_i - a x_i - b)^2$
 
+c'est-à-dire la SCR du modèle.
+
 D'où le nom de la méthode : on cherche les "moindres carrés".
+
+![Moindres carrés](img/Chap3_moindres_carres.png)
 
 On peut montrer que les paramètres $a$ et $b$ minimisant cette fonction sont :
 
