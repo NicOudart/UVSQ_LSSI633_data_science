@@ -431,6 +431,7 @@ Il nous faut donc utiliter la **loi de Student**, et plus particulièrement le "
 |Alors la variable aléatoire $t = \frac{\overline{x}-\mu}{s/\sqrt{p}}$ suit une loi de Student, dont on peut se servir pour établir un intervalle de confiance sur l'estimation $\overline{x}$ de $\mu$.|
 ||
 |On note $t_{\gamma}^{k}$ le **quantile** de seuil d'erreur $\gamma$ de la loi de Student à $k$ **degrés de liberté**.|
+|![Loi de Student](img/Chap3_loi_de_Student.png)|
 |Le **seuil de confiance** est alors $1-\gamma$ : pour seuil de confiance à 99% on prendra $\gamma = 0.01$.|
 |La loi normale étant symétrique, pour déterminer un **intervalle de confiance** de seuil $1-\gamma$, il faut en réalité utiliser $t_{\gamma/2}^{k}$.|
 |Donc pour un intervalle de confiance à 99% on prendra $\gamma = 0.005$.|
