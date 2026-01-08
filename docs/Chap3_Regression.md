@@ -627,7 +627,33 @@ Elle peut être importée avec :
 from sklearn.linear_model import LinearRegression
 ~~~
 
+On peut ensuite initialiser un modèle de régression linéaire `mco` avec un objet "LinearRegression" (la précision sur les coefficients peut être choisie avec le paramètre `tol`) :
 
+~~~
+mco = LinearRegression(tol=1e-6)
+~~~
+
+Pour donner le jeu d'entrainement (matrice des variables d'entrée `X` et vecteur de la variable de sortie `y`) à ce modèle, on utilise la méthode :
+
+~~~
+mco.fit(X,y)
+~~~
+
+On peut à présent réaliser des prédictions `y_pred` à partir d'une matrice `X_pred` :
+
+~~~
+y_pred = mco.predict(X_pred)
+~~~
+
+Pour obtenir le $R^2$ de notre modèle sur ses données d'entrainement `X` et `y`, il suffit d'utiliser la méthode suivante :
+
+~~~
+r_2 = mco.score(X,y)
+~~~
+
+On peut de même le calculer sur des données de test.
+
+Malheureusement, contrairement à Scipy, Scikit-Learn ne permet pas de faire l'inférence statistique avec les MCO : il n'y a pas de fonctionnalité pour déterminer des intervalles de confiance ou de prédiction.
 
 #### Application à notre exemple
 

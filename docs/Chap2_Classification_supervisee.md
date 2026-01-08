@@ -464,7 +464,7 @@ Elle peut être importée avec :
 from sklearn.naive_bayes import GaussianNB
 ~~~
 
-On doit alors créer un objet "GaussianNB" qui contiendra notre modèle :
+On doit alors créer un objet "GaussianNB" qui contiendra notre modèle, ici `bayes_classifier` :
 
 ~~~
 bayes_classifier = GaussianNB()
@@ -831,7 +831,7 @@ Elle peut être importée avec :
 from sklearn.neighbors import KNeighborsClassifier
 ~~~
 
-On peut ensuite initialiser un classifieur KPPV avec un objet "KNeighborsClassifier" de paramètre `k` correspondant au nombre de plus proches voisins :
+On peut ensuite initialiser un classifieur KPPV `knn` avec un objet "KNeighborsClassifier" de paramètre `k` correspondant au nombre de plus proches voisins :
 
 ~~~
 knn = KNeighborsClassifier(n_neighbors=k)
@@ -1193,7 +1193,7 @@ Elle peut être importée avec :
 from sklearn.neural_network import MLPClassifier
 ~~~
 
-On peut ensuite initialiser un classifieur PMC avec les hyperparamètres par défaut en utilisant la commande :
+On peut ensuite initialiser un classifieur PMC `mlp` avec les hyperparamètres par défaut en utilisant la commande :
 
 ~~~
 mlp = MLPClassifier()
