@@ -1094,6 +1094,18 @@ On remarque que pour l'opérateur booléen ET on doit utiliser "&", et pour l'op
 
 **Nous utiliserons la bibliothèque Pandas afin d'importer, d'analyser et de manipuler des données dans le cadre de ce cours**.
 
+### Scipy
+
+Bien que **Scipy** ne soit pas à proprement parler une bibliothèque d'apprentissage automatique, on trouve dans son module "stats" des **outils d'inférence statistique de base** pour de la classification et de la régression.
+
+On peut importer ce module avec la commande Python suivante :
+
+~~~
+import scipy.stats
+~~~
+
+**Dans le cadre de ce cours, nous utiliserons Scipy pour certaines méthodes de base**, car ses implémentations sont moins des "boites noires" que pour d'autres bibliothèques.
+
 ### Scikit-Learn
 
 **Scikit-Learn** est une bibliothèque Python pour l'**apprentissage automatique**.

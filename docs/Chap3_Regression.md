@@ -526,6 +526,19 @@ Pour obtenir le quantile `tq` de seuil `s` correspondant à $1-\gamma$, de la lo
 tq = t.ppf(s,k)
 ~~~
 
+Il ne reste alors qu'à implémenter les formules des estimateurs d'écart-types que nous avons vues précédemment pour calculer les intervalles de confiances et de prédiction.
+
+Il est également possible d'obtenir le $R^2$ de la régression grâce au paramètre `r_value` du modèle :
+
+~~~
+r_2 = mco.r_value**2
+~~~
+
+(On reconnait que `r_value` correspond au coefficient de corrélation tel que vu au Chapitre 1).
+
+Si cette implémentation est pratique pour faire de l'inférence statistique, elle ne gère malheureusement que la régression linéaire simple.
+Pour de la régression linéaire multiple, nous verrons que l'on peut utiliser Scikit-Learn.
+
 #### Généralisation à la régression linéaire multiple
 
 Les MCO peut être généralisée pour les problèmes à plus d'une variable explicative (nombre de variables explicatives $n>1$).
@@ -605,6 +618,16 @@ Celui-ci est calculé en utilisant la décomposition en valeurs singulières (SV
 Cette méthode à l'avantage d'être plus rapide que de résoudre l'équation normale directement, et que le pseudo-inverse de $X$ existe toujours.
 	
 #### Implémentation Scikit-Learn
+
+Il existe une implémentation Scikit-Learn des MCO, qui permet la régression linéaire multiple (et donc la régression polynomiale).
+
+Elle peut être importée avec :
+
+~~~
+from sklearn.linear_model import LinearRegression
+~~~
+
+
 
 #### Application à notre exemple
 
