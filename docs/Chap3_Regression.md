@@ -616,6 +616,10 @@ avec $X^{+}$ le pseudo-inverse de $X$.
 Celui-ci est calculé en utilisant la décomposition en valeurs singulières (SVD) de $X$.
 
 Cette méthode à l'avantage d'être plus rapide que de résoudre l'équation normale directement, et que le pseudo-inverse de $X$ existe toujours.
+
+On peut également généraliser les formules de détermination des intervalles de confiance et de prédiction vues précédemment :
+
+
 	
 #### Implémentation Scikit-Learn
 
@@ -627,10 +631,10 @@ Elle peut être importée avec :
 from sklearn.linear_model import LinearRegression
 ~~~
 
-On peut ensuite initialiser un modèle de régression linéaire `mco` avec un objet "LinearRegression" (la précision sur les coefficients peut être choisie avec le paramètre `tol`) :
+On peut ensuite initialiser un modèle de régression linéaire `mco` avec un objet "LinearRegression" :
 
 ~~~
-mco = LinearRegression(tol=1e-6)
+mco = LinearRegression()
 ~~~
 
 Pour donner le jeu d'entrainement (matrice des variables d'entrée `X` et vecteur de la variable de sortie `y`) à ce modèle, on utilise la méthode :
