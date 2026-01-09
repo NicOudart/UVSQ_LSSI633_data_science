@@ -617,7 +617,19 @@ Celui-ci est calculé en utilisant la décomposition en valeurs singulières (SV
 
 Cette méthode à l'avantage d'être plus rapide que de résoudre l'équation normale directement, et que le pseudo-inverse de $X$ existe toujours.
 
-On peut également généraliser les formules de détermination des intervalles de confiance et de prédiction vues précédemment :
+On peut également généraliser les formules de détermination des **intervalles de confiance** et de **prédiction** vues précédemment.
+
+Tout d'abord, dans le cas multiple l'estimateur de l'écart-type de $\epsilon$ devient :
+
+$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{p-n-1}} = \sqrt{\frac{sc_{yy}}{p-n-1}}$
+
+Soit une réalisation donnée des variables d'entrée $(x_0 x_1 ... x_n) = (u_0 u_1 ... u_n) = U$.
+L'intervalle de confiance à $1-\gamma$ sur la moyenne des $y$ est alors :
+
+
+
+Soit une nouvelle valeur des variables d'entrées $(x_{p+1,0} x_{p+1,1} ... x_{p+1,n}) = V$.
+L'intervalle de prédiction à $1-\gamma$ de $V$ est :
 
 
 	
@@ -658,6 +670,7 @@ r_2 = mco.score(X,y)
 On peut de même le calculer sur des données de test.
 
 Malheureusement, contrairement à Scipy, Scikit-Learn ne permet pas de faire l'inférence statistique avec les MCO : il n'y a pas de fonctionnalité pour déterminer des intervalles de confiance ou de prédiction.
+On doit donc calculer nous même ces intervalles, à partir de la loi de Student implémentée par Scipy, et des formules généralisées.
 
 #### Application à notre exemple
 
