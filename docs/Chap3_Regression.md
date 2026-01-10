@@ -628,10 +628,10 @@ $s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{p-n-1}} = \sqrt{\frac{sc
 Soit une réalisation donnée des variables d'entrée :
 
 $\begin{pmatrix}
-\x_0 & x_1 & \cdots & x_n\\
+x_0 & x_1 & \cdots & x_n
 \end{pmatrix}
 = \begin{pmatrix}
-\u_0 & u_1 & \cdots & u_n\\
+u_0 & u_1 & \cdots & u_n
 \end{pmatrix}
 = U$
 
@@ -646,7 +646,7 @@ $s(\hat{y}(U)) = s \sqrt{U(X^T X)^{-1}U^T}$
 Soit une nouvelle réalisation des variables d'entrées :
 
 $\begin{pmatrix}
-\x_{p+1,0} & x_{p+1,1} & \cdots & x_{p+1,n}\\
+x_{p+1,0} & x_{p+1,1} & \cdots & x_{p+1,n}
 \end{pmatrix}
 = V$
 
