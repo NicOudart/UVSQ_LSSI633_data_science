@@ -531,7 +531,7 @@ Il ne reste alors qu'à implémenter les formules des estimateurs d'écart-types
 Il est également possible d'obtenir le $R^2$ de la régression grâce au paramètre `r_value` du modèle :
 
 ~~~
-r_2 = mco.r_value**2
+r_2 = mco.rvalue**2
 ~~~
 
 (On reconnait que `r_value` correspond au coefficient de corrélation tel que vu au Chapitre 1).
