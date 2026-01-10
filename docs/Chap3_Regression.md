@@ -402,7 +402,7 @@ On peut donc se servir de la méthode des MCO pour estimer $\alpha$ et $\beta$ �
 
 Il est même possible d'estimer l'**écart-type de $\epsilon$** avec l'estimateur suivant :
 
-$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{p-2}} = \sqrt{\frac{sc_{yy}}{p-2}}$
+$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\hat{y_i})^2}{p-2}} = \sqrt{\frac{\sum_{i=1}^{p} \epsilon_i^2}{p-2}}$
 
 Reste alors une problématique : 
 
@@ -623,7 +623,7 @@ On peut également généraliser les formules de détermination des **intervalle
 
 Tout d'abord, dans le cas multiple l'estimateur de l'écart-type de $\epsilon$ devient :
 
-$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{p-n-1}} = \sqrt{\frac{sc_{yy}}{p-n-1}}$
+$s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\hat{y_i})^2}{p-n-1}} = \sqrt{\frac{\sum_{i=1}^{p} \epsilon_i^2}{p-n-1}}$
 
 Soit une réalisation donnée des variables d'entrée :
 
