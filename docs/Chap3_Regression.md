@@ -462,13 +462,13 @@ $s(b) = s \sqrt{\frac{1}{p} + \frac{\overline{x}^2}{sc_{xx}}}$
 |Il est à noter que si tous les $x_i$ de l'échantillon sont égaux, alors $x_i = \overline{x}$, d'où $sc_{xx} = 0$ et donc les intervalles de confiance deviennent infinis.|
 |Ce résultat est attendu, puisqu'on ne peut pas tirer d'information sur la relation entre $x$ et $y$ avec des points pour un seul $x_i$.|
 
-De la même manière, on peut estimer pour une valeur de $x$ donnée $x=u$ l'**intervalle de confiance** à $1-\gamma$ **sur la moyenne des $y$** :
+De la même manière, on peut estimer pour une valeur de $x$ donnée $x=u$ l'**intervalle de confiance** à $1-\gamma$ **sur la moyenne des $y$ sachant $x=u$** :
 
-$\alpha u + \beta \in [a u + b - t_{\gamma/2}^{p-2} s(\hat{y}) ; a u + b + t_{\gamma/2}^{p-2} s(\hat{y})]$
+$\alpha u + \beta \in [a u + b - t_{\gamma/2}^{p-2} s(\hat{y}(u)) ; a u + b + t_{\gamma/2}^{p-2} s(\hat{y}(u))]$
 
 avec
 
-$s(\hat{y}) = s \sqrt{\frac{1}{p} + \frac{(u-\overline{x})^2}{sc_{xx}}}$
+$s(\hat{y}(u)) = s \sqrt{\frac{1}{p} + \frac{(u-\overline{x})^2}{sc_{xx}}}$
 
 Enfin, on peut estimer l'**intervalle de prédiction** sur $y_{p+1}$ pour une **nouvelle donnée** $x_{p+1}$ : 
 
@@ -542,6 +542,8 @@ Pour de la régression linéaire multiple, nous verrons que l'on peut utiliser S
 #### Généralisation à la régression linéaire multiple
 
 Les MCO peut être généralisée pour les problèmes à plus d'une variable explicative (nombre de variables explicatives $n>1$).
+
+(Comme mentionné précédemment, un problème de régression polynomiale peut également être résolu en utilisant de la régression linéaire multiple).
 
 Rappelons que le modèle de régression linéaire multiple à ajuster est le suivant :
 
@@ -623,15 +625,38 @@ Tout d'abord, dans le cas multiple l'estimateur de l'écart-type de $\epsilon$ d
 
 $s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\overline{y_i})^2}{p-n-1}} = \sqrt{\frac{sc_{yy}}{p-n-1}}$
 
-Soit une réalisation donnée des variables d'entrée $(x_0 x_1 ... x_n) = (u_0 u_1 ... u_n) = U$.
-L'intervalle de confiance à $1-\gamma$ sur la moyenne des $y$ est alors :
+Soit une réalisation donnée des variables d'entrée :
 
+$\begin{pmatrix}
+\x_0 & x_1 & \cdots & x_n\\
+\end{pmatrix}
+= \begin{pmatrix}
+\u_0 & u_1 & \cdots & u_n\\
+\end{pmatrix}
+= U$
 
+L'intervalle de confiance à $1-\gamma$ sur la moyenne des $y$ sachant que les variables d'entrée sont à $U$ est alors :
 
-Soit une nouvelle valeur des variables d'entrées $(x_{p+1,0} x_{p+1,1} ... x_{p+1,n}) = V$.
+$U A \in [U \hat{A} - t_{\gamma/2}^{p-n-1} s(\hat{y}(U)) ; U \hat{A} + t_{\gamma/2}^{p-n-1} s(\hat{y}(U))]$
+
+avec
+
+$s(\hat{y}(U)) = s \sqrt{U(X^T X)^{-1}U^T}$
+
+Soit une nouvelle réalisation des variables d'entrées :
+
+$\begin{pmatrix}
+\x_{p+1,0} & x_{p+1,1} & \cdots & x_{p+1,n}\\
+\end{pmatrix}
+= V$
+
 L'intervalle de prédiction à $1-\gamma$ de $V$ est :
 
+$y_{p+1} \in [V \hat{A} - t_{\gamma/2}^{p-n-1} s(y_{p+1}) ; V \hat{A} + t_{\gamma/2}^{p-n-1} s(y_{p+1})]$
 
+avec 
+
+$s(y_{p+1}) = s \sqrt{1+V(X^T X)^{-1}V^T}$
 	
 #### Implémentation Scikit-Learn
 
