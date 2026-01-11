@@ -754,6 +754,28 @@ x_mean = np.mean(x_train)
 sc_xx = np.sum((x_train-x_mean)**2)
 ~~~
 
+Nous pouvons alors en déduire l'estimation de l'écart-type sur la moyenne conditionnelle de $y$, et l'estimation de l'écart-type sur les prédictions :
+
+~~~
+s_y_conf = s*np.sqrt((1/len(x_train))+(((x_mco-x_mean)**2)/sc_xx))
+s_y_pred = s*np.sqrt(1+(1/len(x_train))+(((x_mco-x_mean)**2)/sc_xx))
+~~~
+
+Nous avons à présent tous les élements pour calculer les intervalles de confiance et de prédiction à 95% pour chaque nombre de tâches solaires entre 0 et 320.
+Il suffit d'utiliser le t de Student adapté :
+
+~~~
+t_student = t.ppf(1-(0.05/2),len(x_train)-2)
+
+y_conf_inf = y_mco - (t_student*s_y_conf)
+y_conf_sup = y_mco + (t_student*s_y_conf)
+
+y_pred_inf = y_mco - (t_student*s_y_pred)
+y_pred_sup = y_mco + (t_student*s_y_pred)
+~~~
+
+On peut tracer le modèle linéaire obtenu par les MCO par-dessus le nuage de points des données d'entrainement, avec les intervalles de confiance et de prédiction :
+
 
 
 #### Remarques
