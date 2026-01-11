@@ -776,6 +776,10 @@ y_pred_sup = y_mco + (t_student*s_y_pred)
 
 On peut tracer le modèle linéaire obtenu par les MCO par-dessus le nuage de points des données d'entrainement, avec les intervalles de confiance et de prédiction :
 
+![Exemple de régression linéaire par les MCO](img/Chap3_exemple_mco_modele_simple.png)
+
+Pour évaluer les performances du modèle en entrainement, on peut simplement calculer le $R^2$ sur les données d'entrainement :
+
 
 
 #### Remarques
