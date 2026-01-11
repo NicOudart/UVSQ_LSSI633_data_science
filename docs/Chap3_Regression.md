@@ -720,11 +720,10 @@ Si les hypothèses associées sont bien respectées, les MCO permettent en théo
 Dans la réalité, il est compliqué d'avoir ces hypothèses exactement vraies.
 D'où le fait que l'on applique ici une stratégie de séparation entre ensemble d'entrainement et de test (80% / 20%), afin de **vérifier les performances en généralisation**.
 
-On détermine notre modèle de régression linéaire `mco` par les MCO :
+On détermine notre modèle de régression linéaire `mco` par les MCO en utilisant la bibliothèque Scipy :
 
 ~~~
 from scipy.stats import linregress
-
 mco = linregress(x_train,y_train)
 ~~~
 
@@ -749,22 +748,23 @@ s = np.sqrt(np.sum(res_train**2)/(len(x_train)-2))
 Ensuite, il nous faut calculer $sc_{xx}$ :
 
 ~~~
-x_mean = np.mean(x_train)
+x_mean_train = np.mean(x_train)
 
-sc_xx = np.sum((x_train-x_mean)**2)
+sc_xx_train = np.sum((x_train-x_mean_train)**2)
 ~~~
 
 Nous pouvons alors en déduire l'estimation de l'écart-type sur la moyenne conditionnelle de $y$, et l'estimation de l'écart-type sur les prédictions :
 
 ~~~
-s_y_conf = s*np.sqrt((1/len(x_train))+(((x_mco-x_mean)**2)/sc_xx))
-s_y_pred = s*np.sqrt(1+(1/len(x_train))+(((x_mco-x_mean)**2)/sc_xx))
+s_y_conf = s*np.sqrt((1/len(x_train))+(((x_mco-x_mean_train)**2)/sc_xx_train))
+s_y_pred = s*np.sqrt(1+(1/len(x_train))+(((x_mco-x_mean_train)**2)/sc_xx_train))
 ~~~
 
 Nous avons à présent tous les élements pour calculer les intervalles de confiance et de prédiction à 95% pour chaque nombre de tâches solaires entre 0 et 320.
 Il suffit d'utiliser le t de Student adapté :
 
 ~~~
+from scipy.stats import t
 t_student = t.ppf(1-(0.05/2),len(x_train)-2)
 
 y_conf_inf = y_mco - (t_student*s_y_conf)
@@ -776,11 +776,141 @@ y_pred_sup = y_mco + (t_student*s_y_pred)
 
 On peut tracer le modèle linéaire obtenu par les MCO par-dessus le nuage de points des données d'entrainement, avec les intervalles de confiance et de prédiction :
 
-![Exemple de régression linéaire par les MCO](img/Chap3_exemple_mco_modele_simple.png)
+![Exemple de régression linéaire simple par les MCO](img/Chap3_exemple_mco_modele_simple.png)
 
 Pour évaluer les performances du modèle en entrainement, on peut simplement calculer le $R^2$ sur les données d'entrainement :
 
+~~~
+print(mco.rvalue**2)
+~~~
 
+On obtient $R^2 \approx 0.792$, ce qui veut dire que 79.2% des écarts sont expliqués par le modèle.
+Un score relativement bon, mais pas excellent puisque plus de 1/5 des écarts restent inexpliqués par le modèle.
+
+Pour évaluer les performances du modèle en test, on a pas d'autre choix que de calculer le $R^2$ sur les données de test "à la main" :
+
+~~~
+y_mean_test = np.mean(y_test)
+
+sct_test = np.sum((y_test-y_mean_test)**2)
+scr_test = np.sum((y_test-(mco.intercept+mco.slope*x_test))**2)
+
+r2_test = 1-(scr_test/sct_test)
+
+print(r2_test)
+~~~
+
+On obtient alors $R^2 \approx 0.795$ soit un score très similaire aux performances en entrainement.
+Des performances similaires peuvent donc être attendues en généralisation.
+
+Pour valider ou invalider notre modèle, et comprendre d'où viennent ses limites en terme de performances, affichons les résidus en fonction de la variable d'entrée :
+
+![Exemple de résidus obtenus par régression linéaire simple](img/Chap3_exemple_mco_simple_residus.png)
+
+On observe qu'il y a clairement une tendance des résidus en fonction de la variable d'entrée.
+Les hypothèses sur les résidus ne sont donc pas respectées, ce qui peut expliquer les performances modestes du modèle.
+
+Pour d'obtenir un modèle plus performant, nous proposons donc d'essayer une régression polynomiale de degré 2.
+
+Cette régression polynomiale de degré 2 va revenir à faire une régression linéaire multiple, avec pour variables d'entrée le nombre de tâches solaires et son carré.
+
+Cette fois-ci, on va donc rassembler les variables d'entrée au sein d'une matrice :
+
+~~~
+x_train = np.ones((len(df_train),3))
+x_train[:,1] =  df_train['sunspots'].to_numpy()
+x_train[:,2] = x_train[:,1]**2
+
+x_test = np.ones((len(df_test),3))
+x_test[:,1] =  df_test['sunspots'].to_numpy()
+x_test[:,2] = x_test[:,1]**2
+~~~
+
+La 1ère colonne correspond à l'ordonnée à l'origine et ne contient que des 1, la 2nde colonne correspond au nombre de tâches solaires, la 3ème au carré du nombre de tâches solaires.
+La variable de sortie reste inchangée par rapport à la régression linéaire simple.
+
+On détermine notre modèle de régression linéaire multiple `mco` par les MCO en utilisant la bibliothèque Scikit-Learn :
+
+~~~
+from sklearn.linear_model import LinearRegression 
+mco = LinearRegression()
+
+mco.fit(x_train[:,1:],y_train)
+~~~
+
+**Attention**, la méthode `fit` des objets `LinearRegression` Scikit-Learn ne prend pas en entrée la 1ère colonne de la matrice des variables d'entrée (correspondant à l'ordonnée à l'origine) !
+Cependant, nous aurons bien besoin de la matrice complète pour calculer les intervalles de confiance et de prédiction.
+
+Voici comment estimer les TSI correspondant à 321 de nombres de tâches solaires entre 0 et 320 :
+
+~~~
+x_mco = np.ones((100,3))
+x_mco[:,1] = np.linspace(0,320,100)
+x_mco[:,2] = np.linspace(0,320,100)**2
+
+y_mco = mco.predict(x_mco[:,1:])
+~~~
+
+Comme pour `fit`, la méthode `predict` ne prend pas en entrée la 1ère colonne de la matrice des variables d'entrée.
+
+On calcule l'estimation de l'écart-type des résidus, en faisant attention au fait qu'il y a maintenant une variable d'entrée de plus :
+
+~~~
+res_train = y_train-mco.predict(x_train[:,1:])
+s = np.sqrt(np.sum(res_train**2)/(len(x_train)-3)) 
+~~~
+
+On peut alors estimer les écart-types sur la moyenne conditionnelle de $y$, et sur les prédictions.
+Ce calcul se fait en sélectionnant chaque ligne de la matrice `x_mco` crée précédemment, de manière itérative :
+
+~~~
+s_y_conf = np.zeros(len(x_mco))
+s_y_pred = np.zeros(len(x_mco))
+
+for idx in range(len(x_mco)):
+    
+    x_mco_idx = x_mco[idx,:]
+	
+    s_y_conf[idx] = s*np.sqrt(x_mco_idx@np.linalg.inv(x_train.T@x_train)@x_mco_idx.T)
+    s_y_pred[idx] = s*np.sqrt(1+x_mco_idx@np.linalg.inv(x_train.T@x_train)@x_mco_idx.T)
+~~~
+
+On peut à présent déterminer les intervalles de confiance et de prédiction de notre modèle linéaire multiple :
+
+~~~
+from scipy.stats import t
+t_student = t.ppf(1-(0.05/2),len(x_train)-3)
+
+conf_inf = y_mco - (t_student*s_y_conf)
+conf_sup = y_mco + (t_student*s_y_conf)
+
+pred_inf = y_mco - (t_student*s_y_pred)
+pred_sup = y_mco + (t_student*s_y_pred)
+~~~
+
+Il est maintenant possible d'afficher par dessus le nuage de points des données d'entrainement le modèle polynomial, ainsi que ses intervalles de confiance et de prédiction :
+
+![Exemple de régression linéaire multiple par les MCO](img/Chap3_exemple_mco_modele_multiple.png)
+
+Pour évaluer les performances du modèle en entrainement et en test, on calcule le $R^2$ :
+
+~~~
+print(mco.score(x_train[:,1:],y_train))
+~~~
+
+On obtient $R^2 \approx 0.896$ sur les données d'entrainement, ce qui veut dire que 89.6% des écarts sont expliqués par le modèle.
+Un très bon score ! Maintenant seul 1/10 des écarts restent inexpliqués par le modèle.
+
+En test, on obtient un score très similaire de $R^2 \approx 0.904$, ce qui laisse présager ce niveau de performance en généralisation.
+
+Pour valider ou invalider notre modèle, vérifions que les résidus en fonction de la variable d'entrée se comportent conformément à nos hypothèses :
+
+![Exemple de résidus obtenus par régression linéaire multiple](img/Chap3_exemple_mco_multiple_residus.png)
+
+Cette fois-ci, on n'observe aucune tendance claire se dégager des résidus en fonction de la variable d'entrée : ce qui est attendu.
+
+Par contre, on peut noter que l'écart-type des résidus a l'air de varier légèrement avec le nombre de tâches solaires, et l'hypothèse de normalité est assez difficile à confirmer.
+C'est pourquoi il faudrait en toute rigueur appliquer des tests statistiques de nos hypothèses.
 
 #### Remarques
 
