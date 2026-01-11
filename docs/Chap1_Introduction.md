@@ -1027,6 +1027,8 @@ C'est pourquoi, suivant les applications, on préfèrera utiliser un fichier bin
 
 ## Outils Python pour l'apprentissage
 
+**Pour chacun des programmes Python présentés dans ce cours, on partira du principe que les bibliothèques Numpy et Matplotlib sont importées**.
+
 ### Pandas
 
 **Pandas** est une bibliothèque Python très populaire pour l'**analyse de données**.

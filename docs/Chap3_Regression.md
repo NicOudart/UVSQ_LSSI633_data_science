@@ -699,6 +699,63 @@ On doit donc calculer nous même ces intervalles, à partir de la loi de Student
 
 #### Application à notre exemple
 
+Nous allons à présent appliquer la régression linéaire avec les Moindres Carrés Ordinaires à notre problème exemple.
+
+Tout d'abord, nous importons le fichier CSV depuis son chemin `input_path` sous la forme d'un DataFrame, puis nous sélectionnons les variables d'entrée et de sortie sous la forme de matrices Numpy :
+
+~~~
+df_dataset = pd.read_csv(input_path)
+
+df_train=df_dataset.sample(frac=0.8,random_state=0)
+df_test=df_dataset.drop(df_train.index)
+
+x_train = df_train['sunspots'].to_numpy()
+y_train = df_train['tsi'].to_numpy()
+
+x_test = df_test['sunspots'].to_numpy()
+y_test = df_test['tsi'].to_numpy()
+~~~
+
+Si les hypothèses associées sont bien respectées, les MCO permettent en théorie d'obtenir des intervalles de confiance et de prédiction fiables.
+Dans la réalité, il est compliqué d'avoir ces hypothèses exactement vraies.
+D'où le fait que l'on applique ici une stratégie de séparation entre ensemble d'entrainement et de test (80% / 20%), afin de **vérifier les performances en généralisation**.
+
+On détermine notre modèle de régression linéaire `mco` par les MCO :
+
+~~~
+from scipy.stats import linregress
+
+mco = linregress(x_train,y_train)
+~~~
+
+Nous pouvons à présent estimer des TSI à partir de nombres de tâches solaires.
+Voici par exemple pour 321 nombres de tâches solaires entre 0 et 320 :
+
+~~~
+x_mco = np.linspace(0,320,321)
+y_mco = mco.intercept+mco.slope*x_mco
+~~~
+
+Nous avons ainsi les prédictions de notre modèle pour chaque nombre entiers de tâches solaires sur l'intervalle possible.
+
+Pour obtenir les intervalles de confiance et de prédiction de notre modèle, il nous faut d'abord estimer l'écart-type des résidus :
+
+~~~
+res_train = y_train-(mco.intercept+mco.slope*x_train)
+
+s = np.sqrt(np.sum(res_train**2)/(len(x_train)-2))
+~~~ 
+
+Ensuite, il nous faut calculer $sc_{xx}$ :
+
+~~~
+x_mean = np.mean(x_train)
+
+sc_xx = np.sum((x_train-x_mean)**2)
+~~~
+
+
+
 #### Remarques
 
 La méthode des Moindres Carrés Ordinaire a les **avantages** suivants :
