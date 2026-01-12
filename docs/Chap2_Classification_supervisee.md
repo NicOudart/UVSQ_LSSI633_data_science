@@ -1279,8 +1279,8 @@ Afin d'aider le PMC à converger, nous allons effectuer une transformation min-m
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 scaler.fit(df_features_train)
-scaler.transform(df_features_train)
-scaler.transform(df_features_test)
+df_features_train = scaler.transform(df_features_train)
+df_features_test = scaler.transform(df_features_test)
 ~~~
 
 Maintenant que les données sont prêtes, nous pouvons créer notre classifieur.
@@ -1333,7 +1333,7 @@ Elle se base sur :
 
 * Evaluer la valeur de la fonction de coût sur le jeu de validation, en utilisant la fonction `log_loss` de Scikit-Learn.
 
-Voici l'affichage des 2 courbes Matplotlib obtenues sur notre base de données, pour 200 époques :
+Voici l'affichage des 2 courbes Matplotlib obtenues sur notre base de données, pour 50 époques :
 
 ~~~
 import matplotlib.pyplot as plt

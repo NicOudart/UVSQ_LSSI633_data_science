@@ -935,3 +935,18 @@ Même s'il est possible d'utiliser les MCO pour de la régression non-linéaire,
 **On utilise donc rarement les MCO pour des modèles non-linéaires complexes**.
 
 ### Perceptron multicouche
+
+#### Perceptron multicouche pour la régression
+
+Nous avons vu lors du chapitre précédent que le **perceptron multicouche** (PMC) est un **réseau de neurones** initialement inventé pour résoudre des problèmes de classification binaire, qui peut être adapté pour résoudre n'importe quel problème de classification.
+Et bien le PMC peut également être utilisé pour résoudre des problèmes de **régression non-linéaire**, à condition de choisir des hyperparamètres adaptés.
+
+Si on applique le **théorème de l'approximation universelle** à la régression, il en ressort que le PMC est capable de tracer **n'importe quelle relation**
+
+#### Implémentation Scikit-Learn
+
+#### Application à notre exemple
+
+![Exemple de régression non-linéaire multiple par un PMC](img/Chap3_exemple_pmc_modele.png)
+
+#### Remarques
