@@ -941,9 +941,90 @@ Même s'il est possible d'utiliser les MCO pour de la régression non-linéaire,
 Nous avons vu lors du chapitre précédent que le **perceptron multicouche** (PMC) est un **réseau de neurones** initialement inventé pour résoudre des problèmes de classification binaire, qui peut être adapté pour résoudre n'importe quel problème de classification.
 Et bien le PMC peut également être utilisé pour résoudre des problèmes de **régression non-linéaire**, à condition de choisir des hyperparamètres adaptés.
 
-Si on applique le **théorème de l'approximation universelle** à la régression, il en ressort que le PMC est capable de tracer **n'importe quelle relation**
+Si on applique le **théorème de l'approximation universelle** à la régression, il en ressort que le PMC est capable de tracer **n'importe quelle relation**, à condition d'avoir assez de neurones en couche cachée.
+D'où l'intérêt de ce type de modèle.
+
+Pour adapter le PMC à la régression, il faut tout d'abord adapter l'**architecture** :
+
+* Le **nombre d'entrées** correspond au nombre de variables d'entrée $n$ du problème.
+
+* Le **nombre de sorties** correspond au nombre de variables de sortie du problème (1 dans notre cas, mais on peut imaginer un modèle multi-sorties).
+
+![Perceptron Multicouche pour la régression](img/Chap3_perceptron_multicouche.png)
+
+Ensuite, il faut choisir une **fonction de coût** pertinente pour l'entrainement.
+La fonction la plus couramment utilisée est l'**erreur quadratique moyenne** (notée "MSE" en anglais) :
+
+$MSE = \frac{1}{p} \sum_{i=1}^{p} (y_i-\hat{y_i})^2$
+
+On reconnait une généralisation de la formule des "moindres carrés" utilisée précédemment.
+D'autres fonctions donnant plus ou moins de poids aux outliers existent.
+
+Autre particularité du PMC pour la régression : nous ne voulons pas en sortie un seuil entre 0 et 1 (ou -1 et 1), mais une valeur continue correspondant à la variable de sortie prédite.
+Il faut donc que le neurone de **sortie** soit **sans fonction de seuil**.
+
+Et voilà, nous avons un PMC adapté à la régression !
+
+De la même manière que pour la classification, pour un nombre de neurones par couche cachée donné, plus on aura de couches et plus complexes les frontières de décisions pourront être.
+Et dès que l'on a plus d'une couche cachée, on parle d'**apprentissage profond** ("Deep Learning").
+
+|Nota Bene|
+|:-|
+|Pour que l'apprentissage d'un PMC pour de la régression se déroule correctement, il est recommandé d'effectuer une **transformation des données** d'entrée et de sortie (voir Chapitre 1).|
 
 #### Implémentation Scikit-Learn
+
+Il existe une implémentation Scikit-Learn du PMC pour la régression.
+
+Elle peut être importée avec :
+
+~~~
+from sklearn.neural_network import MLPRegressor
+~~~
+
+On peut ensuite initialiser un PMC pour de la régression `mlp` avec les hyperparamètres par défaut en utilisant la commande :
+
+~~~
+mlp = MLPRegressor()
+~~~
+
+Nous verrons plus loin quels sont ces hyperparamètres.
+
+Pour donner le jeu d'entrainement (variables d'entrée avec `x_train` et variables de sortie avec `y_train`) à ce modèle, on utilise la méthode :
+
+~~~
+mlp.fit(x_train,y_train)
+~~~
+
+On peut à présent réaliser des prédictions `y_test` à partir de variables d'entrée de test `x_test` :
+
+~~~
+y_test = mlp.predict(x_test)
+~~~
+
+Si on veut effectuer un test de notre modèle de régression sur un jeu de données, on peut obtenir un $R^2$ avec la commande :
+
+~~~
+mlp.score(x_test,y_test)
+~~~
+
+Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC :
+
+* Nombre de couches cachées : 1
+
+* Nombre de neurones par couche cachée : 100
+
+* La fenêtre d'activation pour les couches cachées : ReLU
+
+* La fenêtre d'activation pour la couche de sortie : Aucune.
+
+* Le taux d'apprentissage pour la descente de gradient : 0.001
+
+* Le nombre maximum d'époques d'apprentissage : 200 (par défaut sans arrêt prématuré, mais on peut l'activer)
+
+* La fonction de coût : erreur quadratique moyenne
+
+Ces hyperparamètres sont presque tous modifiables par l'utilisateur.
 
 #### Application à notre exemple
 

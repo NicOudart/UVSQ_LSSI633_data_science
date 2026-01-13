@@ -1095,7 +1095,7 @@ C'est ce que l'on appelle le **théorème de l'approximation universelle**.
 
 Le problème est que plus la frontière de décision à tracer est complexe, et plus il faut de neurones dans la couche limite.
 
-Pour résoudre ce problème, on peut ajouter plusieurs couches cachées entre les couches d'entrée et de sortie : plus on aura de couches, et plus complexes les frontières de décisions pourront être.
+Pour résoudre ce problème, on peut ajouter plusieurs couches cachées entre les couches d'entrée et de sortie : pour un nombre de neurones par couche donné, plus on aura de couches, et plus complexes les frontières de décisions pourront être.
 Dès que l'on a plus d'une couche cachée, on parle d'**apprentissage profond** ("Deep Learning").
 
 Nous comprenons bien le potentiel du PMC... à condition de pouvoir l'entrainer !
@@ -1155,7 +1155,7 @@ L'idée est que cette fonction prend en entrée les scores renvoyés par chaque 
 
 |Nota Bene|
 |:-|
-|Pour que l'apprentissage d'un perceptron ou d'un PMC se déroule correctement, il est recommandé d'effectuer une **transformation des données** (voir Chapitre 1), afin d'éviter que le modèle donne artificiellement plus de poids à une feature juste parce qu'elle varie sur une plus grande plage de valeurs.|
+|Pour que l'apprentissage d'un perceptron ou d'un PMC se déroule correctement, il est recommandé d'effectuer une **transformation des données** d'entrée (voir Chapitre 1), afin d'éviter que le modèle donne artificiellement plus de poids à une feature juste parce qu'elle varie sur une plus grande plage de valeurs.|
 
 #### Choix des hyperparamètres
 
@@ -1235,7 +1235,7 @@ Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC 
 
 * La fonction de coût : Log-loss (non modifiable)
 
-Tous ces hyperparamètres sont modifiables par l'utilisateur.
+Ces hyperparamètres sont presque tous modifiables par l'utilisateur.
 
 #### Application à notre exemple
 
