@@ -1291,7 +1291,7 @@ from sklearn.neural_network import MLPClassifier
 mlp = MLPClassifier()
 ~~~
 
-Pour lui fournir les données d'entrainement, il nous suffit d'utiliser la commande suivante :
+Pour l'entrainer, il nous suffit d'utiliser la commande suivante :
 
 ~~~
 mlp.fit(df_features_train,df_labels_train)
@@ -1357,6 +1357,8 @@ plt.xlabel('Epoques')
 plt.ylabel('Fonction de coût')
 plt.legend()
 ~~~
+
+Les performances obtenues avec ce modèle sont déjà excellentes, mais **il faudrait à présent se baser sur ces codes pour effectuer une optimisation des hyperparamètres.**
 
 #### Remarques
 

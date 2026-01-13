@@ -1028,6 +1028,171 @@ Ces hyperparamètres sont presque tous modifiables par l'utilisateur.
 
 #### Application à notre exemple
 
+Nous allons à présent entrainer un PMC à résoudre notre problème de régression.
+
+Comme précédemment, nous importons le fichier CSV depuis son chemin `input_path` sous la forme d'un DataFrame, puis nous sélectionnons les variables d'entrée et de sortie sous la forme de matrices Numpy :
+
+~~~
+df_dataset = pd.read_csv(input_path)
+
+
+df_train=df_dataset.sample(frac=0.8,random_state=0)
+df_test=df_dataset.drop(df_train.index)
+
+x_train = df_train[['sunspots']].to_numpy().reshape(-1, 1) 
+y_train = df_train[['tsi']].to_numpy().reshape(-1, 1) 
+
+x_test = df_test[['sunspots']].to_numpy().reshape(-1, 1) 
+y_test = df_test[['tsi']].to_numpy().reshape(-1, 1) 
+~~~
+
+Afin d'aider le PMC à converger, nous allons effectuer une transformation min-max des entrées et des sorties (voir Chapitre 1).
+C'est pourquoi nous avons fait attention à ce que les dimensions des variables d'entrée et de sortie soient celles attendues par `MinMaxScaler`.
+
+**Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
+
+~~~
+from sklearn.preprocessing import MinMaxScaler
+
+x_scaler = MinMaxScaler()
+x_scaler.fit(x_train)
+
+x_train = x_scaler.transform(x_train)
+x_test = x_scaler.transform(x_test)
+
+y_scaler = MinMaxScaler()
+y_scaler.fit(y_train)
+
+y_train = y_scaler.transform(y_train)
+y_test = y_scaler.transform(y_test)
+~~~
+
+Maintenant que les données sont prêtes, nous pouvons créer notre modèle de régression. 
+Voici comment initialiser un PMC pour de la régression, avec les paramètres par défaut :
+
+~~~
+from sklearn.neural_network import MLPRegressor
+mlp = MLPRegressor()
+~~~
+
+Pour l'entrainer, il nous suffit ensuite d'utiliser la commande suivante :
+
+~~~
+mlp.fit(x_train,y_train.ravel())
+~~~
+
+On a fait attention ici à ce que les dimensions de la sortie soient celles attendues par `MLPRegressor`.
+
+Et pour obtenir le $R^2$ de notre modèle en entrainement et en test :
+
+~~~
+print(mlp.score(x_train,y_train))
+print(mlp.score(x_test,y_test))
+~~~
+
+Pour réaliser des prédictions `y_predict` à partir d'entrées `x_predict`, il ne faudra pas oublier d'effectuer une transformation min-max inverse des sorties :
+
+~~~
+x_scaler.fit(x_predict)
+y_predict = mlp.predict(x_predict)
+y_scaler.inverse_transform(y_predict)
+~~~
+
+Mais comme nous l'avons fait remarquer dans le chapitre précédent, le PMC est sensible au sur-apprentissage.
+Pour cette raison, on peut vouloir appliquer la méthode de régularisation par "arrêt prématuré" (voir Chapitre 1).
+
+Si on active le paramètre `early_stopping` du classifieur PMC de Scikit-Learn, au moment de l'apprentissage il va automatiquement mettre de côté une partie du jeu d'entrainement pour faire un jeu de validation.
+On peut même choisir la fraction du jeu d'entrainement à utiliser pour la validation, avec le paramètre `validation_fraction`.
+
+Voici un exemple de définition d'un classifieur, avec de l'arrêt prématuré et 20% des données d'entrainement utilisées pour la validation :
+
+~~~
+mlp = MLPRegressor(early_stopping=True,validation_fraction=0.2)
+~~~
+
+Il y a aussi une astuce pour afficher l'évaluation de la fonction de coût au cours des époques, pour l'ensemble d'entrainement et de validation.
+Elle se base sur :
+
+* Subdiviser le jeu d'entrainement en un nouveau jeu d'entrainement et un jeu de validation.
+
+* Utiliser la méthode `partial_fit` de notre PMC, qui permet de réaliser une itération à la fois.
+
+* Récupérer la valeur de la fonction de coût sur le jeu d'entrainement, avec l'attribut `loss_` de notre classifieur.
+
+* Evaluer la valeur de la fonction de coût sur le jeu de validation, en utilisant la fonction `mean_squared_error` de Scikit-Learn.
+
+Voici l'affichage des 2 courbes Matplotlib obtenues sur notre base de données, pour 50 époques :
+
+~~~
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+
+df_train2=df_train.sample(frac=0.8,random_state=0)
+df_validation=df_dataset.drop(df_train2.index)
+
+x_train = df_train2[['sunspots']].to_numpy().reshape(-1, 1) 
+y_train = df_train2[['tsi']].to_numpy().reshape(-1, 1) 
+
+x_validation = df_validation[['sunspots']].to_numpy().reshape(-1, 1) 
+y_validation = df_validation[['tsi']].to_numpy().reshape(-1, 1) 
+
+x_scaler = MinMaxScaler()
+x_scaler.fit(x_train)
+
+x_train = x_scaler.transform(x_train)
+x_validation = x_scaler.transform(x_validation)
+
+y_scaler = MinMaxScaler()
+y_scaler.fit(y_train)
+
+y_train = y_scaler.transform(y_train)
+y_validation = y_scaler.transform(y_validation)
+
+mlp = MLPRegressor()
+
+loss_train = []
+loss_validation = []
+
+for idx in range(50):
+    mlp.partial_fit(x_train,y_train.ravel())
+    loss_train.append(mlp.loss_)
+    loss_validation.append(mean_squared_error(y_validation,mlp.predict(x_validation)))
+
+plt.plot(loss_train, label="train loss",c='r')
+plt.plot(loss_validation, label="validation loss",c='g')
+plt.xlabel('Epoques')
+plt.ylabel('Fonction de coût')
+plt.legend()
+~~~
+
+Voici un exemple de modèle de régression obtenu avec un PMC ayant les hyperparamètres par défaut :
+
 ![Exemple de régression non-linéaire multiple par un PMC](img/Chap3_exemple_pmc_modele.png)
 
+On voit bien que le PMC a été capable d'apprendre une fonction non-linéaire entre les variables d'entrée et de sortie.
+
+Avec ce modèle, on obtient $R^2 \approx 0.900$ en entrainement, et $R^2 \approx 0.907$ en test.
+On s'attend donc à de très bonnes performances en généralisation pour ce modèle, mais on peut probablement obtenir mieux avec d'autres hyperparamètres.
+
+**Il faudrait donc à présent se baser sur ces codes pour effectuer une optimisation des hyperparamètres.**
+
 #### Remarques
+
+La méthode du Perceptron Multi-Couche a les **avantages** suivants pour la régression :
+
+* Elle permet de dessiner de déterminer des **relations complexes** entre les variables d'entrée et de sortie sans faire de grosses hypothèses statistiques au préalable.
+
+* Pour des **nombres de variables d'entrées importants**, et des **nombres d'échantillons importants**, l'entrainement d'un PMC devient plus intéressant en termes de **temps de calcul** que les MCO.
+
+* Une fois le modèle entrainé, l'**espace mémoire** pour contenir le modèle est **plus faible** que celui nécessaire pour manipuler le $X$ des MCO
+
+Mais cette méthode a aussi les **limites** suivantes, les mêmes que pour la classification :
+
+* Elle a de **nombreux paramètres et hyperparamètres** à optimiser.
+
+* Elle est **sensible au sur-apprentissage**.
+
+* Les décisions qu'elle prend sont **difficilement expliquées** et **interprétables** : on a aucun intervalle de confiance ou de prédiction sur les sorties.
+On parle encore une fois de "boîte noire".
+
+Comme nous l'avons déjà évoqué, les réseaux de neurones sont à la base des modèles d'apprentissage modernes, fondant ainsi une nouvelle sous-discipline : l'**apprentissage profond**.
