@@ -8,6 +8,12 @@ Ce chapitre est une introduction au partitionnement (ou "classification non-supe
 
 ## Problème de partitionnement
 
+### Exemple de problème
+
+**Comment recenser les espèces de chauve-souris présentes sur le site de l'OVSQ ?**
+
+
+
 ## Mesures de performances
 
 ## Méthodes de base
