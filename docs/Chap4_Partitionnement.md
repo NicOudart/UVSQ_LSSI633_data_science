@@ -7,3 +7,11 @@ Ce chapitre est une introduction au partitionnement (ou "classification non-supe
 ---
 
 ## Problème de partitionnement
+
+## Mesures de performances
+
+## Méthodes de base
+
+### K Moyennes
+
+### Classification Ascendante Hiérarchique
