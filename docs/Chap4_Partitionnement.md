@@ -37,7 +37,25 @@ Pour les besoins de ce cours, ont été sélectionnés 474 enregistrements de cr
 Nous aimerions entrainer un modèle à reconnaitre les espèces de chauves-souris enregistrées, mais nous n'avons pas de vérité terrain pour vérifier ses prédictions. 
 **Est-il tout de même possible de diviser ces enregistrements en plusieurs classes selon leurs similarités, et d'identifier par la suite l'espèce correspondant à chaque classe ?**
 
+Dans ce but, les 3 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz), l'écart-type en fréquence du fondamental (kHz), et la durée du cri (ms)
+
 Voici le jeu de données complet, au format CSV : [Chap4_bats_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap4_bats_dataset.csv)
+
+Le tableau de données qu'il contient est de la forme :
+
+|freq_mean|freq_std|time_len|
+|:-------:|:------:|:------:|
+|31.000   |3.566   |7.500   |
+|30.340   |3.068   |6.250   |
+|28.921   |2.278   |4.750   |
+|27.218   |2.136   |9.750   |
+|29.574   |4.091   |6.750   |
+|...      |...     |...     |
+|26.605   |4.166   |4.750   |
+|23.630   |6.046   |5.750   |
+|26.000   |3.716   |4.500   |
+
+
 
 ## Mesures de performances
 
