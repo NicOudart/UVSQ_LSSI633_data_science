@@ -37,7 +37,7 @@ Pour les besoins de ce cours, ont été sélectionnés 474 enregistrements de cr
 Nous aimerions entrainer un modèle à reconnaitre les espèces de chauves-souris enregistrées, mais nous n'avons pas de vérité terrain pour vérifier ses prédictions. 
 **Est-il tout de même possible de diviser ces enregistrements en plusieurs classes selon leurs similarités, et d'identifier par la suite l'espèce correspondant à chaque classe ?**
 
-Dans ce but, les 3 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz), l'écart-type en fréquence du fondamental (kHz), et la durée du cri (ms)
+Dans ce but, les 3 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz), l'écart-type en fréquence du fondamental (kHz), et la durée du cri (ms).
 
 Voici le jeu de données complet, au format CSV : [Chap4_bats_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap4_bats_dataset.csv)
 
@@ -54,6 +54,27 @@ Le tableau de données qu'il contient est de la forme :
 |26.605   |4.166   |4.750   |
 |23.630   |6.046   |5.750   |
 |26.000   |3.716   |4.500   |
+
+Notre problème de partitionnement sera le suivant : **Identifier les différentes espèces de chauves-souris dans les enregistrements de l'OVSQ, à partir de la fréquence moyenne du fondamental, de l'écart-type en fréquence du fondamental, et de la durée du cri**.
+
+Assurons-nous d'abord qu'une telle partition est possible à partir de ces données.
+
+Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :
+
+~~~
+import pandas as pd
+df_dataset = pd.read_csv(input_path)
+~~~
+
+Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de corrélations**, avec des densités estimées par **KDE** 2D :
+
+~~~
+import seaborn as sns
+sns.pairplot(df_dataset,kind='kde')
+
+Voici le résultat :
+
+![Matrice de corrélations des enregistrements de chauves-souris de l'OVSQ](img/Chap4_correlation_matrix_kde_bats.png)
 
 
 
