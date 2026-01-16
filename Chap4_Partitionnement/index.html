@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap4_Partitionnement/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>IV. Partitionnement - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "IV. Partitionnement";
+        var mkdocs_page_input_path = "Chap4_Partitionnement.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap4_Partitionnement/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap1_Introduction/">I. Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap2_Classification_supervisee/">II. Classification supervisée</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap3_Regression/">III. Régression</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">IV. Partitionnement</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#probleme-de-partitionnement">Problème de partitionnement</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#differents-types-de-partionnement">Différents types de partionnement</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#par-partition">Par partition</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hierarchique">Hiérarchique</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#la-labelisation">La labélisation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exemple-de-probleme">Exemple de problème</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesures-de-performances">Mesures de performances</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#inertie-intra-classe-et-internie-inter-classe">Inertie intra-classe et internie inter-classe</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coefficient-de-silhouette">Coefficient de silhouette</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#la-methode-du-coude">La méthode du coude</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methodes-de-base">Méthodes de base</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#k-moyennes">K Moyennes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#classification-ascendante-hierarchique">Classification Ascendante Hiérarchique</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#labelisation-de-lexemple">Labélisation de l'exemple</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">IV. Partitionnement</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-iv-partitionnement">Chapitre IV : Partitionnement</h1>
+<p>Ce chapitre est une introduction au partitionnement (ou "classification non-supervisée") : principe, mesures de performances et méthodes de base.</p>
+<p><img alt="En-tête chapitre IV" src="../img/Chap4_header.png" /></p>
+<hr />
+<h2 id="probleme-de-partitionnement">Problème de partitionnement</h2>
+<h3 id="differents-types-de-partionnement">Différents types de partionnement</h3>
+<h4 id="par-partition">Par partition</h4>
+<h4 id="hierarchique">Hiérarchique</h4>
+<h3 id="la-labelisation">La labélisation</h3>
+<h3 id="exemple-de-probleme">Exemple de problème</h3>
+<p><strong>Comment recenser les espèces de chauves-souris présentes sur le site de l'OVSQ ?</strong></p>
+<p>Les chiroptérologues (spécialistes des chauves-souris), utilisent souvent l'identification acoustique pour faire un relevé des espèces de chauves-souris présentes sur un site donné.
+En effet, les ultrasons émis par les chauves-souris sont caractéristiques de leur espèce, et contrairement à la capture, cette méthode n'a aucun impact sur ces animaux, qui sont protégés en France.</p>
+<p>Situé en bordure de la forêt des Sources de la Bièvre à Guyancourt, l'Observatoire de Versailles Saint-Quentin-en-Yvelines (OVSQ) est traversé toutes les nuits d'été par des chauves-souris.
+C'est pourquoi depuis 2024, l'OVSQ installe un enregistreur d'ultrasons sur son site, afin de recenser les différentes espèces présentes.</p>
+<p>Voici quelques exemples de "sonogrammes" obtenus à partir des enregistrements de l'OVSQ :</p>
+<p><img alt="Exemples de sonogrammes" src="../img/Chap4_exemple_sonogrammes.png" /></p>
+<p>Chaque image représente un cri de chauve-souris : en abscisse le temps, en ordonnée la fréquence, et en nuance de gris l'amplitude.
+On a l'impression que ces 5 cris proviennent de 5 espèces différentes : fréquences moyennes différentes, plage de fréquences différentes, durées différentes, formes différentes et nombre d'harmoniques différentes.</p>
+<p>Pour les besoins de ce cours, ont été sélectionnés 474 enregistrements de cris de chauves-souris provenant de l'OVSQ.
+Nous aimerions entrainer un modèle à reconnaitre les espèces de chauves-souris enregistrées, mais nous n'avons pas de vérité terrain pour vérifier ses prédictions. 
+<strong>Est-il tout de même possible de diviser ces enregistrements en plusieurs classes selon leurs similarités, et d'identifier par la suite l'espèce correspondant à chaque classe ?</strong></p>
+<p>Dans ce but, les 3 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz), l'écart-type en fréquence du fondamental (kHz), et la durée du cri (ms).</p>
+<p>Voici le jeu de données complet, au format CSV : <a href="https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap4_bats_dataset.csv">Chap4_bats_dataset</a></p>
+<p>Le tableau de données qu'il contient est de la forme :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">freq_mean</th>
+<th style="text-align: center;">freq_std</th>
+<th style="text-align: center;">time_len</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">31.000</td>
+<td style="text-align: center;">3.566</td>
+<td style="text-align: center;">7.500</td>
+</tr>
+<tr>
+<td style="text-align: center;">30.340</td>
+<td style="text-align: center;">3.068</td>
+<td style="text-align: center;">6.250</td>
+</tr>
+<tr>
+<td style="text-align: center;">28.921</td>
+<td style="text-align: center;">2.278</td>
+<td style="text-align: center;">4.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">27.218</td>
+<td style="text-align: center;">2.136</td>
+<td style="text-align: center;">9.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">29.574</td>
+<td style="text-align: center;">4.091</td>
+<td style="text-align: center;">6.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+<tr>
+<td style="text-align: center;">26.605</td>
+<td style="text-align: center;">4.166</td>
+<td style="text-align: center;">4.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">23.630</td>
+<td style="text-align: center;">6.046</td>
+<td style="text-align: center;">5.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">26.000</td>
+<td style="text-align: center;">3.716</td>
+<td style="text-align: center;">4.500</td>
+</tr>
+</tbody>
+</table>
+<p>Notre problème de partitionnement sera le suivant : <strong>Identifier les différentes espèces de chauves-souris dans les enregistrements de l'OVSQ, à partir de la fréquence moyenne du fondamental, de l'écart-type en fréquence du fondamental, et de la durée du cri</strong>.</p>
+<p>Assurons-nous d'abord qu'une telle partition est possible à partir de ces données.</p>
+<p>Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :</p>
+<pre><code>import pandas as pd
+df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>Il est possible avec Seaborn d'afficher ces données sous la forme d'une <strong>matrice de corrélations</strong>, avec des densités estimées par <strong>KDE</strong> 2D :</p>
+<pre><code>import seaborn as sns
+sns.pairplot(df_dataset,kind='kde')
+</code></pre>
+<p>Voici le résultat :</p>
+<p><img alt="Matrice de corrélations des enregistrements de chauves-souris de l'OVSQ" src="../img/Chap4_correlation_matrix_kde_bats.png" /></p>
+<p>On observe que ces 3 features font apparaitre différents regroupements d'enregistrements : les distributions sont clairement multimodales.
+Si les frontières entre groupes, ainsi que le nombre exact de groupes restent difficiles à établir, il n'y a aucun doute sur la présence de plusieurs groupes.
+Et ces classes sont probablement liées à l'espèce de chauves-souris.</p>
+<p>Essayer de partitionner notre base de données à partir de ces features a donc du sens.
+Restera alors à labéliser les classes ainsi délimitées.</p>
+<p>Cependant, on peut noter que certains groupes visibles ont l'air moins denses que d'autres.
+Ceci est plausible : on imagine bien que certaines espèces sont plus communes sur le site que d'autres.
+Un tel déséquilibre pourrait être problématique pour entrainer notre modèle.</p>
+<p><strong>Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.</strong>
+<strong>Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée</strong>.</p>
+<p><strong>L'idée est que nous verrons cet exemple plus en détails en TP.</strong></p>
+<h2 id="mesures-de-performances">Mesures de performances</h2>
+<h3 id="inertie-intra-classe-et-internie-inter-classe">Inertie intra-classe et internie inter-classe</h3>
+<h3 id="coefficient-de-silhouette">Coefficient de silhouette</h3>
+<h3 id="la-methode-du-coude">La méthode du coude</h3>
+<h2 id="methodes-de-base">Méthodes de base</h2>
+<h3 id="k-moyennes">K Moyennes</h3>
+<h3 id="classification-ascendante-hierarchique">Classification Ascendante Hiérarchique</h3>
+<h2 id="labelisation-de-lexemple">Labélisation de l'exemple</h2>
+<p><img alt="Exemple labélisé par Tadarida" src="../img/Chap4_exemple_labelise.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Chap3_Regression/" class="btn btn-neutral float-left" title="III. Régression"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Chap3_Regression/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
