@@ -71,6 +71,7 @@ Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matri
 ~~~
 import seaborn as sns
 sns.pairplot(df_dataset,kind='kde')
+~~~
 
 Voici le résultat :
 
