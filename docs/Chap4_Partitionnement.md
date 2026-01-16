@@ -77,7 +77,21 @@ Voici le résultat :
 
 ![Matrice de corrélations des enregistrements de chauves-souris de l'OVSQ](img/Chap4_correlation_matrix_kde_bats.png)
 
+On observe que ces 3 features font apparaitre différents regroupements d'enregistrements : les distributions sont clairement multimodales.
+Si les frontières entre groupes, ainsi que le nombre exact de groupes restent difficiles à établir, il n'y a aucun doute sur la présence de plusieurs groupes.
+Et ces classes sont probablement liées à l'espèce de chauves-souris.
 
+Essayer de partitionner notre base de données à partir de ces features a donc du sens.
+Restera alors à labéliser les classes ainsi délimitées.
+
+Cependant, on peut noter que certains groupes visibles ont l'air moins denses que d'autres.
+Ceci est plausible : on imagine bien que certaines espèces sont plus communes sur le site que d'autres.
+Un tel déséquilibre pourrait être problématique pour entrainer notre modèle.
+
+**Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
+**Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
+
+**L'idée est que nous verrons cet exemple plus en détails en TP.**
 
 ## Mesures de performances
 
@@ -92,3 +106,7 @@ Voici le résultat :
 ### K Moyennes
 
 ### Classification Ascendante Hiérarchique
+
+## Labélisation de l'exemple
+
+![Exemple labélisé par Tadarida](img/Chap4_exemple_labelise.png)
