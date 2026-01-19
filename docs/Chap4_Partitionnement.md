@@ -8,13 +8,43 @@ Ce chapitre est une introduction au partitionnement (ou "classification non-supe
 
 ## Problème de partitionnement
 
-### Différents types de partionnement 
+Comme mentionné lors du Chapitre I, par "**partitionnement**" on entend diviser des individus non-labélisés en groupes suivant leur proximité dans l'espace des features.
+On essayera d'assigner des labels à ces groupes par la suite.
 
-#### Par partition
+L'idée est de **mieux comprendre** un jeu de données, et d'essayer de **classifier de nouvelles données**.
 
-#### Hiérarchique
+### Différents types de partitionnement
+
+Suivant le problème à résoudre, il existe 2 grands types de partitionnement : **par partition** et **hiérarchique**.
+
+On parle de partitionnement "**par partition**" lorsque l'on cherche à diviser les individus d'une base de donnée en un nombre fini de groupes $k$, sans tisser de lien entre eux.
+On a alors aucune information sur la proximité des classes entre elles.
+
+Par opposition, on parle de partitionnement "**hiérarchique**" lorsque l'on va diviser les individus d'une base de données en $k$ groupes, hiérarchisés selon leur similarité.
+Cette hiérarchisation sera dite "**descendante**" ou "**ascendante**" suivant si on part de 1 classe vers $k$ classes, ou inversement.
+
+On représente souvent la hiérarchisation des classes sous la forme d'un diagramme appelé **dendrogramme** : un arbre représentant les liens entre classes (en abscisse) et leurs distances (en ordonnée).
+
+
 
 ### La labélisation
+
+Une fois les données séparées en $k$ groupes, l'étape suivante est souvent d'essayer d'attribuer des labels aux classes ainsi déterminées.
+Ceci permettra de donner une interprétation à notre partition, et à nos futures prédictions.
+On appelle ce processus "**labélisation**".
+
+En l'absence de vérité terrain pour chacun des individus, la labélisation est délicate.
+On peut néanmoins proposer la méthode suivante :
+
+* Essayer de caractériser chaque groupe avec les outils de **statistiques descriptives** vus au Chapitre 1 (moyenne, écart-type, etc.).
+
+* Si une partition hiérarchique a été réalisée, étudier aussi les **liens entre les groupes**. Sinon, analyser les distances entre groupes.
+
+* Comparer les caractéristiques de chaque groupe, ainsi que les liens entre groupes, aux **connaissances établies** sur le domaine d'application, ou à un petit échantillon de données labélisées si disponible.
+
+* Attribuer un label à chaque groupe en se basant sur ces éléments.
+
+La labélisation implique donc une certaine **expertise** dans le domaine où on cherche à appliquer de la classification non-supervisée.
 
 ### Exemple de problème
 
@@ -94,6 +124,16 @@ Un tel déséquilibre pourrait être problématique pour entrainer notre modèle
 **L'idée est que nous verrons cet exemple plus en détails en TP.**
 
 ## Mesures de performances
+
+Un des grands problèmes en classification non-supervisée est que le nombre de classes est une entrée de la plupart des méthodes de résolution.
+Mais comment connaitre le nombre de classes pertinentes pour un jeu de données ?
+
+Il faut tester différents nombres de classes plausibles, et évaluer les performances du modèle obtenu pour chacun.
+
+Problème : les données auxquelles on veut appliquer une méthode de partitionnement étant par définition non-labélisées, on ne peut pas calculer une erreur par rapport à une vérité terrain.
+Il existe néanmoins des critères pour évaluer la pertinence d'un partitionnement.
+
+Nous allons voir dans cette section différents critères pour évaluer un partitionnement, et différentes méthodes pour déterminer un nombre de classes optimal pour un jeu de données.
 
 ### Inertie intra-classe et internie inter-classe
 
