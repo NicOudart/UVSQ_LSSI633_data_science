@@ -193,13 +193,20 @@ Une bonne partition **minimise l'inertie intra-classe**, ce qui d'après le thé
 
 Les inerties peuvent être utilisées pour comparer les performances de 2 partitions d'un **même jeu de données**, à **$k$ constant**, mais elles ne permettent pas de comparer 2 partitions de données différentes, ou de $k$ différents.
 
-De plus, l'inertie intra-classe **diminue toujours à mesure que l'on augmente le nombre classes** d'une partition de données : alors comment choisir un nombre de classe pertinent ?
+De plus, l'inertie intra-classe **diminue toujours à mesure que l'on augmente le nombre classes** d'une partition de données optimisée pour chaque valeur de $k$ : alors comment choisir un nombre de classe pertinent ?
 
 Nous allons voir 2 critères pour résoudre ces problèmes.
 
 ### La méthode du coude
 
+Comme nous venons de le mentionner, l'inertie intra-classe diminue toujours à mesure que l'on augmente le nombre de classe $k$ de notre partition de données (optimisée pour chaque $k$).
 
+Mais cette diminution a tendance à ralentir à mesure que $k$ augmente : plus $k$ est élevé, moins on gagne en inertie intra-classe en augmentant $k$.
+
+Plus précisément, si on trace l'inertie intra-classe en fonction de $k$, on observe typiquement une courbe en forme de coude : au début l'inertie diminue fortement, puis soudainement elle diminue de manière marginale.
+
+On va alors considérer que la valeur de $k$ optimale est celle qui correspond à l'**angle du coude**, c'est-à-dire quand augmenter $k$ n'apporte plus grand chose en termes d'inertie intra-classe.
+C'est ce que l'on appelle assez logiquement la "**méthode du coude**".
 
 ### Coefficient de silhouette
 
