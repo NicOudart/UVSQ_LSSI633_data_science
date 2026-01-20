@@ -126,16 +126,60 @@ Un tel déséquilibre pourrait être problématique pour entrainer notre modèle
 ## Mesures de performances
 
 Un des grands problèmes en classification non-supervisée est que le nombre de classes est une entrée de la plupart des méthodes de résolution.
-Mais comment connaitre le nombre de classes pertinentes pour un jeu de données ?
+**Mais comment connaitre le nombre de classes pertinentes pour un jeu de données ?**
 
 Il faut tester différents nombres de classes plausibles, et évaluer les performances du modèle obtenu pour chacun.
 
-Problème : les données auxquelles on veut appliquer une méthode de partitionnement étant par définition non-labélisées, on ne peut pas calculer une erreur par rapport à une vérité terrain.
+Problème : les données auxquelles on veut appliquer une méthode de partitionnement étant par définition non-labélisées, **on ne peut pas calculer une erreur par rapport à une vérité terrain**.
 Il existe néanmoins des critères pour évaluer la pertinence d'un partitionnement.
 
-Nous allons voir dans cette section différents critères pour évaluer un partitionnement, et différentes méthodes pour déterminer un nombre de classes optimal pour un jeu de données.
+Nous allons voir dans cette section différents **critères pour évaluer un partitionnement**, et différentes méthodes pour **déterminer un nombre de classes optimal** pour un jeu de données.
 
 ### Inertie intra-classe et internie inter-classe
+
+Un bon partitionnement a les 2 caractéristiques suivantes :
+
+* **Les individus au sein d'un groupe sont les plus similaires possibles** (leurs distances dans l'espace des features sont les plus faibles possibles).
+
+* **Les différents groupes sont les plus différents possibles** (leurs distances dans l'espace des features sont les plus grandes possibles).
+
+On utilise souvent comme indicateurs de ces 2 caractéristiques l'**inertie** intra-classe et inter-classe.
+
+L'**inertie d'une classe** $i$ contenant $n_i$ individus est définie comme la somme des distances au centre de gravité $g_i$ de la classe :
+
+$I_i = \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2$
+
+où chaque $x_{i,j}$ est un vecteur contenant les réalisations des différentes features pour un individu de la classe $i$.
+
+Il s'agit d'une analogie avec la notion de moment d'inertie en Physique : la répartition de la masse dans un objet autour de son centre de gravité va rendre plus ou moins difficile sa mise en mouvement.
+D'une manière analogue, la répartition des individus dans un groupe va rendre plus ou moins coûteuse en termes de performances un changement de centre de gravité des groupes (idem pour les groupes vis-à-vis du centre de gravité du jeu de données total).
+
+Cette formule dépend bien évidemment de la définition du **centre de gravité** $g_i$ de la classe $i$, et de la **mesure de distance** $d$ choisie.
+
+Pour le centre de gravité, on va souvent considérer le **barycentre** :
+
+$g_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{i,j}$
+
+Pour les mesures de distances, reportez-vous à la section "K plus proches voisins" du Chapitre 2.
+Comme pour les K plus proches voisins, il s'agira d'un **hyperparamètre à optimiser**.
+
+On définit alors l'**inertie intra-classe** comme étant la somme des inerties des $k$ classes :
+
+$I = \sum_{i=1}^{k} I_i = \sum{i=1}^{k} \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2$
+
+Il s'agit d'un indicateur de la **similarité des individus au sein de chaque classe**.
+
+L'**inertie inter-classe** est quant à elle définie comme :
+
+$J = \sum_{i=1}^{k} n_i d(g_i,g)^2$
+
+avec $g = \frac{1}{\sum_{i=1}^{k} n_i} \sum_{i=1}^{k} \sum_{j=1}^{n_i} x_{i,j}$ le barycentre du jeu de données complet.
+
+Il s'agit d'un indicateur de la **séparabilité des différentes classes**.
+
+|Théorème de Huygens|
+|:-|
+||
 
 ### Coefficient de silhouette
 
