@@ -125,6 +125,8 @@ Un tel déséquilibre pourrait être problématique pour entrainer notre modèle
 
 ## Mesures de performances
 
+Pour mettre au point des méthodes d'apprentissage automatique d'une partition de données, **nous avons besoin de critères pour juger de la qualité de notre partition**.
+
 Un des grands problèmes en classification non-supervisée est que le nombre de classes est une entrée de la plupart des méthodes de résolution.
 **Mais comment connaitre le nombre de classes pertinentes pour un jeu de données ?**
 
@@ -151,8 +153,10 @@ $I_i = \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2$
 
 où chaque $x_{i,j}$ est un vecteur contenant les réalisations des différentes features pour un individu de la classe $i$.
 
-Il s'agit d'une analogie avec la notion de moment d'inertie en Physique : la répartition de la masse dans un objet autour de son centre de gravité va rendre plus ou moins difficile sa mise en mouvement.
-D'une manière analogue, la répartition des individus dans un groupe va rendre plus ou moins coûteuse en termes de performances un changement de centre de gravité des groupes (idem pour les groupes vis-à-vis du centre de gravité du jeu de données total).
+|Nota Bene|
+|:-|
+|Il s'agit d'une analogie avec la notion de moment d'inertie en Physique : la répartition de la masse dans un objet autour de son centre de gravité va rendre plus ou moins difficile sa mise en mouvement.|
+|D'une manière analogue, la répartition des individus dans un groupe va rendre plus ou moins coûteuse en termes de performances un changement de centre de gravité des groupes (idem pour les groupes vis-à-vis du centre de gravité du jeu de données total).|
 
 Cette formule dépend bien évidemment de la définition du **centre de gravité** $g_i$ de la classe $i$, et de la **mesure de distance** $d$ choisie.
 
@@ -179,11 +183,27 @@ Il s'agit d'un indicateur de la **séparabilité des différentes classes**.
 
 |Théorème de Huygens|
 |:-|
-||
+|On note $T$ l'**inertie totale** d'un jeu de données :|
+|$T = \sum_{i=1}^{k} \sum_{j=1}^{n_i} d(x_{i,j},g)^2$|
+|De manière analogue au théorème de Huygens en Physique, on a conservation de l'inertie totale d'un jeu de données :|
+|$T = I + J$|
+|Cette somme est **indépendante de la partition** choisie.|
+
+Une bonne partition **minimise l'inertie intra-classe**, ce qui d'après le théorème de Huygens revient à **maximiser l'inertie inter-classe**.
+
+Les inerties peuvent être utilisées pour comparer les performances de 2 partitions d'un **même jeu de données**, à **$k$ constant**, mais elles ne permettent pas de comparer 2 partitions de données différentes, ou de $k$ différents.
+
+De plus, l'inertie intra-classe **diminue toujours à mesure que l'on augmente le nombre classes** d'une partition de données : alors comment choisir un nombre de classe pertinent ?
+
+Nous allons voir 2 critères pour résoudre ces problèmes.
+
+### La méthode du coude
+
+
 
 ### Coefficient de silhouette
 
-### La méthode du coude
+
 
 ## Méthodes de base
 
