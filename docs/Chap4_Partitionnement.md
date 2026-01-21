@@ -167,7 +167,7 @@ Pour le centre de gravité, on va souvent considérer le **barycentre** :
 $g_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{i,j}$
 
 Pour les mesures de distances, reportez-vous à la section "K plus proches voisins" du Chapitre 2.
-Comme pour les K plus proches voisins, il s'agira d'un **hyperparamètre à optimiser**.
+Dans le cas où on se servirait des inerties pour entrainer un modèle de partitionnement, la mesure de distance sera un **hyperparamètre à optimiser**.
 
 On définit alors l'**inertie intra-classe** comme étant la somme des inerties des $k$ classes :
 
@@ -183,7 +183,7 @@ avec $g = \frac{1}{\sum_{i=1}^{k} n_i} \sum_{i=1}^{k} \sum_{j=1}^{n_i} x_{i,j}$ 
 
 Il s'agit d'un indicateur de la **séparabilité des différentes classes**.
 
-![Inertie intra-classe et inter-classe](img/Chap_4_inertie_intra_inter_classe.png)
+![Inertie intra-classe et inter-classe](img/Chap4_inertie_intra_inter_classe.png)
 
 |Théorème de Huygens|
 |:-|
@@ -261,7 +261,7 @@ $D_2(x_{i,j}) = min_{1 \leq l \leq k, l \neq i}(\frac{1}{n_l} \sum_{m=1}^{n_l} d
 
 Il s'agit d'un indicateur de **séparabilité** d'un individus par rapport à la classe la plus proche de la sienne : plus il est élevé, plus l'individu est séparable des autres classes
 
-![Distance moyenne intra-classe et distance moyenne à la classe la plus proche](img/Chap4_coefficient_de_silhouette.png)
+![Distance moyenne intra-classe et distance moyenne à la classe la plus proche](img/Chap4_distances_moyennes_intra_classe_et_classe_la_plus_proche.png)
 
 Le coefficient de silhouette est un score compris entre -1 et 1.
 Si pour un individu :
@@ -279,9 +279,13 @@ Dans le but de choisir un nombre de classes optimal pour une partition, on peut 
 Si on veut essayer de comprendre pourquoi une partition a de mauvaises performances, on peut analyser les valeurs de $s(x_{i,j})$ pour chaque individu d'un jeu de données.
 On affiche en général les coefficients de silhouette sous la forme d'un **diagramme en barres**, avec en abscisses $s$ et en ordonnées les individus (rangés par classe).
 
-![Coefficient de silhouette](img/Chap4_distances_moyennes_intra_classe_et_classe_la_plus_proche.png)
+![Coefficient de silhouette](img/Chap4_coefficient_de_silhouette.png)
 
 On peut alors facilement identifier quels individus ont été correctement associés à la bonne classe ou non.
+
+|Nota Bene|
+|:-|
+|Les coefficients de silhouette obtenus dépendent évidemment de la **mesure de distance** choisie.|
 
 ## Méthodes de base
 
