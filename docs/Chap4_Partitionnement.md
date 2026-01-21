@@ -295,4 +295,28 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 
 ## Labélisation de l'exemple
 
+### Eléments pour la labélisation
+
+### Vérité terrain
+
+En 2006, le Muséum d'Histoire Naturelle lance le programme de sciences participatives "Vigie-Chiro".
+L'idée est de collecter des enregistrements de chauves-souris réalisés par des amateurs dans toute la France, afin de réaliser un suivi des différentes espèces d'une année sur l'autre, par région.
+Dans le cadre de ce programme, l'OVSQ partage tous les ans l'intégralité de ses enregistrements avec le Muséum.
+
+Sur sa plateforme en ligne, "Vigie-Chiro" propose un logiciel d'identification automatique des enregistrements de chauves-souris : Tadarida (Bas et al., 2017).
+
+Nous avons labélisé nos 474 enregistrements à l'aide de Tadarida, et 5 espèces ont été identifiées :
+
+* La sérotine commune (_Eptesicus serotinus_), de label : **Eptser**.
+
+* Le murin de Daubenton (_Myotis daubentonii_), de label : **Myodau**.
+
+* La noctule commune (_Nyctalus noctula_), de label : **Nycnoc**.
+
+* La pipistrelle commune (_Pipistrellus pipistrellus_), de label : **Pippip**.
+
+* L'Oreillard roux (_Plecotus auritus_), de label : **Pleaur**.
+
+Voici l'identification Tadarida des différents enregistrements, sous la forme d'une matrice de confusion :
+
 ![Exemple labélisé par Tadarida](img/Chap4_exemple_labelise.png)
