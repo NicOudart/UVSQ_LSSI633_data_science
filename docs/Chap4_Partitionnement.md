@@ -208,9 +208,68 @@ Plus précisément, si on trace l'inertie intra-classe en fonction de $k$, on ob
 On va alors considérer que la valeur de $k$ optimale est celle qui correspond à l'**angle du coude**, c'est-à-dire quand augmenter $k$ n'apporte plus grand chose en termes d'inertie intra-classe.
 C'est ce que l'on appelle assez logiquement la "**méthode du coude**".
 
+|Nota Bene|
+|:-|
+|La méthode du coude n'est pas spécifique aux problèmes de partitionnement.|
+|On la retrouve dans la détermination d'un paramètre optimal pour de nombreux types de modèles.|
+
+En pratique, cette méthode n'est pas toujours simple à appliquer "visuellement".
+En effet, on peut parfois obtenir une courbe de l'inertie intra-classe en fonction de $k$ sans coude évident.
+Dans un tel cas, le choix de $k$ peut s'avérer arbitraire.
+
+Pour obtenir un résultat plus objectif, on peut baser sa décision sur un **critère statistique**.
+Le plus connu est le **Critère d'Information d'Akaike** (AIC) :
+
+$AIC(k) = 2 p - 2 log(L(k))$
+
+avec $p$ le nombre de paramètres à estimer, et $L(k)$ la vraisemblance du modèle pour $k$ classes.
+
+L'idée est ici que le nombre de classe optimal est celui qui **minimise l'AIC** : la formule cherche un modèle vraisemblable, tout en pénalisant le choix d'un nombre de classes trop grand.
+
+Si la méthode de partitionnement choisie ne se base pas sur un modèle statistique, il faudra faire des **hypothèses statistiques** afin de déterminer une fonction de vraisemblance.
+
 ### Coefficient de silhouette
 
+Nous avons vu que la méthode du coude peux aider à trouver le nombre de classes optimal dans certains cas, mais ce choix peut s'avérer difficile en pratique.
+Et les critères statistiques tels que l'AIC impliquent de faire des hypothèses statistiques plus ou moins justes sur la méthode de partitionnement choisie.
 
+Dans l'idéal, nous aimerions un critère qui permette de comparer des modèles de partitionnement obtenus pour différents jeux de données, pour différents nombre de classes, et sans hypothèses sur la méthode choisie.
+
+C'est pourquoi le "**coefficient de silhouette**" est un des critères les plus utilisés pour évaluer une partition de données.
+
+Pour chaque individu de la base de données, il est définit comme :
+
+$s(x_{i,j}) = \frac{D_2(x_{i,j})-D_1(x_{i,j})}{max(D_1(x_{i,j}),D_2(x_{i,j}))}$
+
+Avec $D_1$ la **distance moyenne intra-classe** :
+
+$D_1(x_{i,j}) = \frac{1}{n_i-1} \sum_{m=1,m \neq j}^{n_i} d(x_{i,m},x_{i,j})$
+
+Il s'agit d'un indicateur de la **similarité** d'un individu au reste de sa classe : plus il est faible, plus l'individu est proche du reste de sa classe.
+
+Et $D_2$ la **distance moyenne à la classe la plus proche** :
+
+$D_2(x_{i,j}) = min_{1 \leq l \leq k, l \neq i}(\frac{1}{n_l} \sum_{m=1}^{n_l} d(x_{l,m},x_{i,j}))$
+
+Il s'agit d'un indicateur de **séparabilité** d'un individus par rapport à la classe la plus proche de la sienne : plus il est élevé, plus l'individu est séparable des autres classes
+
+Le coefficient de silhouette est un score compris entre -1 et 1.
+Si pour un individu :
+
+* $s(x_{i,j}) \approx 1$ alors l'individu est correctement identifié à sa classe.
+
+* $s(x_{i,j}) = 0$ alors l'individu est à la frontière entre 2 classes.
+
+* $s(x_{i,j}) < 0$ alors l'individu est mal identifié à sa classe.
+
+On peut alors utiliser le coefficient de silhouette moyen $S = \sum_{i=1}^{k} \sum_{j=1}^{n_i} s(x_{i,j})$ comme mesure de la qualité d'une partition de données : il doit être le plus proche possible de 1.
+
+Dans le but de choisir un nombre de classes optimal pour une partition, on peut simplement tracer la courbe de $S$ obtenu pour les modèles optimisés par chaque $k$, et choisir la valeur de $k$ maximisant $S$.
+
+Si on veut essayer de comprendre pourquoi une partition a de mauvaises performances, on peut analyser les valeurs de $s(x_{i,j})$ pour chaque individu d'un jeu de données.
+On affiche en général les coefficients de silhouette sous la forme d'un **diagramme en barres**, avec en abscisses $s$ et en ordonnées les individus (rangés par classe).
+
+On peut alors facilement identifier quels individus ont été correctement associés à la bonne classe ou non.
 
 ## Méthodes de base
 
