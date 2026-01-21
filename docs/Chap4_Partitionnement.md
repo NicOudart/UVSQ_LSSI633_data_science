@@ -25,7 +25,7 @@ Cette hiérarchisation sera dite "**descendante**" ou "**ascendante**" suivant s
 
 On représente souvent la hiérarchisation des classes sous la forme d'un diagramme appelé **dendrogramme** : un arbre représentant les liens entre classes (en abscisse) et leurs distances (en ordonnée).
 
-
+![Par partition ou hiérarchique](img/Chap4_partition_hierachique.png)
 
 ### La labélisation
 
@@ -145,6 +145,8 @@ Un bon partitionnement a les 2 caractéristiques suivantes :
 
 * **Les différents groupes sont les plus différents possibles** (leurs distances dans l'espace des features sont les plus grandes possibles).
 
+![Bon et mauvais partition](img/Chap4_bonne_mauvaise_partition.png)
+
 On utilise souvent comme indicateurs de ces 2 caractéristiques l'**inertie** intra-classe et inter-classe.
 
 L'**inertie d'une classe** $i$ contenant $n_i$ individus est définie comme la somme des distances au centre de gravité $g_i$ de la classe :
@@ -181,6 +183,8 @@ avec $g = \frac{1}{\sum_{i=1}^{k} n_i} \sum_{i=1}^{k} \sum_{j=1}^{n_i} x_{i,j}$ 
 
 Il s'agit d'un indicateur de la **séparabilité des différentes classes**.
 
+![Inertie intra-classe et inter-classe](img/Chap_4_inertie_intra_inter_classe.png)
+
 |Théorème de Huygens|
 |:-|
 |On note $T$ l'**inertie totale** d'un jeu de données :|
@@ -208,6 +212,8 @@ Plus précisément, si on trace l'inertie intra-classe en fonction de $k$, on ob
 On va alors considérer que la valeur de $k$ optimale est celle qui correspond à l'**angle du coude**, c'est-à-dire quand augmenter $k$ n'apporte plus grand chose en termes d'inertie intra-classe.
 C'est ce que l'on appelle assez logiquement la "**méthode du coude**".
 
+![Méthode du coude](img/Chap4_methode_du_coude.png)
+
 |Nota Bene|
 |:-|
 |La méthode du coude n'est pas spécifique aux problèmes de partitionnement.|
@@ -216,6 +222,8 @@ C'est ce que l'on appelle assez logiquement la "**méthode du coude**".
 En pratique, cette méthode n'est pas toujours simple à appliquer "visuellement".
 En effet, on peut parfois obtenir une courbe de l'inertie intra-classe en fonction de $k$ sans coude évident.
 Dans un tel cas, le choix de $k$ peut s'avérer arbitraire.
+
+![Cas problématique pour la méthode du coude](img/Chap4_cas_problematique_coude.png)
 
 Pour obtenir un résultat plus objectif, on peut baser sa décision sur un **critère statistique**.
 Le plus connu est le **Critère d'Information d'Akaike** (AIC) :
@@ -253,6 +261,8 @@ $D_2(x_{i,j}) = min_{1 \leq l \leq k, l \neq i}(\frac{1}{n_l} \sum_{m=1}^{n_l} d
 
 Il s'agit d'un indicateur de **séparabilité** d'un individus par rapport à la classe la plus proche de la sienne : plus il est élevé, plus l'individu est séparable des autres classes
 
+![Distance moyenne intra-classe et distance moyenne à la classe la plus proche](img/Chap4_coefficient_de_silhouette.png)
+
 Le coefficient de silhouette est un score compris entre -1 et 1.
 Si pour un individu :
 
@@ -268,6 +278,8 @@ Dans le but de choisir un nombre de classes optimal pour une partition, on peut 
 
 Si on veut essayer de comprendre pourquoi une partition a de mauvaises performances, on peut analyser les valeurs de $s(x_{i,j})$ pour chaque individu d'un jeu de données.
 On affiche en général les coefficients de silhouette sous la forme d'un **diagramme en barres**, avec en abscisses $s$ et en ordonnées les individus (rangés par classe).
+
+![Coefficient de silhouette](img/Chap4_distances_moyennes_intra_classe_et_classe_la_plus_proche.png)
 
 On peut alors facilement identifier quels individus ont été correctement associés à la bonne classe ou non.
 
