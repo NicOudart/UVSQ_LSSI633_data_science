@@ -320,3 +320,7 @@ Nous avons labélisé nos 474 enregistrements à l'aide de Tadarida, et 5 espèc
 Voici l'identification Tadarida des différents enregistrements, sous la forme d'une matrice de confusion :
 
 ![Exemple labélisé par Tadarida](img/Chap4_exemple_labelise.png)
+
+Et pour informations, les 5 exemples de sonogrammes présentés en début de chapitre correspondent chacun à une espèce différente parmi celles identifiées par Tadarida :
+
+![Exemples de sonogrammes labélisé par Tadarida](img/Chap4_exemple_sonogrammes_labelise.png)
