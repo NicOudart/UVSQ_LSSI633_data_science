@@ -293,7 +293,29 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 
 ### K Moyennes
 
+#### Principe
+
+#### Implémentation Scikit-Learn
+
+#### Application à notre exemple
+
+![Exemple de coefficients de silhouette moyens pour les k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette_moyen.png)
+
+![Exemple de classes déterminées par k-moyennes](img/Chap4_exemple_kmeans_clusters.png)
+
+![Exemple de coefficients de silhouette par échantillon après k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette.png)
+
+#### Remarques
+
 ### Classification Ascendante Hiérarchique
+
+#### Principe
+
+#### Implémentation Scikit-Learn
+
+#### Application à notre exemple
+
+#### Remarques
 
 ## Labélisation de l'exemple
 
