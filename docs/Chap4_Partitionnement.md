@@ -276,6 +276,8 @@ On peut alors utiliser le coefficient de silhouette moyen $S = \sum_{i=1}^{k} \s
 
 Dans le but de choisir un nombre de classes optimal pour une partition, on peut simplement tracer la courbe de $S$ obtenu pour les modèles optimisés par chaque $k$, et choisir la valeur de $k$ maximisant $S$.
 
+![Coefficient de silhouette moyen](img/Chap4_coefficient_de_silhouette_moyen.png)
+
 Si on veut essayer de comprendre pourquoi une partition a de mauvaises performances, on peut analyser les valeurs de $s(x_{i,j})$ pour chaque individu d'un jeu de données.
 On affiche en général les coefficients de silhouette sous la forme d'un **diagramme en barres**, avec en abscisses $s$ et en ordonnées les individus (rangés par classe).
 
