@@ -315,11 +315,39 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 
 #### Application à notre exemple
 
+![Exemple de coefficients de silhouette moyens pour la CAH](img/Chap4_exemple_cah_coefficient_de_silhouette_moyen.png)
+
+![Exemple de classes déterminées par CAH](img/Chap4_exemple_cah_clusters.png)
+
+![Exemple de coefficients de silhouette par échantillon après CAH](img/Chap4_exemple_cah_coefficient_de_silhouette.png)
+
+![Exemple de dendrogramme obtenu après CAH](img/Chap4_exemple_dendrogramme_cah.png)
+
 #### Remarques
 
 ## Labélisation de l'exemple
 
 ### Eléments pour la labélisation
+
+Nous allons à présent essayer de labéliser les 3 classes obtenues avec les k-moyennes (sachant que les classes obtenues par CAH sont quasi identiques).
+
+Commençons par caractériser avec les **statistiques** descriptives les différents groupes.
+
+Voici les moyennes des classes identifiées selon les différentes features :
+
+|         |Classe 0|Classe 1|Classe 2|
+|:-------:|:------:|:------:|:------:|
+|freq_mean|        |        |        |
+|freq_std |        |        |        |
+|time_len |        |        |        |
+
+Et voici les écart-types des classes identifiées selon les différentes features :
+
+|         |Classe 0|Classe 1|Classe 2|
+|:-------:|:------:|:------:|:------:|
+|freq_mean|        |        |        |
+|freq_std |        |        |        |
+|time_len |        |        |        |
 
 ### Vérité terrain
 
@@ -348,3 +376,16 @@ Voici l'identification Tadarida des différents enregistrements, sous la forme d
 Et pour informations, les 5 exemples de sonogrammes présentés en début de chapitre correspondent chacun à une espèce différente parmi celles identifiées par Tadarida :
 
 ![Exemples de sonogrammes labélisé par Tadarida](img/Chap4_exemple_sonogrammes_labelise.png)
+
+On remarque que les noctules communes, les pipistrelles communes, ainsi que les oreillard roux ont été assez bien identifiées par nos méthodes de partitions.
+Par contre, la sérotine commune et le murin de Daubenton n'ont pas été identifiées.
+
+On peut avancer plusieurs explications :
+
+* La sérotine commune et le murin de Daubenton sont sous représentés dans les observations (26 et 41, contre 159 pour la noctule commune, 169 pour la pipistrelle commune, et 79 pour l'oreillard roux).
+
+* La sérotine commune a l'air difficilement séparable de l'oreillard roux, et le murin de Daubenton difficilement séparable de la pipistrelle commune. 
+Il faudrait donc potentiellement ajouter de nouvelles features, ou appliquer une transformation aux features choisies afin de séparer ces espèces.
+
+* Par défaut, nos méthodes de partitionnement utilisent la distance euclidienne.
+Une autre mesure de distance donnerait peut-être de meilleurs résultats.
