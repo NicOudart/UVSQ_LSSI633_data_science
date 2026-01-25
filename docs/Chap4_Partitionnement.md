@@ -121,7 +121,7 @@ Un tel déséquilibre pourrait être problématique pour entrainer notre modèle
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
 **Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
 
-**L'idée est que nous verrons cet exemple plus en détails en TP.**
+**L'idée est que nous verrons un exemple plus en détails en TP.**
 
 ## Mesures de performances
 
@@ -329,25 +329,48 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 
 ### Eléments pour la labélisation
 
-Nous allons à présent essayer de labéliser les 3 classes obtenues avec les k-moyennes (sachant que les classes obtenues par CAH sont quasi identiques).
+Nous allons à présent essayer de labéliser les 3 classes obtenues avec les k-moyennes (sachant que les classes obtenues par CAH sont identiques).
 
-Commençons par caractériser avec les **statistiques** descriptives les différents groupes.
+Commençons par caractériser avec les **statistiques descriptives** les différents groupes.
 
 Voici les moyennes des classes identifiées selon les différentes features :
 
 |         |Classe 0|Classe 1|Classe 2|
 |:-------:|:------:|:------:|:------:|
-|freq_mean|        |        |        |
-|freq_std |        |        |        |
-|time_len |        |        |        |
+|freq_mean|48.85   |19.77   |26.16   |
+|freq_std |2.54    |0.56    |3.50    |
+|time_len |4.09    |21.97   |1.40    |
 
-Et voici les écart-types des classes identifiées selon les différentes features :
+Pour attribuer une espèce à chaque groupe, nous allons nous appuyer sur la clé d'identification acoustique du chercheur du Museum d'Histoire Naturelle Yves Bas.
 
-|         |Classe 0|Classe 1|Classe 2|
-|:-------:|:------:|:------:|:------:|
-|freq_mean|        |        |        |
-|freq_std |        |        |        |
-|time_len |        |        |        |
+Commençons par la classe 0.
+Nous voyons que l'écart-type en fréquence est faible mais non-négligeable (2.54 kHz), et que la durée est de 4.09 ms.
+Voici la table  d'identification pour ce type de cris, autour de la fréquence moyenne de 48.85 kHz :
+
+|Espèce                  |Fréquences (kHz)|
+|:----------------------:|:--------------:|
+|Pipistrelle de Kuhl     |34-40           |
+|Pipistrelle de Nathusius|38-42           |
+|Pipistrelle commune     |43-50           |
+|Pipistrelle pygmée      |53-60           |
+
+Il est alors évident que la seule espèce plausible est la **Pipistrelle commune**
+
+Ensuite, nous voyons que la classe 1 a un écart-type en fréquences très faible (0.56 kHz), il s'agit donc de cris à fréquence quasi-constante.
+La fréquence moyenne du cri est de 19.77 kHz, ce qui est plutôt faible (à la limite de l'audition d'un humain).
+Voici la table d'identification pour les cris à fréquence basse, quasi-constante :
+
+|Espèce            |Fréquences (kHz)|
+|:----------------:|:--------------:|
+|Molosse de Cestoni|9-12            |
+|Grande Noctule    |13-15           |
+|Noctule commune   |17-20           |
+|Noctule de Leisler|22-26           |
+
+Il est alors évident que la seule espèce plausible est la **Noctule commune**.
+De plus, la durée du cri est plutôt longue (21.97 ms), ce qui corrobore notre identification d'après la littérature spécialisée.
+
+Enfin, nous voyons que la classe 2
 
 ### Vérité terrain
 

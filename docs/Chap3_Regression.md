@@ -211,7 +211,7 @@ Vouloir entrainer un modèle à prédire la TSI à partir du nombre de taches so
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
 **Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
 
-**L'idée est que nous verrons cet exemple plus en détails en TP.**
+**L'idée est que nous verrons un exemple plus en détails en TP.**
 
 ## Mesures de performances
 
@@ -1194,5 +1194,7 @@ Mais cette méthode a aussi les **limites** suivantes, les mêmes que pour la cl
 
 * Les décisions qu'elle prend sont **difficilement expliquées** et **interprétables** : on a aucun intervalle de confiance ou de prédiction sur les sorties.
 On parle encore une fois de "boîte noire".
+
+* L'initialisation de la méthode se faisant de manière **aléatoire**, 2 apprentissages ne donneront pas exactement le même modèle.
 
 Comme nous l'avons déjà évoqué, les réseaux de neurones sont à la base des modèles d'apprentissage modernes, fondant ainsi une nouvelle sous-discipline : l'**apprentissage profond**.

@@ -150,7 +150,7 @@ Vouloir entrainer un modèle à reconnaitre un de ces instruments à partir de c
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
 **Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
 
-**L'idée est que nous verrons cet exemple plus en détails en TP.**
+**L'idée est que nous verrons un exemple plus en détails en TP.**
 
 ## Mesures de performance
 
@@ -1378,6 +1378,8 @@ Mais cette méthode a aussi les **limites** suivantes :
 
 * Les décisions qu'elle prend sont **difficilement expliquées** et **interprétables** : il est difficile voir impossible pour un humain de les comprendre.
 On parle de "boîte noire".
+
+* L'initialisation de la méthode se faisant de manière **aléatoire**, 2 apprentissages ne donneront pas exactement le même modèle.
 
 Les réseaux de neurones sont à la base des modèles d'apprentissage modernes, fondant ainsi une nouvelle sous-discipline : l'**apprentissage profond**.
 
