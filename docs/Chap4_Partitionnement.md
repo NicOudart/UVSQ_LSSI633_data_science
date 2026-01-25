@@ -297,6 +297,82 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 
 #### Implémentation Scikit-Learn
 
+Il existe une implémentation Scikit-Learn de la méthode des K-moyennes.
+
+Elle peut être importée avec :
+
+~~~
+from sklearn.cluster import KMeans
+~~~
+
+On peut ensuite initialiser un modèle de partition `km` avec un objet "KMeans" de paramètre `k` correspondant au nombre de classes à déterminer :
+
+~~~
+km = KMeans(n_clusters=3)
+~~~
+
+Pour diviser le jeu de données en $k$ classes `clusters` à partir des features choisies `features`, on utilise la méthode :
+
+~~~
+clusters = km.fit_predict(features)
+~~~
+
+Si on veut obtenir le coefficient de silhouette moyen de notre partition, on peut utiliser la commande :
+
+~~~
+from sklearn.metrics import silhouette_score
+silhouette_score(features,clusters)
+~~~
+
+#### Affichage des coefficients de silhouette
+
+Dans les bibliothèques sélectionnées dans le cadre de ce cours, il n'existe pas d'implémentation de l'affichage des coefficients de silhouette sous la forme d'un diagramme en barres.
+
+Cependant, dans ses tutoriels en ligne, Scikit-Learn propose un code pour réaliser ce type d'affichage "manuellement".
+
+En partant du principe que l'on a les features choisies dans `features`, et les classes obtenues par partitionnement dans `clusters`, on peut utiliser la méthode "silhouette_samples" pour récupérer les coefficients de silhouette, et réaliser un affichage avec Matplotlib :
+
+~~~
+from sklearn.metrics import silhouette_score,silhouette_samples
+import numpy as np
+import matplotlib.pyplot as plt
+
+sample_scores = silhouette_samples(features,clusters)
+mean_score = silhouette_score(features,clusters)
+
+fig, ax = plt.subplots()
+
+y_lower = 10
+for idx in range(3):
+    sample_scores_idx = sample_scores[clusters == idx]
+    sample_scores_idx.sort()
+
+    size_cluster_idx = sample_scores_idx.shape[0]
+    y_upper = y_lower + size_cluster_idx
+
+    color = plt.cm.tab10(idx)
+    ax.fill_betweenx(
+        np.arange(y_lower, y_upper),
+        0,
+        sample_scores_idx,
+        facecolor=color,
+        edgecolor=color,
+        alpha=0.7
+    )
+
+    ax.text(-0.05, y_lower + 0.5 * size_cluster_idx, str(idx))
+    y_lower = y_upper + 10
+    
+ax.axvline(x=mean_score,color="red",linestyle="--")
+
+ax.set_yticks([])
+ax.set_xlim([-0.1, 1])
+ax.set_xlabel("Coefficient de silhouette",fontsize=12)
+ax.set_ylabel("Classes",fontsize=12)
+~~~
+
+Vous pouvez réutiliser ce code tel quel pour vos propres affichages.
+
 #### Application à notre exemple
 
 ![Exemple de coefficients de silhouette moyens pour les k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette_moyen.png)
@@ -312,6 +388,99 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 #### Principe
 
 #### Implémentation Scikit-Learn
+
+Il existe une implémentation Scikit-Learn de la méthode de la CAH.
+
+Elle peut être importée avec :
+
+~~~
+from sklearn.cluster import AgglomerativeClustering
+~~~
+
+On peut ensuite initialiser un modèle de partition `hca` avec un objet "AgglomerativeClustering" de paramètre `k` correspondant au nombre de classes à déterminer :
+
+~~~
+hca = AgglomerativeClustering(n_clusters=3)
+~~~
+
+Pour diviser le jeu de données en $k$ classes `clusters` à partir des features choisies `features`, on utilise la méthode :
+
+~~~
+clusters = hca.fit_predict(features)
+~~~
+
+Comme pour les K-moyennes, si on veut obtenir le coefficient de silhouette moyen de notre partition, on peut utiliser la commande :
+
+~~~
+from sklearn.metrics import silhouette_score
+silhouette_score(features,clusters)
+~~~
+
+#### Affichage d'un dendrogramme avec Scipy
+
+Dans les bibliothèques sélectionnées dans le cadre de ce cours, il n'existe pas d'implémentation pour afficher le dendrogramme d'une CAH.
+
+Cependant, dans ses tutoriels en ligne, Scikit-Learn propose une fonction pour réaliser ce type d'affichage "manuellement", en s'appuyant sur la fonction "dendrogramme" de la bibliothèque Scipy.
+La voici, pour un modèle déterminé par CAH `model` :
+
+~~~
+from scipy.cluster.hierarchy import dendrogram
+import numpy as np
+
+def plot_dendrogram(model, **kwargs):
+    
+    counts = np.zeros(model.children_.shape[0])
+    n_samples = len(model.labels_)
+
+    for i, merge in enumerate(model.children_):
+        current_count = 0
+        for child_idx in merge:
+            if child_idx < n_samples:
+                current_count += 1
+            else:
+                current_count += counts[child_idx - n_samples]
+        counts[i] = current_count
+
+    linkage_matrix = np.column_stack([
+        model.children_,
+        model.distances_,
+        counts
+    ]).astype(float)
+
+    dendrogram(linkage_matrix, **kwargs)
+~~~
+
+Vous pouvez réutiliser ce code tel quel pour vos propres affichages.
+
+Pour pouvoir utiliser cette fonction, il faut créer une partition des features choisies `features`, avec les paramètres suivants :
+
+~~~
+hca = AgglomerativeClustering(distance_threshold=0,n_clusters=None)
+hca.fit(features)
+~~~
+
+Pour afficher le dendrogramme complet (de 1 classe par individu à 1 classe unique) :
+
+~~~
+import maplotlib.pyplot as plt
+plt.figure()
+plot_dendrogram(hca,truncate_mode="level")
+plt.xlabel("Nombre d'individus par classe",fontsize=12)
+plt.ylabel("Classes",fontsize=12)
+plt.xticks([])
+plt.show()
+~~~
+
+Mais en général, on va préférer afficher le dendrogramme jusqu'au nombre de classes voulu `k` :
+
+~~~
+import matplotlib.pyplot as plt
+plt.figure()
+plot_dendrogram(hca,truncate_mode="lastp",p=k)
+plt.xlabel("Nombre d'individus par classe",fontsize=12)
+plt.ylabel("Distance entre classes",fontsize=12)
+plt.show()
+~~~
 
 #### Application à notre exemple
 
@@ -370,7 +539,19 @@ Voici la table d'identification pour les cris à fréquence basse, quasi-constan
 Il est alors évident que la seule espèce plausible est la **Noctule commune**.
 De plus, la durée du cri est plutôt longue (21.97 ms), ce qui corrobore notre identification d'après la littérature spécialisée.
 
-Enfin, nous voyons que la classe 2
+Enfin, nous voyons que la classe 2 a une fréquence moyenne intermédiaire de 26.16 kHz, avec un large écart-type de 3.50 kHz.
+La durée du cri est assez courte, à peine 1.40 ms.
+Ce type de cris est généralement associé à des chauves-souris de la famille des **Oreillards**.
+
+D'après le document de Yves Bas, il est très difficile de différencier les cris des différentes espèces d'Oreillards.
+Nous ne pouvons donc pas aller plus loin dans la labélisation de cette classe.
+
+D'où les labels suivants pour les 3 classes : Noctule commune, Pipistrelle commune et Oreillards.
+
+On trouve facilement dans la littérature spécialisée que ces 3 espèces sont crédibles pour une lisière de forêt en Ile-de-France.
+
+Comme nous l'avions anticipé, la labélisation a nécessité ici des recherches bibliographiques sur l'identification acoustique des chauves-souris française.
+De manière générale, une labélisation correcte nécessite souvent une **expertise** dans le domaine d'étude.
 
 ### Vérité terrain
 
@@ -412,3 +593,8 @@ Il faudrait donc potentiellement ajouter de nouvelles features, ou appliquer une
 
 * Par défaut, nos méthodes de partitionnement utilisent la distance euclidienne.
 Une autre mesure de distance donnerait peut-être de meilleurs résultats.
+
+|Nota Bene|
+|:-|
+|En général, une vérité terrain n'est pas disponible dans un cas de partitionnement, ou alors pour un échantillon restreint.|
+|Dans les cas où des labels sont accessibles ulterieurement, on peut utiliser les mêmes mesures de performances que pour la classification supervisée.|
