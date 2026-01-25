@@ -330,7 +330,7 @@ Dans les bibliothèques sélectionnées dans le cadre de ce cours, il n'existe p
 
 Cependant, dans ses tutoriels en ligne, Scikit-Learn propose un code pour réaliser ce type d'affichage "manuellement".
 
-En partant du principe que l'on a les features choisies dans `features`, et les classes obtenues par partitionnement dans `clusters`, on peut utiliser la méthode "silhouette_samples" pour récupérer les coefficients de silhouette, et réaliser un affichage avec Matplotlib :
+En partant du principe que l'on a les features choisies dans `features`, et les classes obtenues par partitionnement en `k` dans `clusters`, on peut utiliser la méthode "silhouette_samples" pour récupérer les coefficients de silhouette, et réaliser un affichage avec Matplotlib :
 
 ~~~
 from sklearn.metrics import silhouette_score,silhouette_samples
@@ -343,7 +343,7 @@ mean_score = silhouette_score(features,clusters)
 fig, ax = plt.subplots()
 
 y_lower = 10
-for idx in range(3):
+for idx in range(k):
     sample_scores_idx = sample_scores[clusters == idx]
     sample_scores_idx.sort()
 
@@ -384,7 +384,7 @@ df_dataset = pd.read_csv(input_path)
 ~~~
 
 Nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
-Utilisons le coefficient de silhouette moyen pour chaque nombre de classes entre 2 et 15, et affichons les scores obtenus :
+Utilisons le **coefficient de silhouette** moyen pour chaque nombre de classes entre 2 et 15, et affichons les scores obtenus :
 
 ~~~
 from sklearn.cluster import KMeans
@@ -420,7 +420,7 @@ La valeur du coefficient moyen obtenu sera de 0,76 environ, ce qui est considér
 
 |Nota Bene|
 |:-|
-|Il est à noter que nous avons mis le paramètre "random_state" à 0 car le modèle renvoyé par les K-moyenne dépend de l'initialisation.|
+|Il est à noter que nous avons mis le paramètre "random_state" à 0 car le modèle renvoyé par les K-moyennes dépend de l'initialisation.|
 |Nous nous assurons ainsi que 2 executions de ce code Python donnerons le même résultat.|
 |Il faudrait en toute rigueur vérifier que d'autres initialisation donnent le même $k$ optimal.|
 
@@ -448,7 +448,7 @@ Voici le graphique obtenu :
 
 Les classes identifiées ont l'air cohérentes avec les pics que nous avions observés dans les données en début de chapitre.
 
-Pour vérifier la qualité de cette partition, nous proposons d'afficher le coefficient de silhouette pour chaque individu, sous la forme d'un diagramme en barres.
+Pour vérifier la qualité de cette partition, nous proposons d'afficher le coefficient de silhouette pour chaque individu, sous la forme d'un **diagramme en barres**.
 Voici le graphique obtenu avec le code donné précédemment :
 
 ![Exemple de coefficients de silhouette par échantillon après k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette.png)
@@ -481,7 +481,7 @@ from sklearn.cluster import AgglomerativeClustering
 On peut ensuite initialiser un modèle de partition `hca` avec un objet "AgglomerativeClustering" de paramètre `k` correspondant au nombre de classes à déterminer :
 
 ~~~
-hca = AgglomerativeClustering(n_clusters=3)
+hca = AgglomerativeClustering(n_clusters=k)
 ~~~
 
 Pour diviser le jeu de données en $k$ classes `clusters` à partir des features choisies `features`, on utilise la méthode :
@@ -547,7 +547,7 @@ import maplotlib.pyplot as plt
 plt.figure()
 plot_dendrogram(hca,truncate_mode="level")
 plt.xlabel("Nombre d'individus par classe",fontsize=12)
-plt.ylabel("Classes",fontsize=12)
+plt.ylabel("Distance entre classes",fontsize=12)
 plt.xticks([])
 plt.show()
 ~~~
@@ -565,13 +565,97 @@ plt.show()
 
 #### Application à notre exemple
 
+Nous allons à présent appliquer la CAH à notre problème exemple.
+
+Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame depuis le chemin `input_path` :
+
+~~~
+df_dataset = pd.read_csv(input_path)
+~~~
+
+Comme pour les K-moyennes, nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
+Notre exemple étant relativement simple, on s'attend à ce que le résultat soit très similaire.
+
+Nous utilisons une fois encore le coefficient de silhouette moyen pour chaque nombre de classes entre 2 et 15, et nous affichons les scores obtenus :
+
+~~~
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+silhouette = []
+
+for k in range(2,15):
+    
+    hca = AgglomerativeClustering(n_clusters=k)
+
+    clusters = hca.fit_predict(df_dataset)
+    
+    score = silhouette_score(df_dataset,clusters)
+    
+    silhouette.append(score)
+
+plt.plot(np.arange(2,15),silhouette,'ro-')
+plt.grid()
+plt.xlabel('Nombre de classes',fontsize=12)
+plt.ylabel('Coefficient de silhouette moyen',fontsize=12)
+~~~
+
+La courbe obtenue est en effet très similaire à celle obtenue avec les K-moyennes :
+
 ![Exemple de coefficients de silhouette moyens pour la CAH](img/Chap4_exemple_cah_coefficient_de_silhouette_moyen.png)
+
+C'est donc sans surprise que nous choisissons à nouveau $k=3$.
+Le coefficient de silhouette moyen sera alors de 0,76.
+
+Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée :
+
+~~~
+hca = AgglomerativeClustering(n_clusters=3)
+
+clusters = hca.fit_predict(df_dataset)
+
+df_dataset_clustured = df_dataset.copy()
+df_dataset_clustured['clusters'] = clusters
+~~~
+
+Et comme pour les K-moyennes, nous pouvons afficher sous la forme d'une **matrice de corrélation** la partition obtenue, en utilisant Seaborn :
+
+~~~
+import seaborn as sns
+sns.pairplot(df_dataset_clustured,hue='clusters',palette='deep')
+~~~
+
+Voici le graphique obtenu :
 
 ![Exemple de classes déterminées par CAH](img/Chap4_exemple_cah_clusters.png)
 
+Il est similaire à celui obtenu par les K-moyennes, à ceci près que les classes n'ont pas reçu le même numéro.
+
+Le coefficient de silhouette de chaque individu peut aussi être affiché sous la forme d'un **diagramme en barres**, et sans surprise il est similaire à celui obtenu par les K-moyennes :
+
 ![Exemple de coefficients de silhouette par échantillon après CAH](img/Chap4_exemple_cah_coefficient_de_silhouette.png)
 
+|Nota Bene|
+|:-|
+|Les K-moyennes et la CAH ne donneront pas toujours la même partition pour un même jeu de données.|
+|Nous sommes ici dans un cas particulier.|
+
+La CAH étant une méthode de partitionnement hiérarchique, elle permet de tisser des liens entre les différentes classes.
+Nous pouvons tracer ces liens sous la forme d'un **dendrogramme**, en utilisant la fonction présentée précédemment.
+
+Voici le dendrogramme total, ainsi que le dendrogramme tronqué pour 3 classes :
+
 ![Exemple de dendrogramme obtenu après CAH](img/Chap4_exemple_dendrogramme_cah.png)
+
+La classe 0 correspond à la branche contenant 158 individu, la classe 1 à la branche contenant 210 individus, et la classe 2 à la branche contenant 106 individus.
+
+Tout d'abord, on peut noter que le choix de $k=3$ est plutôt cohérent avec les distances entre classes observées dans le dendrogramme.
+
+Ensuite, le fait que les classes 0 et 2 soient plus proches entre elles que de la classe 1 s'observe aussi dans la matrice de corrélation affichée précédemment.
+La classe 1 est surtout éloignée des 2 autres suivant l'axe de la fréquence moyenne du fondamental.
+
+Il faudrait en toute rigueur vérifier que cette forte différence selon un axe n'est pas juste liée au fait que nous n'avons appliqué aucune normalisation à nos features avant partitionnement.
 
 #### Remarques
 
