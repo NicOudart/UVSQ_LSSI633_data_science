@@ -375,11 +375,92 @@ Vous pouvez réutiliser ce code tel quel pour vos propres affichages.
 
 #### Application à notre exemple
 
+Nous allons à présent appliquer les K-moyennes à notre problème exemple.
+
+Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame, depuis le chemin `input_path` :
+
+~~~
+df_dataset = pd.read_csv(input_path)
+~~~
+
+Nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
+Utilisons le coefficient de silhouette moyen pour chaque nombre de classes entre 2 et 15, et affichons les scores obtenus :
+
+~~~
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+silhouette = []
+
+for k in range(2,15):
+    
+    km = KMeans(n_clusters=k,random_state=0)
+
+    clusters = km.fit_predict(df_dataset)
+    
+    score = silhouette_score(df_dataset,clusters)
+    
+    silhouette.append(score)
+
+plt.plot(np.arange(2,15),silhouette,'ro-')
+plt.grid()
+plt.xlabel('Nombre de classes',fontsize=12)
+plt.ylabel('Coefficient de silhouette moyen',fontsize=12)
+~~~
+
+Voici la courbe obtenue :
+
 ![Exemple de coefficients de silhouette moyens pour les k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette_moyen.png)
+
+On observe que le nombre de classes maximisant le coefficient de silhouette moyen est $k=3$.
+Nous choisirons donc ce paramètre pour la suite.
+
+La valeur du coefficient moyen obtenu sera de 0,76 environ, ce qui est considéré comme un bon score pour des données réelles.
+
+|Nota Bene|
+|:-|
+|Il est à noter que nous avons mis le paramètre "random_state" à 0 car le modèle renvoyé par les K-moyenne dépend de l'initialisation.|
+|Nous nous assurons ainsi que 2 executions de ce code Python donnerons le même résultat.|
+|Il faudrait en toute rigueur vérifier que d'autres initialisation donnent le même $k$ optimal.|
+
+Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée :
+
+~~~
+km = KMeans(n_clusters=3,random_state=0)
+
+clusters = km.fit_predict(df_dataset)
+
+df_dataset_clustured = df_dataset.copy()
+df_dataset_clustured['clusters'] = clusters
+~~~
+
+Et afficher sous la forme d'une **matrice de corrélations** la partition obtenue, en utilisant Seaborn :
+
+~~~
+import seaborn as sns
+sns.pairplot(df_dataset_clustured,hue='clusters',palette='deep')
+~~~
+
+Voici le graphique obtenu :
 
 ![Exemple de classes déterminées par k-moyennes](img/Chap4_exemple_kmeans_clusters.png)
 
+Les classes identifiées ont l'air cohérentes avec les pics que nous avions observés dans les données en début de chapitre.
+
+Pour vérifier la qualité de cette partition, nous proposons d'afficher le coefficient de silhouette pour chaque individu, sous la forme d'un diagramme en barres.
+Voici le graphique obtenu avec le code donné précédemment :
+
 ![Exemple de coefficients de silhouette par échantillon après k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette.png)
+
+Tout d'abord, on observe qu'aucun individu n'a un coefficient de silhouette négatif, ce qui est le signe d'un bon partitionnement.
+
+Ensuite, on voit que pour le classe 0, la quasi-intégralité des individus a un coefficient supérieur à 0,5.
+Ceci est cohérent avec la matrice de corrélation que nous avons affichée précédemment : la classe 0 a l'air d'être la mieux séparée des 3.
+
+Les classes 1 et 2 ont quelques individus avec des coefficients entre 0 et 0,5.
+Ces individus sont donc proches de la frontière avec la classe la plus proche.
+Ce qui une fois de plus colle au résultat précédent : les classes 1 et 2 ont l'air plus difficilement séparables avec les features retenues.
 
 #### Remarques
 
