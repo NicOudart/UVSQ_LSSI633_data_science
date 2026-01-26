@@ -314,10 +314,14 @@ Voici l'algorithme détaillé :
 |- On assigne à chaque individu la classe $i$ de point $h_i$ le plus proche selon une mesure de distance.|
 |- On calcule le barycentre $g_i$ de chacune des classes.|
 |- On assigne à $h_i$ le point $g_i$ pour chacune des classes.|
+|Le but est de faire converger les $h_i$ vers les barycentres des centres de gravité des classes idéales.|
 
 ![K-moyennes](img/Chap4_k_moyennes.png)
 
-Lorsque l'on utilise la méthodes K-moyennes, on fait des hypothèses implicites :
+Il est à noter que dans la plupart des implémentations des K-moyennes, la distance choisie est la **distance euclidienne**.
+Néanmoins, d'autres mesures de distance peuvent être envisagées.
+
+Il est également essentiel d'avoir en tête que lorsque l'on utilise les K-moyennes, on fait des hypothèses implicites :
 
 * $k$ est bien le nombre de classes optimal.
 
@@ -327,11 +331,13 @@ Lorsque l'on utilise la méthodes K-moyennes, on fait des hypothèses implicites
 
 * Chaque classe a le même nombre d'individus : elles sont "**équilibrées**".
 
+![Cas problématiques pour les K-moyennes](img/Chap4_cas_problematiques_k_moyennes.png)
+
 Plusieurs approches peuvent être proposées en cas de non-respect de ces hypothèse :
 
 * Le nombre de classes optimal peut être estimé avec une des méthodes vues précédemment.
 
-* Si les classes ne sont **pas isotropes**, c'est peut-être parce que les features évoluent sur des ordres de grandeur différents.
+* Si les classes sont **anisotropes**, c'est peut-être parce que les features évoluent sur des ordres de grandeur différents.
 Une **normalisation** des features peut alors aider.
 
 * Si les classes sont **déséquilibrées**, il est recommandé de tester plusieurs initialisations des K-moyennes, pour éviter de rester bloqué dans un minimum local d'inertie intra-classe.
@@ -516,6 +522,23 @@ Il est à noter que, comme beaucoup de cas pratiques, notre problème ne partiti
 De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, avec des features normalisées, ou avec une méthodes aux hypothèses différentes.
 
 #### Remarques
+
+La méthode des K-moyennes a les **avantages** suivants :
+
+* Elle est **simple** à implémenter, et son résultat est tout à fait **interprétable** par un humain : on cherche à obtenir les centres de gravité des classes.
+
+* Elle **converge assez rapidement**, et on peut donc l'utiliser sur de **grands jeux de données**.
+
+Mais cette méthode a aussi les **limites** suivantes :
+
+* Les performances de la méthode sont mauvaises si les **hypothèses implicites** sur les données ne sont pas respectées.
+
+* L'initialisation étant **aléatoire**, 2 executions de l'algorithme ne donneront **pas exactement la même partition**.
+Il est même possible que la méthode tombe dans un minimum local de l'inertie intra-classe.
+
+* La distance euclidienne étant **sensible aux outliers**, la méthode des K-moyennes l'est aussi.
+
+Les K-moyennes n'étant pas une méthode de partitionnement hiérarchique, elle ne trace aucun lien entre les classes qu'elle détermine.
 
 ### Classification Ascendante Hiérarchique
 
