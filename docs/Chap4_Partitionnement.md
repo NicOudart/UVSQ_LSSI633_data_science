@@ -118,6 +118,10 @@ Cependant, on peut noter que certains groupes visibles ont l'air moins denses qu
 Ceci est plausible : on imagine bien que certaines espèces sont plus communes sur le site que d'autres.
 Un tel déséquilibre pourrait être problématique pour entrainer notre modèle.
 
+Aussi, les valeurs d'écart-type sur la fréquence du fondamental sont plus faibles en ordre de grandeur que celles des 2 autres features.
+Ceci peu aussi être problématique pour l'apprentissage de notre modèle.
+Une normalisation pourrait donc en améliorer les performances.
+
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
 **Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
 
@@ -295,6 +299,45 @@ On peut alors facilement identifier quels individus ont été correctement assoc
 
 #### Principe
 
+La méthode de base en partitionnement "par partition" est celle des **K-moyennes**.
+
+Il s'agit d'un algorithme **itératif**, cherchant à réduire à chaque itération l'inertie intra-classe, à partir d'une partition initiale aléatoire.
+L'idée ici est donc d'essayer de faire converger le modèle vers la partition **minimisant l'inertie intra-classe**.
+Le nombre de classes $k$ est un paramètre d'entrée de l'algorithme.
+
+Voici l'algorithme détaillé :
+
+|Algorithme des K-moyennes|
+|:-|
+|On initialise aléatoirement $k$ points $h_i$ dans l'espace des features choisies, chacun correspondant à une classe.|
+|Jusqu'à ce qu'une critère d'arrêt soit atteint, on va itérer les actions suivantes :|
+|- On assigne à chaque individu la classe $i$ de point $h_i$ le plus proche selon une mesure de distance.|
+|- On calcule le barycentre $g_i$ de chacune des classes.|
+|- On assigne à $h_i$ le point $g_i$ pour chacune des classes.|
+
+![K-moyennes](img/Chap4_k_moyennes.png)
+
+Lorsque l'on utilise la méthodes K-moyennes, on fait des hypothèses implicites :
+
+* $k$ est bien le nombre de classes optimal.
+
+* Les différentes classes sont "sphériques" au sens de la distance choisie : on parle "d'**isotropie**" des classes.
+
+* Chaque classe a la **même variance**.
+
+* Chaque classe a le même nombre d'individus : elles sont "**équilibrées**".
+
+Plusieurs approches peuvent être proposées en cas de non-respect de ces hypothèse :
+
+* Le nombre de classes optimal peut être estimé avec une des méthodes vues précédemment.
+
+* Si les classes ne sont **pas isotropes**, c'est peut-être parce que les features évoluent sur des ordres de grandeur différents.
+Une **normalisation** des features peut alors aider.
+
+* Si les classes sont **déséquilibrées**, il est recommandé de tester plusieurs initialisations des K-moyennes, pour éviter de rester bloqué dans un minimum local d'inertie intra-classe.
+
+Dans le cas où aucune de ces approches n'est efficace, il faut tout simplement envisager un autre modèle de partitionnement que les K-moyennes.
+
 #### Implémentation Scikit-Learn
 
 Il existe une implémentation Scikit-Learn de la méthode des K-moyennes.
@@ -453,7 +496,7 @@ Voici le graphique obtenu avec le code donné précédemment :
 
 ![Exemple de coefficients de silhouette par échantillon après k-moyennes](img/Chap4_exemple_kmeans_coefficient_de_silhouette.png)
 
-Tout d'abord, on observe qu'aucun individu n'a un coefficient de silhouette négatif, ce qui est le signe d'un bon partitionnement.
+Tout d'abord, on observe qu'aucun individu n'a un coefficient de silhouette négatif, ce qui est le signe d'un plutôt bon partitionnement.
 
 Ensuite, on voit que pour le classe 0, la quasi-intégralité des individus a un coefficient supérieur à 0,5.
 Ceci est cohérent avec la matrice de corrélation que nous avons affichée précédemment : la classe 0 a l'air d'être la mieux séparée des 3.
@@ -461,6 +504,16 @@ Ceci est cohérent avec la matrice de corrélation que nous avons affichée pré
 Les classes 1 et 2 ont quelques individus avec des coefficients entre 0 et 0,5.
 Ces individus sont donc proches de la frontière avec la classe la plus proche.
 Ce qui une fois de plus colle au résultat précédent : les classes 1 et 2 ont l'air plus difficilement séparables avec les features retenues.
+
+Il est à noter que, comme beaucoup de cas pratiques, notre problème ne partitionnement ne respecte pas exactement les hypothèses implicites des K-moyennes :
+
+* Comme nous l'avions déjà mentionné, nos classes sont déséquilibrées.
+
+* Nos classes ne sont pas isotropes. Comme nous l'avions déjà mentionné, les features n'évoluent pas toutes sur le même ordre de grandeur.
+
+* La variance de nos classes n'est clairement pas la même.
+
+De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, avec des features normalisées, ou avec une méthodes aux hypothèses différentes.
 
 #### Remarques
 
