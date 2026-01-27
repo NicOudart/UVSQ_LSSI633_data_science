@@ -563,12 +563,42 @@ Voici l'algorithme détaillé :
 |- Les 2 classes les plus similaires sont fusionnées.|
 |On enregistre les classes obtenues à chaque itération pour pouvoir tracer un dendrogramme.|
 
-Cette méthode implique de décider d'un **critère de similitude** entre 2 classe.
+![CAH](img/Chap4_CAH.png)
+
+Cette méthode implique de décider d'un **critère de similarité** entre 2 classes.
 Il s'agira d'un **hyperparamètre** à choisir.
 
-Voici les 4 principaux critères utilisés pour la CAH :
+Voici les 4 principaux critères utilisables par la CAH pour mesurer la similarité entre 2 classes :
 
-*
+* **Lien simple** : la distance minimale entre 2 individus issus de ces 2 classes.
+
+* **Lien complet** : la distance maximale entre 2 individus issus de ces 2 classes.
+
+* **Lien moyen** : la moyenne des distances entre tous les couples d'individus issus des 2 classes possibles.
+
+* **Critère de Ward** : l'augmentation de l'inertie intra-classe quand les 2 classes sont fusionnées.
+
+![Les critères de similarité pour la CAH](img/Chap4_CAH_similarites.png)
+
+Derrière ces critères, se cache donc le choix d'une **mesure de distance** entre individus.
+
+Certains critères sont plus rapides à calculer que d'autres, mais lorsque l'on choisis un critère plutôt qu'un autre, on fait un choix sur notre vision de la "proximité" entre classes :
+
+* Lien simple : on voit la notion de similarité à l'**échelle des individus**.
+Ce critère est adapté aux cas de classes très anisotropes, mais aura tendance à relier 2 classes si un outlier se trouve entre elles.
+On la considèrera donc comme **peu conservatrice**.
+
+* Lien complet : on voit la notion de similarité à l'**échelle de la classe entière**.
+Ce critère est adapté aux classes fortement séparées, mais aura aussi tendance à être sensible aux outliers, mais dans l'excès inverse : la méthode sera **très conservatrice**, et un outlier pourra à lui tout seul empêcher de lier 2 classes pourtant proches.
+
+* Lien moyen : on voit la notion de similarité du point de vue de la **moyenne des distances** des individus entre classes.
+On peut donc voir ce critère comme un **compromis entre les 2 précédents**.
+Il aura tendance à favoriser des classes "sphériques" au sens de la distance choisie.
+
+* Critère de Ward : il s'agit du critère pour lequel les hypothèses sont **les plus fortes**.
+Elles sont similaires à celles des K-moyennes : classes isotropes, de même variance, et équilibrées.
+
+En pratique, on va souvent choisir par défaut le **critère de Ward**. 
 
 #### Implémentation Scikit-Learn
 
@@ -791,13 +821,29 @@ On peut évaluer le coefficient de silhouette moyen de la partition obtenue pour
 
 Selon le coefficient de silhouette moyen, la meilleure partition est celle obtenue avec le lien "simple" et le critère de Ward.
 
-Cette mesure de performance va par définition favoriser des classes "sphériques".
+Cette mesure de performance va par définition favoriser des classes "sphériques" (effet de moyenne).
 En regardant les nuages de points affichés pour chaque critère de similarité, on comprend que le coefficient de silhouette moyen va favoriser les partitionnements limitant l'allongement du cluster 0, qui est déjà très anisotrope.
 
 Pour ce qui est de choisir entre la partition obtenue avec lien "complet" ou avec le critère de Ward, tout dépend de la définition de "similarité" entre les classes qui parait pertinente pour notre application.
 C'est loin d'être une question triviale.
 
 #### Remarques
+
+La méthode de la CAH a les **avantages** suivants :
+
+* Elle permet de **tisser des liens** entre les classes déterminées, ce qui rend le modèle **très interprétable**.
+
+* On peut décider du nombre optimal de classes $k$ **a posterio**, en coupant le dendrogramme.
+
+* Pour chaque $k$, le modèle renvoyé par le CAH est **déterministe** : il n'y a pas ici d'initialisation aléatoire comme pour les K-moyennes.
+
+* Il est possible d'**adapter le critère de similarité** selon notre problème.
+
+Mais cette méthode a aussi les **limites** suivantes :
+
+* Elle est relativement **gourmande en temps de calcul**, ce qui la rend difficile à appliquer à des grands jeux de données.
+
+* Suivant le critère de similarité choisie, elle peut être plus ou moins **sensible aux outliers**.
 
 ## Labélisation de l'exemple
 
