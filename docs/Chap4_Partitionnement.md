@@ -544,6 +544,32 @@ Les K-moyennes n'étant pas une méthode de partitionnement hiérarchique, elle 
 
 #### Principe
 
+Comme son nom l'indique, la méthode de la **Classification Ascendante Hiérarchique** (CAH) est une méthode de partitionnement **hiérarchique**, qui agrège les classes de manière **ascendante**.
+Il s'agit d'une méthode **itérative**, fusionnant 2 classes à chaque itération, ce qui correspond à fusionner 2 branches d'un dendrogramme.
+
+Elle s'initialise en considérant chaque individu comme unique représentant de sa propre classe : on a autant de classes que d'individu, **l'inertie intra-classe est nulle**.
+
+Elle se termine une fois que toutes les classes ont été fusionnées : on a une unique classe, **l'inertie inter-classe est nulle**.
+
+On peut découper le dendrogramme obtenu au niveau du nombre de classe $k$ désiré, ou alors arrêter les itérations de la méthode pour ce $k$ si nous ne sommes pas intéressés par le dendrogramme.
+
+Voici l'algorithme détaillé :
+
+|Algorithme de la CAH|
+|:-|
+|On initialise $n$ classes : une par individu dans le jeu de données.|
+|Jusqu'à ce que l'on atteigne un nombre de classe égal à 1 (ou égal au nombre de classes $k$ désiré), on va itérer les actions suivantes :|
+|- On mesure la similarité entre les différentes classes.|
+|- Les 2 classes les plus similaires sont fusionnées.|
+|On enregistre les classes obtenues à chaque itération pour pouvoir tracer un dendrogramme.|
+
+Cette méthode implique de décider d'un **critère de similitude** entre 2 classe.
+Il s'agira d'un **hyperparamètre** à choisir.
+
+Voici les 4 principaux critères utilisés pour la CAH :
+
+*
+
 #### Implémentation Scikit-Learn
 
 Il existe une implémentation Scikit-Learn de la méthode de la CAH.
@@ -559,6 +585,9 @@ On peut ensuite initialiser un modèle de partition `hca` avec un objet "Agglome
 ~~~
 hca = AgglomerativeClustering(n_clusters=k)
 ~~~
+
+Par défaut, l'implémentation Scikit-Learn utilise le critère de Ward comme mesure de similarité.
+Il est possible de changer cet hyperparamètre avec le paramètre "linkage" de l'objet "AgglomerativeClustering" : 'ward', 'complete', 'average' ou 'single'.
 
 Pour diviser le jeu de données en $k$ classes `clusters` à partir des features choisies `features`, on utilise la méthode :
 
@@ -615,6 +644,8 @@ Pour pouvoir utiliser cette fonction, il faut créer une partition des features 
 hca = AgglomerativeClustering(distance_threshold=0,n_clusters=None)
 hca.fit(features)
 ~~~
+
+Avec d'autres paramètres, il ne sera pas possible de récupérer le dendrogramme associé au modèle. 
 
 Pour afficher le dendrogramme complet (de 1 classe par individu à 1 classe unique) :
 
@@ -724,14 +755,47 @@ Voici le dendrogramme total, ainsi que le dendrogramme tronqué pour 3 classes :
 
 ![Exemple de dendrogramme obtenu après CAH](img/Chap4_exemple_dendrogramme_cah.png)
 
-La classe 0 correspond à la branche contenant 158 individu, la classe 1 à la branche contenant 210 individus, et la classe 2 à la branche contenant 106 individus.
+Comme nous l'avons mentionné précédémment, l'implémentation Scikit-Learn de la CAH utilise par défaut le critère de Ward comme mesure de similarité entre classes.
+C'est souvent le compromis choisi pour la CAH.
 
-Tout d'abord, on peut noter que le choix de $k=3$ est plutôt cohérent avec les distances entre classes observées dans le dendrogramme.
+Il est évident que si nous définissons différemment la "similarité" entre classes, le dendrogramme que nous obtiendrons sera différent : 2 groupes peuvent être plus proche selon une mesure de similarité qu'une autre.
 
-Ensuite, le fait que les classes 0 et 2 soient plus proches entre elles que de la classe 1 s'observe aussi dans la matrice de corrélation affichée précédemment.
-La classe 1 est surtout éloignée des 2 autres suivant l'axe de la fréquence moyenne du fondamental.
+Voici les dendrogrammes obtenus pour les 4 mesures de similarité implémentées dans Scikit-Learn :
 
-Il faudrait en toute rigueur vérifier que cette forte différence selon un axe n'est pas juste liée au fait que nous n'avons appliqué aucune normalisation à nos features avant partitionnement.
+![Exemples de dendrogrammes obtenus pour différentes mesures de similarité](img/Chap4_exemple_dendrogramme_cah_differentes_similarites.png)
+
+On remarque que le critère de similarité du "lien simple" donne un résultat mauvais : une des classes n'a qu'un seul individu...
+
+Pour les autres critères, difficile de dire quelle partition est la meilleure à partir des dendrogrammes seuls.
+On peut vérifier les partitions obtenues avec des nuages de points selon les différentes features.
+
+Voici un exemple pour la fréquence moyenne du fondamental et la durée du cri :
+
+![Exemples de nuages de points obtenus pour différentes mesures de similarité](img/Chap4_exemple_nuage_points_cah_differentes_similarites.png)
+
+On comprend alors l'origine de la sous-performance du lien "simple" : un outlier.
+
+Le lien "complet" et le critère de Ward donnent la même partition (similaire à celle renvoyée par les K-moyennes), à ceci près que les dendrogrammes sont différents.
+Le lien "complet" se basant sur la dissimilarité maximum entre 2 classes, on peut imaginer que la forme non sphérique de nos classes, ou la présence d'outliers sont les causes de cette différence.
+
+Le lien "moyen" diffère des liens "complet" et du critère de Ward par son attribution de quelques individus situés à la frontière entre les 2 classes les plus proches selon Ward.
+
+On peut évaluer le coefficient de silhouette moyen de la partition obtenue pour chaque critère de similarité :
+
+|Critère de similarité|Coefficient de silhouette moyen|
+|:-------------------:|:-----------------------------:|
+|Simple               |0.59                           |
+|Complet              |0.76                           |
+|Moyen                |0.72                           |
+|Ward                 |0.76                           |
+
+Selon le coefficient de silhouette moyen, la meilleure partition est celle obtenue avec le lien "simple" et le critère de Ward.
+
+Cette mesure de performance va par définition favoriser des classes "sphériques".
+En regardant les nuages de points affichés pour chaque critère de similarité, on comprend que le coefficient de silhouette moyen va favoriser les partitionnements limitant l'allongement du cluster 0, qui est déjà très anisotrope.
+
+Pour ce qui est de choisir entre la partition obtenue avec lien "complet" ou avec le critère de Ward, tout dépend de la définition de "similarité" entre les classes qui parait pertinente pour notre application.
+C'est loin d'être une question triviale.
 
 #### Remarques
 
