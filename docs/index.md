@@ -27,11 +27,11 @@ L'objectif est qu'à la fin de ce cours vous soyez capable de :
 
 * **Identifier** à quel **type de problème** (classification, regression, partitionnement) vous êtes confrontés.
 
-* **Réfléchir aux enjeux** liés à chacun de ces types de problèmes, et savoir **choisir une des méthodes** pertinente parmi celles vue en cours.
+* **Réfléchir aux enjeux** liés à chacun de ces types de problèmes, et savoir **choisir une méthodes** pertinente parmi celles vue en cours.
 
 * **Evaluer les performances** de votre modèle, et les interpréter.
 
-Ce cours vous donnera aussi des astuces d'implémentation en **Python**, basées sur la bibliothèque **Scikit-Learn**.
+Ce cours vous donnera aussi des astuces d'implémentation en **Python**, principalement basées sur la bibliothèque **Scikit-Learn**.
 
 ---
 
