@@ -912,14 +912,14 @@ from sklearn.model_selection import train_test_split
 df_features_train, df_features_test, df_labels_train, df_labels_test = train_test_split(df_features,df_labels,test_size=0.2,random_state=0)
 ~~~
 
-Enfin, nous réalisons une transformation "min-max" (voir Chapitre 1), pour s'assurer que les 2 features évoluent sur des intervalles comparables.
+Enfin, nous réalisons une transformation "centrage-réduction" (voir Chapitre 1), pour s'assurer que les 2 features évoluent sur des intervalles comparables.
 
 **Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
 
 ~~~
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
-scaler = MinMaxScaler()
+scaler = StandardScaler()
 scaler.fit(df_features_train)
 
 df_features_train[['harmo1','harmo2']] = scaler.transform(df_features_train)
@@ -1293,14 +1293,14 @@ from sklearn.model_selection import train_test_split
 df_features_train, df_features_test, df_labels_train, df_labels_test = train_test_split(df_features,df_labels,test_size=0.2,random_state=0)
 ~~~
 
-Afin d'aider le PMC à converger, nous allons effectuer une transformation min-max (voir Chapitre 1) afin de s'assurer que les 3 features évoluent sur des intervalles comparables.
+Afin d'aider le PMC à converger, nous allons effectuer une transformation centrage-réduction (voir Chapitre 1) afin de s'assurer que les 3 features évoluent sur des intervalles comparables.
 
 **Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
 
 ~~~
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
-scaler = MinMaxScaler()
+scaler = StandardScaler()
 scaler.fit(df_features_train)
 
 df_features_train[['harmo1','harmo2','harmo3']] = scaler.transform(df_features_train)

@@ -1046,21 +1046,21 @@ x_test = df_test[['sunspots']].to_numpy().reshape(-1, 1)
 y_test = df_test[['tsi']].to_numpy().reshape(-1, 1) 
 ~~~
 
-Afin d'aider le PMC à converger, nous allons effectuer une transformation min-max des entrées et des sorties (voir Chapitre 1).
-C'est pourquoi nous avons fait attention à ce que les dimensions des variables d'entrée et de sortie soient celles attendues par `MinMaxScaler`.
+Afin d'aider le PMC à converger, nous allons effectuer une transformation centrage-réduction des entrées et des sorties (voir Chapitre 1).
+C'est pourquoi nous avons fait attention à ce que les dimensions des variables d'entrée et de sortie soient celles attendues par `StandardScaler`.
 
 **Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
 
 ~~~
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
-x_scaler = MinMaxScaler()
+x_scaler = StandardScaler()
 x_scaler.fit(x_train)
 
 x_train = x_scaler.transform(x_train)
 x_test = x_scaler.transform(x_test)
 
-y_scaler = MinMaxScaler()
+y_scaler = StandardScaler()
 y_scaler.fit(y_train)
 
 y_train = y_scaler.transform(y_train)
@@ -1090,7 +1090,7 @@ print(mlp.score(x_train,y_train))
 print(mlp.score(x_test,y_test))
 ~~~
 
-Pour réaliser des prédictions `y_predict` à partir d'entrées `x_predict`, il ne faudra pas oublier d'effectuer une transformation min-max inverse des sorties :
+Pour réaliser des prédictions `y_predict` à partir d'entrées `x_predict`, il ne faudra pas oublier d'effectuer une transformation centrage-réduction inverse des sorties :
 
 ~~~
 x_scaler.fit(x_predict)
@@ -1136,13 +1136,13 @@ y_train = df_train2[['tsi']].to_numpy().reshape(-1, 1)
 x_validation = df_validation[['sunspots']].to_numpy().reshape(-1, 1) 
 y_validation = df_validation[['tsi']].to_numpy().reshape(-1, 1) 
 
-x_scaler = MinMaxScaler()
+x_scaler = StandardScaler()
 x_scaler.fit(x_train)
 
 x_train = x_scaler.transform(x_train)
 x_validation = x_scaler.transform(x_validation)
 
-y_scaler = MinMaxScaler()
+y_scaler = StandardScaler()
 y_scaler.fit(y_train)
 
 y_train = y_scaler.transform(y_train)
