@@ -1274,6 +1274,11 @@ encoder = LabelEncoder()
 df_dataset['instrument'] = encoder.fit_transform(df_dataset['instrument'])
 ~~~
 
+Ce choix peut paraitre étonnant, puisque nos labels ne sont pas ordinaux.
+On aurait plutôt tendance à utiliser de l'encodage "one-hot".
+
+L'astuce est que l'implémentation "MLPClassifier" de Scikit-Learn réalise implicitement un encodage "one-hot" à partir de labels "par étiquette".
+
 Nous récupérons ensuite les features et les labels que nous allons utiliser dans 2 DataFrames :
 
 ~~~
