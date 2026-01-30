@@ -130,7 +130,7 @@ import pandas as pd
 df_dataset = pd.read_csv(input_path)
 ~~~
 
-Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de corrélations**, avec chaque classe d'une couleur différente.
+Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de nuages de points**, avec chaque classe d'une couleur différente.
 Ce type de représentation permet de vérifier la séparabilité des différentes classes à partir des features sélectionnés.
 
 Voici la commande Seaborn :
@@ -895,6 +895,9 @@ encoder = LabelEncoder()
 df_dataset['instrument'] = encoder.fit_transform(df_dataset['instrument'])
 ~~~
 
+Comme les KPPV se contentent de calculer des distances sur les features, on peut utiliser un encodage par étiquette malgré le fait que nos labels ne sont pas ordinaux.
+**Attention :** pour les méthodes utilisant une fonction de coût sur les labels, un encodage "one-hot" devra être utilisé !
+
 Nous récupérons ensuite les features et les labels que nous allons utiliser dans 2 DataFrames :
 
 ~~~
@@ -907,6 +910,20 @@ Nous séparons ensuite nos données en un jeu d'entrainement (80%) et un jeu de 
 ~~~
 from sklearn.model_selection import train_test_split
 df_features_train, df_features_test, df_labels_train, df_labels_test = train_test_split(df_features,df_labels,test_size=0.2,random_state=0)
+~~~
+
+Enfin, nous réalisons une transformation "min-max" (voir Chapitre 1), pour s'assurer que les 2 features évoluent sur des intervalles comparables.
+
+**Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
+
+~~~
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+scaler.fit(df_features_train)
+
+df_features_train[['harmo1','harmo2']] = scaler.transform(df_features_train)
+df_features_test[['harmo1','harmo2']] = scaler.transform(df_features_test)
 ~~~
 
 Maintenant que les données sont prêtes, nous pouvons créer notre classifieur.
@@ -944,7 +961,7 @@ Voici une matrice de confusion complète pour nous aider à conclure :
 ![Exemple de matrice de confusion](img/Chap2_exemple_matrice_confusion_2.png)
 
 On observe qu'à l'entrainement comme en test, le hautbois est très bien séparé des autres instruments, alors que la trompette et la flute sont parfois confondus.
-Ce résultat était prévisible au vu de la matrice de corrélations que nous avions obtenue lors de notre étude préliminaire.
+Ce résultat était prévisible au vu de la matrice de nuages de points que nous avions obtenue lors de notre étude préliminaire.
 Les proportions d'erreurs restent cependant relativement faibles comparées aux nombres d'observations.
 
 Nous n'avons pour l'instant testé qu'une valeur de $k$.
@@ -1271,16 +1288,18 @@ from sklearn.model_selection import train_test_split
 df_features_train, df_features_test, df_labels_train, df_labels_test = train_test_split(df_features,df_labels,test_size=0.2,random_state=0)
 ~~~
 
-Afin d'aider le PMC à converger, nous allons effectuer une transformation min-max (voir Chapitre 1).
+Afin d'aider le PMC à converger, nous allons effectuer une transformation min-max (voir Chapitre 1) afin de s'assurer que les 3 features évoluent sur des intervalles comparables.
 
 **Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !**
 
 ~~~
 from sklearn.preprocessing import MinMaxScaler
+
 scaler = MinMaxScaler()
 scaler.fit(df_features_train)
-df_features_train = scaler.transform(df_features_train)
-df_features_test = scaler.transform(df_features_test)
+
+df_features_train[['harmo1','harmo2','harmo3']] = scaler.transform(df_features_train)
+df_features_test[['harmo1','harmo2','harmo3']] = scaler.transform(df_features_test)
 ~~~
 
 Maintenant que les données sont prêtes, nous pouvons créer notre classifieur.

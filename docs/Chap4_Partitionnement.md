@@ -96,7 +96,7 @@ import pandas as pd
 df_dataset = pd.read_csv(input_path)
 ~~~
 
-Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de corrélations**, avec des densités estimées par **KDE** 2D :
+Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de nuages de points**, avec des densités estimées par **KDE** 2D :
 
 ~~~
 import seaborn as sns
@@ -105,7 +105,7 @@ sns.pairplot(df_dataset,kind='kde')
 
 Voici le résultat :
 
-![Matrice de corrélations des enregistrements de chauves-souris de l'OVSQ](img/Chap4_correlation_matrix_kde_bats.png)
+![matrice de nuages de points des enregistrements de chauves-souris de l'OVSQ](img/Chap4_correlation_matrix_kde_bats.png)
 
 On observe que ces 3 features font apparaitre différents regroupements d'enregistrements : les distributions sont clairement multimodales.
 Si les frontières entre groupes, ainsi que le nombre exact de groupes restent difficiles à établir, il n'y a aucun doute sur la présence de plusieurs groupes.
@@ -484,7 +484,7 @@ df_dataset_clustured = df_dataset.copy()
 df_dataset_clustured['clusters'] = clusters
 ~~~
 
-Et afficher sous la forme d'une **matrice de corrélations** la partition obtenue, en utilisant Seaborn :
+Et afficher sous la forme d'une **matrice de nuages de points** la partition obtenue, en utilisant Seaborn :
 
 ~~~
 import seaborn as sns
@@ -949,3 +949,6 @@ Une autre mesure de distance donnerait peut-être de meilleurs résultats.
 |:-|
 |En général, une vérité terrain n'est pas disponible dans un cas de partitionnement, ou alors pour un échantillon restreint.|
 |Dans les cas où des labels sont accessibles ulterieurement, on peut utiliser les mêmes mesures de performances que pour la classification supervisée.|
+
+### Pour aller plus loin
+
