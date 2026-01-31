@@ -103,7 +103,7 @@ import seaborn as sns
 sns.histplot(data=df_dataset, x='time_len', y='freq_mean',bins=30,cbar=True)
 ~~~
 
-Voici le résultat :
+Voici le résultat, à côté du nuage de points correspondant :
 
 ![Histogramme 2D des enregistrements de chauves-souris de l'OVSQ](img/Chap4_histogramme_2D_bats.png)
 
@@ -535,7 +535,7 @@ Il est à noter que, comme beaucoup de cas pratiques, notre problème ne partiti
 
 * Il y a des outliers dans nos données.
 
-De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, en supprimant les outliers, ou avec une méthodes aux hypothèses différentes.
+De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, en supprimant les outliers, ou avec une méthode aux hypothèses différentes.
 
 #### Remarques
 
@@ -601,17 +601,21 @@ Derrière ces critères, se cache donc le choix d'une **mesure de distance** ent
 Certains critères sont plus rapides à calculer que d'autres, mais lorsque l'on choisis un critère plutôt qu'un autre, on fait un choix sur notre vision de la "proximité" entre classes :
 
 * Lien simple : on voit la notion de similarité à l'**échelle des individus**.
+
 Ce critère est adapté aux cas de classes très anisotropes, mais aura tendance à relier 2 classes si un outlier se trouve entre elles.
 On la considèrera donc comme **peu conservatrice**.
 
 * Lien complet : on voit la notion de similarité à l'**échelle de la classe entière**.
+
 Ce critère est adapté aux classes fortement séparées, mais aura aussi tendance à être sensible aux outliers, mais dans l'excès inverse : la méthode sera **très conservatrice**, et un outlier pourra à lui tout seul empêcher de lier 2 classes pourtant proches.
 
 * Lien moyen : on voit la notion de similarité du point de vue de la **moyenne des distances** des individus entre classes.
+
 On peut donc voir ce critère comme un **compromis entre les 2 précédents**.
 Il aura tendance à favoriser des classes "sphériques" au sens de la distance choisie.
 
 * Critère de Ward : il s'agit du critère pour lequel les hypothèses sont **les plus fortes**.
+
 Elles sont similaires à celles des K-moyennes : classes isotropes, de même variance, et équilibrées.
 
 En pratique, on va souvent choisir par défaut le **critère de Ward**. 
@@ -772,6 +776,8 @@ La courbe obtenue est en effet très similaire à celle obtenue avec les K-moyen
 C'est donc sans surprise que nous choisissons à nouveau $k=3$.
 Le coefficient de silhouette moyen sera alors de 0,76.
 
+Ce score est environ le même que pour les K-moyenne : de manière générale les 2 partitions sont aussi bonnes aux yeux du coefficient de silhouette.
+
 Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée, puis inverser le centrage-réduction des features :
 
 ~~~
@@ -796,15 +802,19 @@ Voici le graphique obtenu :
 
 ![Exemple de classes déterminées par CAH](img/Chap4_exemple_cah_clusters.png)
 
-Il est similaire à celui obtenu par les K-moyennes, à ceci près que les classes n'ont pas reçu le même numéro.
+Il est similaire à celui obtenu par les K-moyennes, à l'exception de quelques individus entre les classe
+(Attention, les classes n'ont pas reçu le même numéro).
 
-Le coefficient de silhouette de chaque individu peut aussi être affiché sous la forme d'un **diagramme en barres**, et sans surprise il est similaire à celui obtenu par les K-moyennes :
+Le coefficient de silhouette de chaque individu peut aussi être affiché sous la forme d'un **diagramme en barres**, et sans surprise il est assez similaire à celui obtenu par les K-moyennes :
 
 ![Exemple de coefficients de silhouette par échantillon après CAH](img/Chap4_exemple_cah_coefficient_de_silhouette.png)
 
+On remarque tout de même que 2 individus sont attribués à tort à la classe 0 selon le coefficient de silhouette.
+Il s'agit de d'individus situés entre la classe 0 et la classe 1.
+
 |Nota Bene|
 |:-|
-|Les K-moyennes et la CAH ne donneront pas toujours la même partition pour un même jeu de données.|
+|Les K-moyennes et la CAH ne donneront pas toujours des partitions aussi similaires pour un même jeu de données.|
 |Nous sommes ici dans un cas particulier.|
 
 La CAH étant une méthode de partitionnement hiérarchique, elle permet de tisser des liens entre les différentes classes.
@@ -814,16 +824,20 @@ Voici le dendrogramme total, ainsi que le dendrogramme tronqué pour 3 classes :
 
 ![Exemple de dendrogramme obtenu après CAH](img/Chap4_exemple_dendrogramme_cah.png)
 
+Selon ce dendrogramme, les classes 1 et 2 (104 et 210 individus) sont plus proches entre elles que de la classe 0 (160 individus).
+
 Comme nous l'avons mentionné précédémment, l'implémentation Scikit-Learn de la CAH utilise par défaut le critère de Ward comme mesure de similarité entre classes.
 C'est souvent le compromis choisi pour la CAH.
 
-Il est évident que si nous définissons différemment la "similarité" entre classes, le dendrogramme que nous obtiendrons sera différent : 2 groupes peuvent être plus proche selon une mesure de similarité qu'une autre.
+Selon la définition de la "similarité" du critère de Ward, cela signifie que fusionner les classes 1 et 2 fait moins monter l'inertie intra-classe que fusionner les classe 0 et 1 ou 0 et 2.
+
+Il est évident que si nous définissons autrement la "similarité" entre classes, le dendrogramme que nous obtiendrons sera différent : 2 groupes peuvent être plus proche selon une mesure de similarité qu'une autre.
 
 Voici les dendrogrammes obtenus pour les 4 mesures de similarité implémentées dans Scikit-Learn :
 
 ![Exemples de dendrogrammes obtenus pour différentes mesures de similarité](img/Chap4_exemple_dendrogramme_cah_differentes_similarites.png)
 
-On remarque que le critère de similarité du "lien simple" donne un résultat mauvais : une des classes n'a qu'un seul individu...
+On remarque directement que les critères de similarité du "lien simple" et du "lien moyen" donnent de mauvais résultats : une des classes n'a qu'un seul individu...
 
 Pour les autres critères, difficile de dire quelle partition est la meilleure à partir des dendrogrammes seuls.
 On peut vérifier les partitions obtenues avec des nuages de points selon les différentes features.
@@ -832,14 +846,29 @@ Voici un exemple pour la fréquence moyenne du fondamental et la durée du cri :
 
 ![Exemples de nuages de points obtenus pour différentes mesures de similarité](img/Chap4_exemple_nuage_points_cah_differentes_similarites.png)
 
-On comprend alors l'origine de la sous-performance du lien "simple" : un outlier.
+On comprend alors l'origine de la sous-performance des liens "simple" et "moyen": un outlier.
 
-Le lien "complet" et le critère de Ward donnent la même partition (similaire à celle renvoyée par les K-moyennes), à ceci près que les dendrogrammes sont différents.
-Le lien "complet" se basant sur la dissimilarité maximum entre 2 classes, on peut imaginer que la forme non sphérique de nos classes, ou la présence d'outliers sont les causes de cette différence.
+Dans les 2 cas, la CAH a isolé cet outlier dans une classe dont il est l'unique individu.
+Ceci peut se comprendre intuitivement : un outlier est par définition loin de tous les autres individus, ainsi que de la moyenne des individus, et ceci pour toutes les classes.
 
-Le lien "moyen" diffère des liens "complet" et du critère de Ward par son attribution de quelques individus situés à la frontière entre les 2 classes les plus proches selon Ward.
+Nous avons ici une illustration de la sensibilité aux outliers de ces 2 types de liens.
+Faire le ménage dans notre base de donnée en retirant les outliers pourrait donc grandement améliorer les performances de la CAH dans ces 2 cas.
 
-On peut évaluer le coefficient de silhouette moyen de la partition obtenue pour chaque critère de similarité :
+On peut noter que l'outlier est placé comme éloigné des 2 autre classes dans le dendrogramme pour le lien "simple", et comme proche de la classe 1.
+Encore une fois, ceci ce comprend facilement : du point de vue de la distance minimale entre individus, l'outlier est plus éloigné des 2 autres classes, alors que du point de vue de la moyenne il est visiblement plus proche de la classe 1.
+
+D'après les dendrogrammes obtenus, le lien "complet" et le critère de Ward sont en accord sur les liens entre classes.
+
+On observe aussi que les 2 types de liens délimitent de la même façon la classe 2.
+Par contre ils ne fixent clairement pas la même frontière entre les classes 0 et 1 : le lien "complet" attribut plus d'individus à la classe 1 que le critère de Ward.
+
+Ce résultat n'est pas surprenant : le lien "complet" se basant sur la distance maximale entre individus de 2 classes, l'outlier va avoir tendance à "tirer" la frontière entre les classes 0 et 1 de sont côté.
+Ce n'est pas le cas pour le critère de Ward, qui ne regardera que l'inertie intra-classe.
+
+Nous avons ici une illustration de la sensibilité aux outlier du lien "complet".
+On aurait tendance à choisir la partition obtenue avec le critère de Ward.
+
+Pour faire un choix définitif, on peut évaluer le coefficient de silhouette moyen de la partition obtenue pour chaque critère de similarité :
 
 |Critère de similarité|Coefficient de silhouette moyen|
 |:-------------------:|:-----------------------------:|
@@ -848,13 +877,14 @@ On peut évaluer le coefficient de silhouette moyen de la partition obtenue pour
 |Moyen                |0.63                           |
 |Ward                 |0.76                           |
 
-Selon le coefficient de silhouette moyen, la meilleure partition est celle obtenue avec le lien "simple" et le critère de Ward.
+Selon le coefficient de silhouette moyen, sans surprise la meilleure partition est celle obtenue avec le critère de Ward.
 
-Cette mesure de performance va par définition favoriser des classes "sphériques" (effet de moyenne).
-En regardant les nuages de points affichés pour chaque critère de similarité, on comprend que le coefficient de silhouette moyen va favoriser les partitionnements limitant l'allongement du cluster 0, qui est déjà très anisotrope.
+Comme nous l'avons mentionné précédemment, le critère de Ward est souvent le choix par défaut.
+Cependant, suivant le problème auquel on est confronté, une autre mesure de similarité peut être plus pertinente.
 
-Pour ce qui est de choisir entre la partition obtenue avec lien "complet" ou avec le critère de Ward, tout dépend de la définition de "similarité" entre les classes qui parait pertinente pour notre application.
-C'est loin d'être une question triviale.
+Dans le cas de notre exemple, nettoyer notre base de données des outliers permettrait probablement d'améliorer les performances obtenues pour tous les types de liens. 
+
+Comme pour les K-moyennes, les performances que nous obtenons ici avec le critère de Ward sont limitées, car celui-ci implique des hypothèses fortes, qui ne sont pas respectées ici (isotropie, variance constante, classes équilibrées). 
 
 #### Remarques
 
@@ -918,14 +948,17 @@ Voici la table d'identification pour des cris de longue durée, à fréquence ba
 Il est alors évident que la seule espèce plausible est la **Noctule commune**.
 
 Enfin, nous voyons que la classe 2 a une fréquence moyenne intermédiaire de 26.07 kHz, avec une durée de 5.87 ms.
-Ce type de cris est généralement associé à des chauves-souris de la famille des **Oreillards**.
+Ce type de cris est généralement associé à des chauves-souris de la famille des **Sérotines** ou des **Oreillards**.
 
 D'après le document de Yves Bas, il est très difficile de différencier les cris des différentes espèces d'Oreillards.
+Et sans informations sur la forme des cris, il nous est impossible d'attribuer avec certitude ces cris aux Oreillards ou aux Sérotines.
 Nous ne pouvons donc pas aller plus loin dans la labélisation de cette classe.
 
-D'où les labels suivants pour les 3 classes : Noctule commune, Pipistrelle commune et Oreillards.
+D'où les labels que nous avons choisis pour les 3 classes : Noctule commune, Pipistrelle commune et Oreillards / Sérotine.
 
 On trouve facilement dans la littérature spécialisée que ces 3 espèces sont crédibles pour une lisière de forêt en Ile-de-France.
+
+De plus, cette labélisation est cohérente avec les lien tracés entre les classes par la CAH : les cris de noctules étant beaucoup plus longs en moyenne que ceux des pipistrelles communes et des oreillards / sérotines, on comprend pourquoi ils seraient considérés comme "moins similaires".
 
 Comme nous l'avions anticipé, la labélisation a nécessité ici des recherches bibliographiques sur l'identification acoustique des chauves-souris française.
 De manière générale, une labélisation correcte nécessite souvent une **expertise** dans le domaine d'étude.
@@ -959,7 +992,7 @@ Et pour informations, les 5 exemples de sonogrammes présentés en début de cha
 ![Exemples de sonogrammes labélisé par Tadarida](img/Chap4_exemple_sonogrammes_labelise.png)
 
 On remarque que les noctules communes, les pipistrelles communes, ainsi que les oreillard roux ont été assez bien identifiées par nos méthodes de partitions.
-Par contre, la sérotine commune et le murin de Daubenton n'ont pas été identifiées.
+Par contre, la sérotine commune et le murin de Daubenton n'ont pas été clairement identifiées.
 
 On peut avancer plusieurs explications :
 
@@ -975,6 +1008,3 @@ Une autre mesure de distance donnerait peut-être de meilleurs résultats.
 |:-|
 |En général, une vérité terrain n'est pas disponible dans un cas de partitionnement, ou alors pour un échantillon restreint.|
 |Dans les cas où des labels sont accessibles ulterieurement, on peut utiliser les mêmes mesures de performances que pour la classification supervisée.|
-
-### Pour aller plus loin
-
