@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap3_Regression/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>III. Régression - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "III. R\u00e9gression";
+        var mkdocs_page_input_path = "Chap3_Regression.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap3_Regression/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap1_Introduction/">I. Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap2_Classification_supervisee/">II. Classification supervisée</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">III. Régression</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#probleme-de-regression">Problème de régression</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#les-differents-types-de-regression">Les différents types de régression</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-lineaire-simple">Régression linéaire simple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-lineaire-multiple">Régression linéaire multiple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regression-polynomiale">Régression polynomiale</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exemple-de-probleme">Exemple de problème</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesures-de-performances">Mesures de performances</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#table-anova">Table ANOVA</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coefficient-de-determination">Coefficient de détermination</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#analyse-des-residus">Analyse des résidus</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methodes-de-base">Méthodes de base</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#moindres-carres-ordinaire">Moindres carrés ordinaire</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#meilleur-estimateur-lineaire-non-biaise-blue">Meilleur Estimateur Linéaire Non-biaisé (BLUE)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#intervalles-de-confiance-et-de-prediction">Intervalles de confiance et de prédiction</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scipy">Implémentation Scipy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#generalisation-a-la-regression-lineaire-multiple">Généralisation à la régression linéaire multiple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple">Application à notre exemple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#remarques">Remarques</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#perceptron-multicouche">Perceptron multicouche</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#perceptron-multicouche-pour-la-regression">Perceptron multicouche pour la régression</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn_1">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple_1">Application à notre exemple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#remarques_1">Remarques</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap4_Partitionnement/">IV. Partitionnement</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">III. Régression</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-iii-regression">Chapitre III : Régression</h1>
+<p>Ce chapitre est une introduction à la régression : principe, mesures de performances et méthodes de base.</p>
+<p><img alt="En-tête chapitre III" src="../img/Chap3_header.png" /></p>
+<hr />
+<h2 id="probleme-de-regression">Problème de régression</h2>
+<p>Comme mentionné lors du Chapitre I, par "<strong>régression</strong>" on entend associer une réalisation d'une variable <strong>quantitative continue</strong> à un individu (labels), à partir des réalisations d'autres variables (features).</p>
+<p>On cherche donc une <strong>relation entre les variables</strong> d'entrée (aussi appelées "variables explicatives") et la variable de sortie (aussi appelée "variable de réponse").</p>
+<p>Il existe 2 grands types de relations entre variables :</p>
+<ul>
+<li>La relation est <strong>déterministe</strong> si on considère que la variable de sortie peut être <strong>connue exactement</strong> à partir des variables d'entrée.</li>
+</ul>
+<p>Par exemple, si je veux déterminer le rayon <span class="arithmatex">\(R\)</span> d'une étoile par rapport à sa luminosité <span class="arithmatex">\(L\)</span> et sa température <span class="arithmatex">\(T\)</span>, en m'appuyant sur la théorie du corps noir, j'utilise la formule <span class="arithmatex">\(R = \sqrt{\frac{L}{4 \pi \sigma T^4}}\)</span>.</p>
+<ul>
+<li>La relation est <strong>probabiliste</strong> si on considère que d'<strong>autres facteurs</strong> que les variables d'entrée vont influer sur la valeur de la variable de sortie.</li>
+</ul>
+<p>Dans ce cas, une même réalisation des variables d'entrée pourra être associée à plusieurs valeurs de la variable de sortie, et inversement.</p>
+<p>Mais si les variables d'entrée et de sortie sont <strong>corrélées</strong>, la relation sera tout de même utile pour réaliser des <strong>prédictions</strong> avec une certaine marge d'erreur.</p>
+<p><img alt="Relations déterministe et probabiliste" src="../img/Chap3_relation_deterministe_probabiliste.png" /></p>
+<p>C'est souvent le cas en Physique, lorsque l'on réalise des mesures pour expliquer un phénomène.
+Si on reprend notre exemple précédent : la théorie du corps noir n'explique pas parfaitement la rayonnement d'une étoile, et on peut avoir des erreurs de mesures de <span class="arithmatex">\(L\)</span>, <span class="arithmatex">\(T\)</span> et <span class="arithmatex">\(R\)</span>.
+Mais si <span class="arithmatex">\(L\)</span>, <span class="arithmatex">\(T\)</span> et <span class="arithmatex">\(R\)</span> sont correlées, alors on peut essayer de prédire <span class="arithmatex">\(R\)</span> à partir de <span class="arithmatex">\(L\)</span> et <span class="arithmatex">\(T\)</span>, moyennant une certaine erreur.</p>
+<p>C'est tout le principe de la régression : <strong>déterminer une relation probabiliste entre les variables d'entrée et la variable de sortie</strong>.</p>
+<p>Nous avions aussi mentionné lors du Chapitre I qu'entrainer un modèle de régression ne peut se faire que par <strong>apprentissage supervisé</strong>.
+L'idée est encore une fois que le modèle soit ensuite capable de <strong>généraliser</strong> à de nouvelles observations.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Anecdote historique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Le nom de "régression" vient du généticien Francis Galton, qui l'utilisa pour son étude sur la "régression vers la moyenne".</td>
+</tr>
+<tr>
+<td style="text-align: left;">En fait, Galton cherchait à modéliser un phénomène d'hérédité qu'il observait dans la population humaine :</td>
+</tr>
+<tr>
+<td style="text-align: left;">La taille des fils avait tendance à se rapprocher de la moyenne de la population par rapport à celle de leur père.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="les-differents-types-de-regression">Les différents types de régression</h3>
+<p>Suivant le nombre d'entrées et le type de modèle à ajuster aux données, on a différents types de problèmes de régression.
+Nous allons voir ici les 3 plus courants.</p>
+<h4 id="regression-lineaire-simple">Régression linéaire simple</h4>
+<p>La <strong>régression linéaire simple</strong> est le problème de régression le plus basique qui soit.</p>
+<p>On recherche une relation linéaire entre une variable d'entrée <span class="arithmatex">\(x\)</span> et une variable de sortie <span class="arithmatex">\(y\)</span>.
+L'erreur est une variable aléatoire notée <span class="arithmatex">\(\epsilon\)</span>.</p>
+<p>Le modèle à ajuster est le suivant :</p>
+<p><span class="arithmatex">\(y = \alpha x + \beta + \epsilon\)</span></p>
+<p>avec les paramètres <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> à déterminer.</p>
+<p>Il s'agit d'un problème d'<strong>inférence statistique</strong> : nous disposons d'un jeu d'entrainement qui est un <strong>échantillon</strong> de la population totale, et nous voulons en déduire une estimation de <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> nous permettant de réaliser des prédictions.</p>
+<p>Nous verrons que l'on fait en général les hypothèses suivantes sur <span class="arithmatex">\(\epsilon\)</span> :</p>
+<ul>
+<li>
+<p><strong>Indépedance</strong> de ses réalisations.</p>
+</li>
+<li>
+<p><strong>Moyenne nulle</strong>.</p>
+</li>
+<li>
+<p><strong>Ecart-type constant</strong> avec <span class="arithmatex">\(x\)</span>.</p>
+</li>
+</ul>
+<p>Afin de pouvoir donner un "intervalle de confiance" aux prédictions, on va en plus ajouter une hypothèse de <strong>normalité</strong> : <span class="arithmatex">\(\epsilon\)</span> suit une loi normale.
+Nous en reparlerons plus tard.</p>
+<p><img alt="Modèle linéaire simple" src="../img/Chap3_modele_lineaire.png" /></p>
+<h4 id="regression-lineaire-multiple">Régression linéaire multiple</h4>
+<p>On peut généraliser le modèle de la section précédente aux problèmes avec <strong>plusieurs variables d'entrée</strong>.</p>
+<p>Si on note <span class="arithmatex">\(x_1\)</span>, <span class="arithmatex">\(x_2\)</span>, ..., <span class="arithmatex">\(x_n\)</span> les <span class="arithmatex">\(n\)</span> variables d'entrée, et <span class="arithmatex">\(y\)</span> notre variable de sortie.</p>
+<p>Le modèle à ajuster devient :</p>
+<p><span class="arithmatex">\(y = \alpha_1 x_1 + \alpha_2 x_2 + ... + \alpha_n x_n + \beta + \epsilon\)</span></p>
+<p>On reconnait la formule d'un hyperplan de dimension <span class="arithmatex">\(n\)</span>.</p>
+<p>On peut mettre cette formule sous forme matricielle :</p>
+<p><span class="arithmatex">\(y = A.x + \epsilon\)</span></p>
+<p>avec <span class="arithmatex">\(A = 
+      \begin{pmatrix}
+      \beta\\
+      \alpha_1\\
+      \alpha_2\\
+      \vdots\\
+      \alpha_n 
+      \end{pmatrix}\)</span></p>
+<p>et <span class="arithmatex">\(x = 
+      \begin{pmatrix}
+      1\\
+      x_1\\
+      x_2\\
+      \vdots\\
+      x_n 
+      \end{pmatrix}\)</span></p>
+<p>Nous verrons dans la suite comment généraliser les méthodes aux problèmes multiples.</p>
+<h4 id="regression-polynomiale">Régression polynomiale</h4>
+<p>Comment faire lorsqu'un modèle linéaire n'est pas pertinent pour représenter la relation entre nos variables ?</p>
+<p>Afin de réaliser une <strong>régression non-linéaire</strong>, il y a une astuce : on cherche à ajuster un modèle <strong>polynomial</strong>.</p>
+<p>Pour un ordre <span class="arithmatex">\(k\)</span>, il aura la forme :</p>
+<p><span class="arithmatex">\(y = \alpha_1 x + \alpha_2 x^2 + ... + \alpha_n x^n + b + \epsilon\)</span></p>
+<p>Il y a alors une astuce : si on considère <span class="arithmatex">\(x\)</span>, <span class="arithmatex">\(x^2\)</span>, ..., <span class="arithmatex">\(x^n\)</span> comme <span class="arithmatex">\(n\)</span> variables d'entrée, alors on reconnait un problème de <strong>régression multiple</strong> !</p>
+<p>On peut donc le traiter avec les mêmes méthodes qu'un problème linéaire.</p>
+<p>Il existe d'autres techniques d'ajustement de modèles non-linéaires, que nous ne traiterons pas dans le cadre de ce cours.</p>
+<h3 id="exemple-de-probleme">Exemple de problème</h3>
+<p><strong>Est-il possible de prédire l'intensité du rayonnement solaire à partir du nombre de taches solaires ?</strong></p>
+<p>Les taches solaires sont des zones de "faible" température (4500 K contre 5800 K) la surface du soleil (photosphère).
+Elles apparaissent lorsque l'apport de chaleur à la surface par convection est inhibé par une concentration de lignes de champs magnétique.</p>
+<p>On sait observer les taches solaires depuis l'antiquité, et on a des mesures du nombre taches solaires depuis le XVIIème, qui varie entre 0 et 350 environ.
+On l'utilise comme un marqueur de l'activité solaire depuis le milieu XIXème siècle.</p>
+<p>Un autre marqueur connu de l'activité solaire est l'"irradiance solaire" totale ou TSI en anglais.
+Il s'agit de la puissance du rayonnement solaire reçue en haut de l'atmosphère ter restre, par unité de surface.
+Sa valeur est d'environ 1363 <span class="arithmatex">\(W/m^2\)</span>, avec de légères variations suivant l'activité solaire.</p>
+<p>La TSI est un paramètre clé en climatologie, puisqu'il correspond à l'énergie apportée par le soleil à la Terre.
+Mais sa mesure n'est pas aisée : il ne peut être obtenu que par des satellites.</p>
+<p>Voici l'évolution du nombre de taches solaires et du TSI depuis 1948 jusqu'à 2024 :</p>
+<p><img alt="Taches solaires et TSI en fonction de l'année" src="../img/Chap3_exemple_taches_solaires_tsi_annees.png" /></p>
+<p>On a ici 20 points par an, avec un filtrage de moyenne glissante sur une 1/2 année, soit 1531 points au total.
+Elles sont issues de l'Observatoire Royal de Belgique (SILSO, Dewitte et al. 2022).</p>
+<p>On observe que le nombre de taches solaires comme la TSI suivent les mêmes cycles de 11 ans environ, correspondant aux cycles de l'activité solaire.
+On imagine alors que la corrélation entre les 2 grandeurs doit être forte.</p>
+<p>D'où l'idée suivante : <strong>peut-on entrainer un modèle à estimer la TSI à partir du nombre de taches solaires ?</strong></p>
+<p>Voici les données d'où sont issues les courbes précédentes, au format CSV : <a href="https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap3_sunspots_dataset.csv">Chap3_sunspots_dataset</a></p>
+<p>Le tableau de données qu'il contient est de la forme :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">year</th>
+<th style="text-align: center;">tsi</th>
+<th style="text-align: center;">sunspots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1948.25</td>
+<td style="text-align: center;">1363.743</td>
+<td style="text-align: center;">193.667</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.30</td>
+<td style="text-align: center;">1363.729</td>
+<td style="text-align: center;">196.541</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.35</td>
+<td style="text-align: center;">1363.722</td>
+<td style="text-align: center;">205.891</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.40</td>
+<td style="text-align: center;">1363.713</td>
+<td style="text-align: center;">215.623</td>
+</tr>
+<tr>
+<td style="text-align: center;">1948.45</td>
+<td style="text-align: center;">1363.729</td>
+<td style="text-align: center;">218.060</td>
+</tr>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+<tr>
+<td style="text-align: center;">2024.65</td>
+<td style="text-align: center;">1364.015</td>
+<td style="text-align: center;">172.536</td>
+</tr>
+<tr>
+<td style="text-align: center;">2024.70</td>
+<td style="text-align: center;">1364.013</td>
+<td style="text-align: center;">170.525</td>
+</tr>
+<tr>
+<td style="text-align: center;">2024.75</td>
+<td style="text-align: center;">1364.038</td>
+<td style="text-align: center;">171.563</td>
+</tr>
+</tbody>
+</table>
+<p>Il contient pour chacun des 1531 points l'année (sous forme décimale), la TSI moyenne (en <span class="arithmatex">\(W/m^2\)</span>) et le nombre de taches solaires moyen sur une fenêtre d'une 1/2 année.</p>
+<p>Notre problème de régression sera la suivant : <strong>prédire la TSI moyenne sur une 1/2 année à partir du nombre de taches solaires moyen sur cette même fenêtre</strong>.</p>
+<p>Voyons d'abord si une telle régression est possible à partir de ces données.</p>
+<p>Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :</p>
+<pre><code>import pandas as pd
+df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>On peut alors utiliser la méthode "plot" des DataFrames pandas pour afficher la TSI en fonction du nombre de taches solaires, sous la forme d'un <strong>nuage de points</strong> :</p>
+<pre><code>df_dataset.plot(x='sunspots',y='tsi',kind='scatter',c='r',marker='+')
+</code></pre>
+<p>Voici le résultat :</p>
+<p><img alt="Taches solaires en fonction du TSI" src="../img/Chap3_exemple_taches_solaires_tsi.png" /></p>
+<p>On observe comme attendu que les 2 grandeurs ont l'air <strong>fortement corrélées</strong>.
+Cependant, on peut déjà constater que : (1) la relation n'a l'air linéaire que pour des nombres de taches solaires faibles (moins de 150-200), (2) la dispersions des points a l'air d'augmenter avec le nombre de taches solaires.</p>
+<p>Ces observations seront importantes dans la suite.</p>
+<p>On peut également calculer le coefficient de corrélation entre la TSI et le nombre taches solaires, en utilisant la méthode "corr" des DataFrames Pandas :</p>
+<pre><code>df_dataset['tsi'].corr(df_dataset['sunspots'])
+</code></pre>
+<p>On trouve un coefficient de corrélation de 0.89 environ, ce qui confirme une forte corrélation entre les variables.
+Vouloir entrainer un modèle à prédire la TSI à partir du nombre de taches solaires a donc un sens.</p>
+<p><strong>Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.</strong>
+<strong>Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée</strong>.</p>
+<p><strong>L'idée est que nous verrons un exemple plus en détails en TP.</strong></p>
+<h2 id="mesures-de-performances">Mesures de performances</h2>
+<p>Nous allons passer en revue dans cette section les principaux indicateurs de performances applicables à la régression linéaire.</p>
+<h3 id="table-anova">Table ANOVA</h3>
+<p>Soit un problème de régression dont la variable de sortie est notée <span class="arithmatex">\(y\)</span>.
+On veut évaluer les performances d'un modèle de régression sur un jeu de données issu de ce problème.</p>
+<p>La moyenne des valeurs de <span class="arithmatex">\(y\)</span> au sein de cet échantillon est notée <span class="arithmatex">\(\overline{y}\)</span>.
+La valeur de <span class="arithmatex">\(y\)</span> pour le i-ème individu de cet échantillon sera notée <span class="arithmatex">\(y_i\)</span>.</p>
+<p>Admettons que l'on a ait déterminé un modèle de regression linéaire pour ces données.
+On note <span class="arithmatex">\(\hat{y_i}\)</span> la prédiction de ce modèle linéaire pour le i-ème individu.</p>
+<p>Pour juger de la qualité du modèle, on divise les écarts en 2 groupes :</p>
+<ul>
+<li>Les <strong>écarts résiduels</strong>, ou "résidus" : <span class="arithmatex">\(y_i - \hat{y_i}\)</span></li>
+</ul>
+<p>Il s'agit des écarts non-expliqués par le modèle. 
+On remarque qu'ils correspondent aux <span class="arithmatex">\(\epsilon_i\)</span> de notre modèle.</p>
+<ul>
+<li>Les écarts <strong>écarts de régression</strong>, ou "écarts expliqués" : <span class="arithmatex">\(\hat{y_i} - \overline{y}\)</span></li>
+</ul>
+<p>Il s'agit des écarts expliqués par le modèle.</p>
+<p>On a alors l'<strong>écart total</strong> :</p>
+<p><span class="arithmatex">\(y_i - \overline{y} = (y_i - \hat{y_i}) - (\hat{y_i} - \overline{y})\)</span></p>
+<p><img alt="Ecarts" src="../img/Chap3_ecarts.png" /></p>
+<p>On met en général ces écarts sous la forme de variances, en prenant la somme des carrés des <span class="arithmatex">\(p\)</span> individus de cet échantillon :</p>
+<ul>
+<li>
+<p>SCR ("somme des carrés des résidus") : <span class="arithmatex">\(\sum_{i=1}^{p} (y_i - \hat{y_i})^2\)</span></p>
+</li>
+<li>
+<p>SCE ("somme des carrés expliqués") : <span class="arithmatex">\(\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2\)</span></p>
+</li>
+<li>
+<p>SCT ("somme des carrés totale") : <span class="arithmatex">\(\sum_{i=1}^{p} (y_i - \overline{y})^2\)</span></p>
+</li>
+</ul>
+<p>avec <span class="arithmatex">\(SCT = SCR + SCE\)</span></p>
+<p><strong>Un modèle sera d'autant plus performant que la SCR sera faible comparée à la SCT</strong>.</p>
+<p><img alt="SCR et SCT" src="../img/Chap3_SCR_SCT.png" /></p>
+<p>L'idée est la suivante : plus la SCE est grande (et donc plus la SCR est faible), et plus le modèle <strong>explique</strong> <span class="arithmatex">\(y\)</span> à partir des entrées.</p>
+<p>On range en général ces valeurs sous la forme d'un tableau, nommé "table ANOVA" (contraction en anglais de "ANalysis Of VAriance") :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span class="arithmatex">\(x_i\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(y_i\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(\hat{y_i}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(\hat{y_i} - \overline{y}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\((\hat{y_i} - \overline{y})^2\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(y_i - \hat{y_i}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\((y_i - \hat{y_i})^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><span class="arithmatex">\(\overline{x}\)</span></th>
+<th style="text-align: center;"><span class="arithmatex">\(\overline{y}\)</span></th>
+<th style="text-align: center;">SCE</th>
+<th style="text-align: center;">SCR</th>
+<th style="text-align: center;">SCT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+</tbody>
+</table>
+<p>On peut trouver des variantes de cette table, mais elle contient toujours au moins la SCE, la SCR et la SCT.</p>
+<h3 id="coefficient-de-determination">Coefficient de détermination</h3>
+<p>La table ANOVA est une représentation plutôt exhaustive des performances en régression linéaire.</p>
+<p>Mais comme souvent, on voudrait pouvoir résumer au mieux les performances avec un score unique dérivé de cette table.</p>
+<p>Le critère le plus utilisé est le <strong>coefficient de détermination</strong>, noté <span class="arithmatex">\(R^2\)</span> :</p>
+<p><span class="arithmatex">\(R^2 = \frac{SCE}{SCT} = \frac{\sum_{i=1}^{p} (\hat{y_i} - \overline{y})^2}{\sum_{i=1}^{p} (y_i - \overline{y})^2} = 1 - \frac{SCR}{SCT} = 1 - \frac{\sum_{i=1}^{p} (y_i - \hat{y_i})^2}{\sum_{i=1}^{p} (y_i - \overline{y})^2}\)</span></p>
+<p>Le <span class="arithmatex">\(R^2\)</span> s'interprète comme <strong>la proportion de l'écart total expliquée par le modèle</strong>.</p>
+<p>Il s'agit donc d'un score entre 0 et 1 : plus la valeur est proche de 1, et meilleur est le modèle.</p>
+<p>Par exemple, mettons que l'on utilise la luminosité d'une étoile pour essayer de prédire son rayon, grâce à une régression linéaire.
+Si le <span class="arithmatex">\(R^2\)</span> du modèle est de 0.75 sur un échantillon de données, cela veut dire que le modèle explique 75% de la variation du rayon de l'étoile.
+Les 25% restants sont expliqués par les erreurs.</p>
+<p>On remarque que le <span class="arithmatex">\(R^2\)</span> correspond au carré du coefficient de corrélation (voir Chapitre 1) entre les valeurs observées <span class="arithmatex">\(y_i\)</span> et les valeurs prédites <span class="arithmatex">\(\hat{y_i}\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">En régression linéaire simple, le <span class="arithmatex">\(R^2\)</span> est égal au carré du coefficient de corrélation entre <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ce n'est pas vrai pour la régression linéaire multiple.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="analyse-des-residus">Analyse des résidus</h3>
+<p>Lorsque les performances d'un modèle de régression linéaire ont l'air mauvaises, on a envie de comprendre pourquoi.</p>
+<p>La bonne approche est de réaliser une <strong>analyse des résidus</strong>.</p>
+<p>Dans un 1er temps, cette analyse peut être <strong>visuelle</strong>.
+On affiche simplement les résidus en fonction de <span class="arithmatex">\(x\)</span>, ou sous la forme d'un histogramme, et on vérifie s'ils ont l'air d'avoir le comportement attendu de <span class="arithmatex">\(\epsilon\)</span> : </p>
+<ul>
+<li>
+<p>Indépendance des observations.</p>
+</li>
+<li>
+<p>Moyenne nulle.</p>
+</li>
+<li>
+<p>Ecart-type constant, aussi appelé "homoscédasticité".</p>
+</li>
+<li>
+<p>Normalité.</p>
+</li>
+</ul>
+<p>Dans l'idéal, on attend donc <strong>un nuage de points aléatoires</strong>, d'écart-type constant, sans tendances en fonction de <span class="arithmatex">\(x\)</span>.</p>
+<p><img alt="Résidus" src="../img/Chap3_residus.png" /></p>
+<p>Si ce n'est pas le cas, alors il faut soit :</p>
+<ul>
+<li>
+<p><strong>Revoir notre modèle</strong> (une régression linéaire simple n'est peut-être pas adaptée).</p>
+</li>
+<li>
+<p><strong>Nettoyer nos données</strong> (des outliers ou des données abérrantes sont peut-être la cause du mauvais ajustement).</p>
+</li>
+<li>
+<p><strong>Ajouter des variables explicatives</strong> (<span class="arithmatex">\(x\)</span> n'est peut-être pas suffisant pour expliquer <span class="arithmatex">\(y\)</span> de manière satisfaisante).</p>
+</li>
+</ul>
+<p>En cas de doute, on peut procéder à des tests de ces hypothèses, mais ils ne sont pas tous simples à mettre en place.
+En voici quelques exemples :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Hypothèse</th>
+<th style="text-align: center;">Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Normalité</td>
+<td style="text-align: center;">Droite de Henry (quantiles des résidus en fonction de ceux attendus)</td>
+</tr>
+<tr>
+<td style="text-align: center;">Homoscédasticité</td>
+<td style="text-align: center;">Test de White (hypothèse nulle : variance des résidus sachant <span class="arithmatex">\(x\)</span> constante)</td>
+</tr>
+<tr>
+<td style="text-align: center;">Indépendance</td>
+<td style="text-align: center;">Test de Durbin-Watson (hypothèse nulle : non-corrélation des résidus)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methodes-de-base">Méthodes de base</h2>
+<h3 id="moindres-carres-ordinaire">Moindres carrés ordinaire</h3>
+<p>Les <strong>moindres carrés ordinaire</strong> (MCO) est la méthode de régression linéaire la plus basique qui soit.
+S'il s'agit originellement d'une méthode de <strong>statistiques descriptives</strong>, nous verrons que l'on peut s'en servir pour faire de l'<strong>inférence statistique</strong>.</p>
+<h4 id="principe">Principe</h4>
+<p>Comme nous venons de le mentionner, les MCO a originellement un but descriptif.</p>
+<p>Si on a un jeu de données contenant une variable explicative <span class="arithmatex">\(x\)</span> et une variable de réponse <span class="arithmatex">\(y\)</span>, on cherche :  <strong>quelle droite d'équation <span class="arithmatex">\(y = a x + b\)</span> représente le mieux la distribution des <span class="arithmatex">\(p\)</span> points <span class="arithmatex">\((x_i,y_i)\)</span> de cet échantillon ?</strong></p>
+<p><span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span> seront alors 2 indicateurs statistiques caractérisant notre échantillon.</p>
+<p>Mais comment déterminer qu'une droite représente au mieux un nuage de points ?</p>
+<p>La méthode des MCO considère que la droite d'équation <span class="arithmatex">\(y = a x + b\)</span> représentant le mieux les <span class="arithmatex">\(p\)</span> point de notre échantillon est celle qui <strong>minimise</strong> :</p>
+<p><span class="arithmatex">\(\sum_{i=1}^{p} (y_i - a x_i - b)^2\)</span></p>
+<p>c'est-à-dire la SCR du modèle.</p>
+<p>D'où le nom de la méthode : on cherche les "moindres carrés".</p>
+<p><img alt="Moindres carrés" src="../img/Chap3_moindres_carres.png" /></p>
+<p>On peut montrer que les paramètres <span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span> minimisant cette fonction sont :</p>
+<p><span class="arithmatex">\(a = \frac{\sum_{i=1}^{p} (x_i-\overline{x})(y_i-\overline{y})}{\sum_{i=1}^{p} (x_i-\overline{x})^2}\)</span></p>
+<p><span class="arithmatex">\(b = \overline{y} - a \overline{x}\)</span></p>
+<p>On notera pour simplifier les expressions :</p>
+<p><span class="arithmatex">\(sc_{xx} = \sum_{i=1}^{p} (x_i-\overline{x})^2\)</span></p>
+<p><span class="arithmatex">\(sc_{yy} = \sum_{i=1}^{p} (y_i-\overline{y})^2\)</span></p>
+<p><span class="arithmatex">\(sc_{xy} = \sum_{i=1}^{p} (x_i-\overline{x})(y_i-\overline{y})\)</span></p>
+<p>D'où <span class="arithmatex">\(a = \frac{sc_{xy}}{sc_{xx}}\)</span></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La droite déterminée par les MCO passera toujours par le point <span class="arithmatex">\((\overline{x},\overline{y})\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="meilleur-estimateur-lineaire-non-biaise-blue">Meilleur Estimateur Linéaire Non-biaisé (BLUE)</h4>
+<p>Revenons à notre problème de régression linéaire simple : à partir de notre échantillon, nous voulons trouver un modèle liant nos variables <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span>, de la forme <span class="arithmatex">\(y = \alpha x + \beta + \epsilon\)</span>.</p>
+<p>Sous certaines conditions sur <span class="arithmatex">\(\epsilon\)</span>, nous pouvons appliquer le <strong>théorème de Gauss-Markov</strong> à notre problème :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Théorème de Gauss-Markov</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">On cherche à modéliser une relation <span class="arithmatex">\(y = \alpha x + \beta + \epsilon\)</span> entre 2 variables <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span>, à partir d'un échantillon de réalisations <span class="arithmatex">\((x_i,y_i)\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Si <span class="arithmatex">\(\epsilon\)</span> vérifie :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Une moyenne nulle.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Un écart-type constant avec <span class="arithmatex">\(x\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Une non-corrélation de ses réalisations.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alors, les paramètres <span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span> de la droite déterminée par les MCO est le <strong>Meilleur Estimateur Linéaire Non-biaisé</strong> ("BLUE" en anglais) de <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>On peut donc se servir de la méthode des MCO pour estimer <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span> à partir de notre échantillon de points <span class="arithmatex">\((x_i,y_i)\)</span>.</p>
+<p>Il est même possible d'estimer l'<strong>écart-type de <span class="arithmatex">\(\epsilon\)</span></strong> avec l'estimateur suivant :</p>
+<p><span class="arithmatex">\(s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\hat{y_i})^2}{p-2}} = \sqrt{\frac{\sum_{i=1}^{p} \epsilon_i^2}{p-2}}\)</span></p>
+<p>Reste alors une problématique : </p>
+<p>Si j'utilise mon modèle pour réaliser une prédiction <span class="arithmatex">\(\hat{y_{p+1}}\)</span> à partir d'une nouvelle valeur <span class="arithmatex">\(x_{p+1}\)</span>, c'est-à-dire en calculant <span class="arithmatex">\(\hat{y_{p+1}} = \alpha x_{p+1} + \beta\)</span>, <strong>à quel point puis-je avoir confiance en ma prédiction ?</strong></p>
+<h4 id="intervalles-de-confiance-et-de-prediction">Intervalles de confiance et de prédiction</h4>
+<p>Comme pour tout problème d'inférence statistique, lorsque l'on a obtenu notre modèle de régression linéaire, on se pose alors les questions suivantes :</p>
+<ul>
+<li>
+<p>Quelle est mon <strong>incertitude sur les <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span></strong> trouvés à partir de mon échantillon ?</p>
+</li>
+<li>
+<p>Pour une valeur de <span class="arithmatex">\(x\)</span> fixée, quelle est mon <strong>incertitude sur la moyenne des <span class="arithmatex">\(y\)</span></strong> avec mon modèle de régression linéaire ?</p>
+</li>
+<li>
+<p>Pour un nouvelle observation de <span class="arithmatex">\(x\)</span>, quelle est mon <strong>incertitude sur la valeur de <span class="arithmatex">\(y\)</span> prédite</strong> par mon modèle de régression linéaire ?</p>
+</li>
+</ul>
+<p>Pour répondre à ces questions, nous allons utiliser des <strong>intervalles de confiance</strong>.</p>
+<p>L'hypothèse de <strong>normalité</strong> de <span class="arithmatex">\(\epsilon\)</span> implique que les estimations de <span class="arithmatex">\(\alpha\)</span> et de <span class="arithmatex">\(\beta\)</span> à partir d'un échantillon <strong>suivent une loi normale</strong>.
+Mais nous ne pouvons qu'estimer son écart-type, puisque nous ne disposons que d'un échantillon.</p>
+<p>Il nous faut donc utiliter la <strong>loi de Student</strong>, et plus particulièrement le "t de Student".</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Rappels sur le t de Student</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Soit une population de moyenne <span class="arithmatex">\(\mu\)</span> et d'écart-type inconnu, dont on récupère un échantillon de <span class="arithmatex">\(p\)</span> points, de moyenne estimée <span class="arithmatex">\(\overline{x}\)</span> et d'écart-type estimé <span class="arithmatex">\(s\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alors la variable aléatoire <span class="arithmatex">\(t = \frac{\overline{x}-\mu}{s/\sqrt{p}}\)</span> suit une loi de Student, dont on peut se servir pour établir un intervalle de confiance sur l'estimation <span class="arithmatex">\(\overline{x}\)</span> de <span class="arithmatex">\(\mu\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">On note <span class="arithmatex">\(t_{\gamma}^{k}\)</span> le <strong>quantile</strong> de seuil d'erreur <span class="arithmatex">\(\gamma\)</span> de la loi de Student à <span class="arithmatex">\(k\)</span> <strong>degrés de liberté</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><img alt="Loi de Student" src="../img/Chap3_loi_de_Student.png" /></td>
+</tr>
+<tr>
+<td style="text-align: left;">Le <strong>seuil de confiance</strong> est alors <span class="arithmatex">\(1-\gamma\)</span> : pour seuil de confiance à 99% on prendra <span class="arithmatex">\(\gamma = 0.01\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">La loi normale étant symétrique, pour déterminer un <strong>intervalle de confiance</strong> de seuil <span class="arithmatex">\(1-\gamma\)</span>, il faut en réalité utiliser <span class="arithmatex">\(t_{\gamma/2}^{k}\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Donc pour un intervalle de confiance à 99% on prendra <span class="arithmatex">\(\gamma = 0.005\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">On a alors :</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="arithmatex">\(p(\overline{x} - t_{\gamma/2}^{p-1} \frac{s}{\sqrt{p}} \leq \mu \leq \overline{x} + t_{\gamma/2}^{p-1} \frac{s}{\sqrt{p}}) = 1 - \gamma\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">avec <span class="arithmatex">\(k = p-1\)</span> car on a utilisé 1 degré de liberté pour estimer <span class="arithmatex">\(\mu\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Nota Bene :</td>
+</tr>
+<tr>
+<td style="text-align: left;">Il est à noter que plus <span class="arithmatex">\(p\)</span> est grand (et donc plus <span class="arithmatex">\(k\)</span> est grand) et plus le <span class="arithmatex">\(t\)</span> se rapproche d'une loi normale.</td>
+</tr>
+</tbody>
+</table>
+<p>Dans notre cas, nous avons utilisé 2 degrés de liberté pour estimer <span class="arithmatex">\(\alpha\)</span> et <span class="arithmatex">\(\beta\)</span>, nous utiliserons donc le t de Student pour <span class="arithmatex">\(p-2\)</span> degrés de liberté.</p>
+<p>On peut donc établir les <strong>intervalles de confiance</strong> à <span class="arithmatex">\(1-\gamma\)</span> suivants <strong>sur <span class="arithmatex">\(a\)</span> et <span class="arithmatex">\(b\)</span></strong> :</p>
+<p><span class="arithmatex">\(\alpha \in [a - t_{\gamma/2}^{p-2} s(a) ; a + t_{\gamma/2}^{p-2} s(a)]\)</span></p>
+<p><span class="arithmatex">\(\beta \in [b - t_{\gamma/2}^{p-2} s(b) ; b + t_{\gamma/2}^{p-2} s(b)]\)</span></p>
+<p>avec les écart-types estimés :</p>
+<p><span class="arithmatex">\(s(a) = \frac{s}{\sqrt{sc_{xx}}}\)</span></p>
+<p><span class="arithmatex">\(s(b) = s \sqrt{\frac{1}{p} + \frac{\overline{x}^2}{sc_{xx}}}\)</span></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Il est à noter que si tous les <span class="arithmatex">\(x_i\)</span> de l'échantillon sont égaux, alors <span class="arithmatex">\(x_i = \overline{x}\)</span>, d'où <span class="arithmatex">\(sc_{xx} = 0\)</span> et donc les intervalles de confiance deviennent infinis.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ce résultat est attendu, puisqu'on ne peut pas tirer d'information sur la relation entre <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span> avec des points pour un seul <span class="arithmatex">\(x_i\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>De la même manière, on peut estimer pour une valeur de <span class="arithmatex">\(x\)</span> donnée <span class="arithmatex">\(x=u\)</span> l'<strong>intervalle de confiance</strong> à <span class="arithmatex">\(1-\gamma\)</span> <strong>sur la moyenne des <span class="arithmatex">\(y\)</span> sachant <span class="arithmatex">\(x=u\)</span></strong> :</p>
+<p><span class="arithmatex">\(\alpha u + \beta \in [a u + b - t_{\gamma/2}^{p-2} s(\hat{y}(u)) ; a u + b + t_{\gamma/2}^{p-2} s(\hat{y}(u))]\)</span></p>
+<p>avec</p>
+<p><span class="arithmatex">\(s(\hat{y}(u)) = s \sqrt{\frac{1}{p} + \frac{(u-\overline{x})^2}{sc_{xx}}}\)</span></p>
+<p>Enfin, on peut estimer l'<strong>intervalle de prédiction</strong> sur <span class="arithmatex">\(y_{p+1}\)</span> pour une <strong>nouvelle donnée</strong> <span class="arithmatex">\(x_{p+1}\)</span> : </p>
+<p><span class="arithmatex">\(y_{p+1} \in [a x_{p+1} + b - t_{\gamma/2}^{p-2} s(y_{p+1}) ; a x_{p+1} + b + t_{\gamma/2}^{p-2} s(y_{p+1})]\)</span></p>
+<p>avec</p>
+<p><span class="arithmatex">\(s(y_{p+1}) = s \sqrt{1 + \frac{1}{p} + \frac{(x_{p+1}-\overline{x})^2}{sc_{xx}}}\)</span></p>
+<p>En général, lorsque l'on affiche par-dessus le nuage de points la droite du modèle obtenu par MCO, on affiche aussi l'intervalle de confiance sur la moyenne des <span class="arithmatex">\(y\)</span>, et l'intervalle de prédiction choisis.
+Le graphique obtenu est de la forme suivante :</p>
+<p><img alt="Modèle des MCO avec intervalles de confiance et de prédiction" src="../img/Chap3_intervalles_confiance_pr%C3%A9diction.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Il est à noter que :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Les intervalles de confiance sur la moyenne des <span class="arithmatex">\(y\)</span> sont toujours plus petits que les intervalles de prévision.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- La droite obtenue par MCO passe toujours par <span class="arithmatex">\((\overline{x},\overline{y})\)</span>, donc plus on s'éloigne de ce point, plus les intervalles de confiance et de prédiction vont augmenter.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="implementation-scipy">Implémentation Scipy</h4>
+<p>Afin de réaliser une régression linéaire simple avec la méthode des MCO, on peut utiliser la bibliothèque de calculs scientifiques Scipy, et en particulier son module de statistiques "scipy.stat".</p>
+<p>Il suffit d'importer l'objet "linregress" avec :</p>
+<pre><code>from scipy.stats import linregress
+</code></pre>
+<p>Pour ajuster un modèle de régression linéaire <code>mco</code> à une variable d'entrée <code>x</code> et une variable de sortie <code>y</code> on utilise la commande :</p>
+<pre><code>mco = linregress(x,y)
+</code></pre>
+<p>On peut alors récupérer le coefficient directeur <code>a</code> et l'ordonnée à l'origine <code>b</code> de ce modèle linéaire avec :</p>
+<pre><code>a = mco.slope
+b = mco.intercept
+</code></pre>
+<p>Il suffit alors d'utiliser ces 2 paramètres pour réaliser une prédiction.</p>
+<p>Pour déterminer les intervalles de confiance et de prédiction, la bibliothèque Scipy propose aussi une implémentation de la loi de Student, que l'on peut importer avec :</p>
+<pre><code>from scipy.stats import t
+</code></pre>
+<p>Pour obtenir le quantile <code>tq</code> de seuil <code>s</code> correspondant à <span class="arithmatex">\(1-\gamma\)</span>, de la loi de Student de à <code>k</code> degrés de libertés, on alors simple utiliser la méthode :</p>
+<pre><code>tq = t.ppf(s,k)
+</code></pre>
+<p>Il ne reste alors qu'à implémenter les formules des estimateurs d'écart-types que nous avons vues précédemment pour calculer les intervalles de confiances et de prédiction.</p>
+<p>Il est également possible d'obtenir le <span class="arithmatex">\(R^2\)</span> de la régression grâce au paramètre <code>r_value</code> du modèle :</p>
+<pre><code>r_2 = mco.rvalue**2
+</code></pre>
+<p>(On reconnait que <code>r_value</code> correspond au coefficient de corrélation tel que vu au Chapitre 1).</p>
+<p>Si cette implémentation est pratique pour faire de l'inférence statistique, elle ne gère malheureusement que la régression linéaire simple.
+Pour de la régression linéaire multiple, nous verrons que l'on peut utiliser Scikit-Learn.</p>
+<h4 id="generalisation-a-la-regression-lineaire-multiple">Généralisation à la régression linéaire multiple</h4>
+<p>Les MCO peut être généralisée pour les problèmes à plus d'une variable explicative (nombre de variables explicatives <span class="arithmatex">\(n&gt;1\)</span>).</p>
+<p>(Comme mentionné précédemment, un problème de régression polynomiale peut également être résolu en utilisant de la régression linéaire multiple).</p>
+<p>Rappelons que le modèle de régression linéaire multiple à ajuster est le suivant :</p>
+<p><span class="arithmatex">\(y = \alpha_1 x_1 + \alpha_2 x_2 + ... + \alpha_n x_n + \beta + \epsilon\)</span></p>
+<p>Si nous disposons de <span class="arithmatex">\(p\)</span> observations dans notre jeu de données d'entrainement, il faut que nos paramètres <span class="arithmatex">\(\alpha_1\)</span>, ..., <span class="arithmatex">\(\alpha_n\)</span> et <span class="arithmatex">\(\beta\)</span> vérifient : </p>
+<p><span class="arithmatex">\(\begin{cases}
+y_1 = \alpha_1 x_{1,1} + \alpha_2 x_{1,2} + ... + \alpha_n x_{1,n} + \beta + \epsilon_1\\
+y_2 = \alpha_1 x_{2,1} + \alpha_2 x_{2,2} + ... + \alpha_n x_{2,n} + \beta + \epsilon_2\\
+...\\
+y_p = \alpha_1 x_{p,1} + \alpha_2 x_{p,2} + ... + \alpha_n x_{p,n} + \beta + \epsilon_p\\
+\end{cases}\)</span></p>
+<p>Un système d'équations linéaires que l'on peut mettre sous la forme matricielle suivante :</p>
+<p><span class="arithmatex">\(Y = X A + E\)</span></p>
+<p>avec</p>
+<p><span class="arithmatex">\(Y = 
+    \begin{pmatrix}
+    y_1\\
+    y_2\\
+    \vdots\\
+    y_p 
+    \end{pmatrix}\)</span></p>
+<p><span class="arithmatex">\(X = 
+    \begin{pmatrix}
+    1 &amp; x_{1,1} &amp; x_{1,2} &amp; \cdots &amp; x_{1,n} \\
+    1 &amp; x_{2,1} &amp; x_{2,2} &amp; \cdots &amp; x_{2,n} \\
+    \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\
+    1 &amp; x_{p,1} &amp; x_{p,2} &amp;\cdots &amp; x_{p,n} 
+    \end{pmatrix}\)</span></p>
+<p><span class="arithmatex">\(A = 
+    \begin{pmatrix}
+    \beta\\
+    \alpha_1\\
+    \alpha_2\\
+    \vdots\\
+    \alpha_n 
+    \end{pmatrix}\)</span></p>
+<p><span class="arithmatex">\(E = 
+    \begin{pmatrix}
+    \epsilon_1\\
+    \epsilon_2\\
+    \vdots\\
+    \epsilon_p 
+    \end{pmatrix}\)</span></p>
+<p>Avec les mêmes hypothèses sur <span class="arithmatex">\(\epsilon\)</span> que pour la régression linéaire simple, on peut appliquer les MCO pour trouver le <strong>meilleur estimateur linéaire non-biaisé de <span class="arithmatex">\(A\)</span></strong>.</p>
+<p>Cette fois-ci, il s'agit de la matrice <span class="arithmatex">\(\hat{A}\)</span> minimisant l'<strong>erreur quadratique moyenne</strong> (ou "MSE" en anglais) :</p>
+<p><span class="arithmatex">\(MSE = \frac{1}{p} \sum_{i=1}^{p} (y_i - \sum_{j=1}^{n} \alpha_j x_{i,j} - \beta)^2\)</span></p>
+<p>On peut montrer que ce minimum est obtenu pour <span class="arithmatex">\(\hat{A}\)</span> vérifiant l'<strong>équation normale</strong> suivante :</p>
+<p><span class="arithmatex">\(\hat{A} = (X^T X)^{-1} X^T Y\)</span></p>
+<p>En pratique, il est rare que l'on résolve directement l'équation normale : (1) sa résolution est complexe, (2) la matrice <span class="arithmatex">\(X^T X\)</span> peut ne pas être inversible (si <span class="arithmatex">\(p&lt;n\)</span> ou si certaines equations sont redondantes).</p>
+<p>C'est pourquoi la plupart des implémentations des MCO pour de la régression linéaire multiple calculent plutôt :</p>
+<p><span class="arithmatex">\(\hat{A} = X^{+} Y\)</span></p>
+<p>avec <span class="arithmatex">\(X^{+}\)</span> le pseudo-inverse de <span class="arithmatex">\(X\)</span>.</p>
+<p>Celui-ci est calculé en utilisant la décomposition en valeurs singulières (SVD) de <span class="arithmatex">\(X\)</span>.</p>
+<p>Cette méthode à l'avantage d'être plus rapide que de résoudre l'équation normale directement, et que le pseudo-inverse de <span class="arithmatex">\(X\)</span> existe toujours.</p>
+<p>On peut également généraliser les formules de détermination des <strong>intervalles de confiance</strong> et de <strong>prédiction</strong> vues précédemment.</p>
+<p>Tout d'abord, dans le cas multiple l'estimateur de l'écart-type de <span class="arithmatex">\(\epsilon\)</span> devient :</p>
+<p><span class="arithmatex">\(s = \sqrt{\frac{\sum_{i=1}^{p} (y_i-\hat{y_i})^2}{p-n-1}} = \sqrt{\frac{\sum_{i=1}^{p} \epsilon_i^2}{p-n-1}}\)</span></p>
+<p>Soit une réalisation donnée des variables d'entrée :</p>
+<p><span class="arithmatex">\(\begin{pmatrix}
+x_0 &amp; x_1 &amp; \cdots &amp; x_n
+\end{pmatrix}
+= \begin{pmatrix}
+u_0 &amp; u_1 &amp; \cdots &amp; u_n
+\end{pmatrix}
+= U\)</span></p>
+<p>L'intervalle de confiance à <span class="arithmatex">\(1-\gamma\)</span> sur la moyenne des <span class="arithmatex">\(y\)</span> sachant que les variables d'entrée sont à <span class="arithmatex">\(U\)</span> est alors :</p>
+<p><span class="arithmatex">\(U A \in [U \hat{A} - t_{\gamma/2}^{p-n-1} s(\hat{y}(U)) ; U \hat{A} + t_{\gamma/2}^{p-n-1} s(\hat{y}(U))]\)</span></p>
+<p>avec</p>
+<p><span class="arithmatex">\(s(\hat{y}(U)) = s \sqrt{U(X^T X)^{-1}U^T}\)</span></p>
+<p>Soit une nouvelle réalisation des variables d'entrées :</p>
+<p><span class="arithmatex">\(\begin{pmatrix}
+x_{p+1,0} &amp; x_{p+1,1} &amp; \cdots &amp; x_{p+1,n}
+\end{pmatrix}
+= V\)</span></p>
+<p>L'intervalle de prédiction à <span class="arithmatex">\(1-\gamma\)</span> de <span class="arithmatex">\(V\)</span> est :</p>
+<p><span class="arithmatex">\(y_{p+1} \in [V \hat{A} - t_{\gamma/2}^{p-n-1} s(y_{p+1}) ; V \hat{A} + t_{\gamma/2}^{p-n-1} s(y_{p+1})]\)</span></p>
+<p>avec </p>
+<p><span class="arithmatex">\(s(y_{p+1}) = s \sqrt{1+V(X^T X)^{-1}V^T}\)</span></p>
+<h4 id="implementation-scikit-learn">Implémentation Scikit-Learn</h4>
+<p>Il existe une implémentation Scikit-Learn des MCO, qui permet la régression linéaire multiple (et donc la régression polynomiale).</p>
+<p>Elle peut être importée avec :</p>
+<pre><code>from sklearn.linear_model import LinearRegression
+</code></pre>
+<p>On peut ensuite initialiser un modèle de régression linéaire <code>mco</code> avec un objet "LinearRegression" :</p>
+<pre><code>mco = LinearRegression()
+</code></pre>
+<p>Pour donner le jeu d'entrainement (matrice des variables d'entrée <code>X</code> et vecteur de la variable de sortie <code>y</code>) à ce modèle, on utilise la méthode :</p>
+<pre><code>mco.fit(X,y)
+</code></pre>
+<p>On peut à présent réaliser des prédictions <code>y_pred</code> à partir d'une matrice <code>X_pred</code> :</p>
+<pre><code>y_pred = mco.predict(X_pred)
+</code></pre>
+<p>Pour obtenir le <span class="arithmatex">\(R^2\)</span> de notre modèle sur ses données d'entrainement <code>X</code> et <code>y</code>, il suffit d'utiliser la méthode suivante :</p>
+<pre><code>r_2 = mco.score(X,y)
+</code></pre>
+<p>On peut de même le calculer sur des données de test.</p>
+<p>Malheureusement, contrairement à Scipy, Scikit-Learn ne permet pas de faire l'inférence statistique avec les MCO : il n'y a pas de fonctionnalité pour déterminer des intervalles de confiance ou de prédiction.
+On doit donc calculer nous même ces intervalles, à partir de la loi de Student implémentée par Scipy, et des formules généralisées.</p>
+<h4 id="application-a-notre-exemple">Application à notre exemple</h4>
+<p>Nous allons à présent appliquer la régression linéaire avec les Moindres Carrés Ordinaires à notre problème exemple.</p>
+<p>Tout d'abord, nous importons le fichier CSV depuis son chemin <code>input_path</code> sous la forme d'un DataFrame, puis nous sélectionnons les variables d'entrée et de sortie sous la forme de matrices Numpy :</p>
+<pre><code>df_dataset = pd.read_csv(input_path)
+
+df_train=df_dataset.sample(frac=0.8,random_state=0)
+df_test=df_dataset.drop(df_train.index)
+
+x_train = df_train['sunspots'].to_numpy()
+y_train = df_train['tsi'].to_numpy()
+
+x_test = df_test['sunspots'].to_numpy()
+y_test = df_test['tsi'].to_numpy()
+</code></pre>
+<p>Si les hypothèses associées sont bien respectées, les MCO permettent en théorie d'obtenir des intervalles de confiance et de prédiction fiables.
+Dans la réalité, il est compliqué d'avoir ces hypothèses exactement vraies.
+D'où le fait que l'on applique ici une stratégie de séparation entre ensemble d'entrainement et de test (80% / 20%), afin de <strong>vérifier les performances en généralisation</strong>.</p>
+<p>On détermine notre modèle de régression linéaire <code>mco</code> par les MCO en utilisant la bibliothèque Scipy :</p>
+<pre><code>from scipy.stats import linregress
+mco = linregress(x_train,y_train)
+</code></pre>
+<p>Nous pouvons à présent estimer des TSI à partir de nombres de tâches solaires.
+Voici par exemple pour 321 nombres de tâches solaires entre 0 et 320 :</p>
+<pre><code>x_mco = np.linspace(0,320,321)
+y_mco = mco.intercept+mco.slope*x_mco
+</code></pre>
+<p>Nous avons ainsi les prédictions de notre modèle pour chaque nombre entiers de tâches solaires sur l'intervalle possible.</p>
+<p>Pour obtenir les intervalles de confiance et de prédiction de notre modèle, il nous faut d'abord estimer l'écart-type des résidus :</p>
+<pre><code>res_train = y_train-(mco.intercept+mco.slope*x_train)
+
+s = np.sqrt(np.sum(res_train**2)/(len(x_train)-2))
+</code></pre>
+<p>Ensuite, il nous faut calculer <span class="arithmatex">\(sc_{xx}\)</span> :</p>
+<pre><code>x_mean_train = np.mean(x_train)
+
+sc_xx_train = np.sum((x_train-x_mean_train)**2)
+</code></pre>
+<p>Nous pouvons alors en déduire l'estimation de l'écart-type sur la moyenne conditionnelle de <span class="arithmatex">\(y\)</span>, et l'estimation de l'écart-type sur les prédictions :</p>
+<pre><code>s_y_conf = s*np.sqrt((1/len(x_train))+(((x_mco-x_mean_train)**2)/sc_xx_train))
+s_y_pred = s*np.sqrt(1+(1/len(x_train))+(((x_mco-x_mean_train)**2)/sc_xx_train))
+</code></pre>
+<p>Nous avons à présent tous les élements pour calculer les intervalles de confiance et de prédiction à 95% pour chaque nombre de tâches solaires entre 0 et 320.
+Il suffit d'utiliser le t de Student adapté :</p>
+<pre><code>from scipy.stats import t
+t_student = t.ppf(1-(0.05/2),len(x_train)-2)
+
+y_conf_inf = y_mco - (t_student*s_y_conf)
+y_conf_sup = y_mco + (t_student*s_y_conf)
+
+y_pred_inf = y_mco - (t_student*s_y_pred)
+y_pred_sup = y_mco + (t_student*s_y_pred)
+</code></pre>
+<p>On peut tracer le modèle linéaire obtenu par les MCO par-dessus le nuage de points des données d'entrainement, avec les intervalles de confiance et de prédiction :</p>
+<p><img alt="Exemple de régression linéaire simple par les MCO" src="../img/Chap3_exemple_mco_modele_simple.png" /></p>
+<p>Pour évaluer les performances du modèle en entrainement, on peut simplement calculer le <span class="arithmatex">\(R^2\)</span> sur les données d'entrainement :</p>
+<pre><code>print(mco.rvalue**2)
+</code></pre>
+<p>On obtient <span class="arithmatex">\(R^2 \approx 0.792\)</span>, ce qui veut dire que 79.2% des écarts sont expliqués par le modèle.
+Un score relativement bon, mais pas excellent puisque plus de 1/5 des écarts restent inexpliqués par le modèle.</p>
+<p>Pour évaluer les performances du modèle en test, on a pas d'autre choix que de calculer le <span class="arithmatex">\(R^2\)</span> sur les données de test "à la main" :</p>
+<pre><code>y_mean_test = np.mean(y_test)
+
+sct_test = np.sum((y_test-y_mean_test)**2)
+scr_test = np.sum((y_test-(mco.intercept+mco.slope*x_test))**2)
+
+r2_test = 1-(scr_test/sct_test)
+
+print(r2_test)
+</code></pre>
+<p>On obtient alors <span class="arithmatex">\(R^2 \approx 0.795\)</span> soit un score très similaire aux performances en entrainement.
+Des performances similaires peuvent donc être attendues en généralisation.</p>
+<p>Pour valider ou invalider notre modèle, et comprendre d'où viennent ses limites en terme de performances, affichons les résidus en fonction de la variable d'entrée :</p>
+<p><img alt="Exemple de résidus obtenus par régression linéaire simple" src="../img/Chap3_exemple_mco_simple_residus.png" /></p>
+<p>On observe qu'il y a clairement une tendance des résidus en fonction de la variable d'entrée.
+Les hypothèses sur les résidus ne sont donc pas respectées, ce qui peut expliquer les performances modestes du modèle.</p>
+<p>Pour d'obtenir un modèle plus performant, nous proposons donc d'essayer une régression polynomiale de degré 2.</p>
+<p>Cette régression polynomiale de degré 2 va revenir à faire une régression linéaire multiple, avec pour variables d'entrée le nombre de tâches solaires et son carré.</p>
+<p>Cette fois-ci, on va donc rassembler les variables d'entrée au sein d'une matrice :</p>
+<pre><code>x_train = np.ones((len(df_train),3))
+x_train[:,1] =  df_train['sunspots'].to_numpy()
+x_train[:,2] = x_train[:,1]**2
+
+x_test = np.ones((len(df_test),3))
+x_test[:,1] =  df_test['sunspots'].to_numpy()
+x_test[:,2] = x_test[:,1]**2
+</code></pre>
+<p>La 1ère colonne correspond à l'ordonnée à l'origine et ne contient que des 1, la 2nde colonne correspond au nombre de tâches solaires, la 3ème au carré du nombre de tâches solaires.
+La variable de sortie reste inchangée par rapport à la régression linéaire simple.</p>
+<p>On détermine notre modèle de régression linéaire multiple <code>mco</code> par les MCO en utilisant la bibliothèque Scikit-Learn :</p>
+<pre><code>from sklearn.linear_model import LinearRegression 
+mco = LinearRegression()
+
+mco.fit(x_train[:,1:],y_train)
+</code></pre>
+<p><strong>Attention</strong>, la méthode <code>fit</code> des objets <code>LinearRegression</code> Scikit-Learn ne prend pas en entrée la 1ère colonne de la matrice des variables d'entrée (correspondant à l'ordonnée à l'origine) !
+Cependant, nous aurons bien besoin de la matrice complète pour calculer les intervalles de confiance et de prédiction.</p>
+<p>Voici comment estimer les TSI correspondant à 321 de nombres de tâches solaires entre 0 et 320 :</p>
+<pre><code>x_mco = np.ones((100,3))
+x_mco[:,1] = np.linspace(0,320,100)
+x_mco[:,2] = np.linspace(0,320,100)**2
+
+y_mco = mco.predict(x_mco[:,1:])
+</code></pre>
+<p>Comme pour <code>fit</code>, la méthode <code>predict</code> ne prend pas en entrée la 1ère colonne de la matrice des variables d'entrée.</p>
+<p>On calcule l'estimation de l'écart-type des résidus, en faisant attention au fait qu'il y a maintenant une variable d'entrée de plus :</p>
+<pre><code>res_train = y_train-mco.predict(x_train[:,1:])
+s = np.sqrt(np.sum(res_train**2)/(len(x_train)-3)) 
+</code></pre>
+<p>On peut alors estimer les écart-types sur la moyenne conditionnelle de <span class="arithmatex">\(y\)</span>, et sur les prédictions.
+Ce calcul se fait en sélectionnant chaque ligne de la matrice <code>x_mco</code> crée précédemment, de manière itérative :</p>
+<pre><code>s_y_conf = np.zeros(len(x_mco))
+s_y_pred = np.zeros(len(x_mco))
+
+for idx in range(len(x_mco)):
+
+    x_mco_idx = x_mco[idx,:]
+
+    s_y_conf[idx] = s*np.sqrt(x_mco_idx@np.linalg.inv(x_train.T@x_train)@x_mco_idx.T)
+    s_y_pred[idx] = s*np.sqrt(1+x_mco_idx@np.linalg.inv(x_train.T@x_train)@x_mco_idx.T)
+</code></pre>
+<p>On peut à présent déterminer les intervalles de confiance et de prédiction de notre modèle linéaire multiple :</p>
+<pre><code>from scipy.stats import t
+t_student = t.ppf(1-(0.05/2),len(x_train)-3)
+
+conf_inf = y_mco - (t_student*s_y_conf)
+conf_sup = y_mco + (t_student*s_y_conf)
+
+pred_inf = y_mco - (t_student*s_y_pred)
+pred_sup = y_mco + (t_student*s_y_pred)
+</code></pre>
+<p>Il est maintenant possible d'afficher par dessus le nuage de points des données d'entrainement le modèle polynomial, ainsi que ses intervalles de confiance et de prédiction :</p>
+<p><img alt="Exemple de régression linéaire multiple par les MCO" src="../img/Chap3_exemple_mco_modele_multiple.png" /></p>
+<p>Pour évaluer les performances du modèle en entrainement et en test, on calcule le <span class="arithmatex">\(R^2\)</span> :</p>
+<pre><code>print(mco.score(x_train[:,1:],y_train))
+</code></pre>
+<p>On obtient <span class="arithmatex">\(R^2 \approx 0.896\)</span> sur les données d'entrainement, ce qui veut dire que 89.6% des écarts sont expliqués par le modèle.
+Un très bon score ! Maintenant seul 1/10 des écarts restent inexpliqués par le modèle.</p>
+<p>En test, on obtient un score très similaire de <span class="arithmatex">\(R^2 \approx 0.904\)</span>, ce qui laisse présager ce niveau de performance en généralisation.</p>
+<p>Pour valider ou invalider notre modèle, vérifions que les résidus en fonction de la variable d'entrée se comportent conformément à nos hypothèses :</p>
+<p><img alt="Exemple de résidus obtenus par régression linéaire multiple" src="../img/Chap3_exemple_mco_multiple_residus.png" /></p>
+<p>Cette fois-ci, on n'observe aucune tendance claire se dégager des résidus en fonction de la variable d'entrée : ce qui est attendu.</p>
+<p>Par contre, on peut noter que l'écart-type des résidus a l'air de varier légèrement avec le nombre de tâches solaires, et l'hypothèse de normalité est assez difficile à confirmer.
+C'est pourquoi il faudrait en toute rigueur appliquer des tests statistiques de nos hypothèses.</p>
+<h4 id="remarques">Remarques</h4>
+<p>La méthode des Moindres Carrés Ordinaire a les <strong>avantages</strong> suivants :</p>
+<ul>
+<li>
+<p>Elle est relativement <strong>simple</strong> à mettre en place, avec <strong>peu de paramètres</strong>, et <strong>aucun hyperparamètre</strong>.</p>
+</li>
+<li>
+<p>Les prédictions qu'elle réalise sont complètement <strong>expliquées</strong> et <strong>interprétables</strong> : un humain peut les comprendre.
+On peut établir des <strong>intervalles de confiance</strong> sur les prédictions.</p>
+</li>
+<li>
+<p>Une fois le modèle entrainé, le temps de <strong>calcul des prédictions</strong> est <strong>rapide</strong> (linéaire par rapport au nombre de prédictions).</p>
+</li>
+</ul>
+<p>Mais cette méthode a aussi les <strong>limites</strong> suivantes :</p>
+<ul>
+<li>
+<p>Le temps de calcul de la SVD <strong>augmente quadratiquement avec le nombre de variables explicatives !</strong></p>
+</li>
+<li>
+<p>Elle demande <strong>beaucoup de mémoire</strong> pour manipuler la matrice <span class="arithmatex">\(X\)</span>.</p>
+</li>
+</ul>
+<p>Ces 2 désavantages sont les raisons pour lesquelles <strong>on utilise très peu les MCO dans les cas où le nombre de variables explicatives est grand</strong>.</p>
+<p>Même s'il est possible d'utiliser les MCO pour de la régression non-linéaire, avec l'astuce de la régression polynomiale, plus l'ordre du polynôme est grand et plus le nombre de variables explicatives est grand.
+<strong>On utilise donc rarement les MCO pour des modèles non-linéaires complexes</strong>.</p>
+<h3 id="perceptron-multicouche">Perceptron multicouche</h3>
+<h4 id="perceptron-multicouche-pour-la-regression">Perceptron multicouche pour la régression</h4>
+<p>Nous avons vu lors du chapitre précédent que le <strong>perceptron multicouche</strong> (PMC) est un <strong>réseau de neurones</strong> initialement inventé pour résoudre des problèmes de classification binaire, qui peut être adapté pour résoudre n'importe quel problème de classification.
+Et bien le PMC peut également être utilisé pour résoudre des problèmes de <strong>régression non-linéaire</strong>, à condition de choisir des hyperparamètres adaptés.</p>
+<p>Si on applique le <strong>théorème de l'approximation universelle</strong> à la régression, il en ressort que le PMC est capable de tracer <strong>n'importe quelle relation</strong>, à condition d'avoir assez de neurones en couche cachée.
+D'où l'intérêt de ce type de modèle.</p>
+<p>Pour adapter le PMC à la régression, il faut tout d'abord adapter l'<strong>architecture</strong> :</p>
+<ul>
+<li>
+<p>Le <strong>nombre d'entrées</strong> correspond au nombre de variables d'entrée <span class="arithmatex">\(n\)</span> du problème.</p>
+</li>
+<li>
+<p>Le <strong>nombre de sorties</strong> correspond au nombre de variables de sortie du problème (1 dans notre cas, mais on peut imaginer un modèle multi-sorties).</p>
+</li>
+</ul>
+<p><img alt="Perceptron Multicouche pour la régression" src="../img/Chap3_perceptron_multicouche.png" /></p>
+<p>Ensuite, il faut choisir une <strong>fonction de coût</strong> pertinente pour l'entrainement.
+La fonction la plus couramment utilisée est l'<strong>erreur quadratique moyenne</strong> (notée "MSE" en anglais) :</p>
+<p><span class="arithmatex">\(MSE = \frac{1}{p} \sum_{i=1}^{p} (y_i-\hat{y_i})^2\)</span></p>
+<p>On reconnait une généralisation de la formule des "moindres carrés" utilisée précédemment.
+D'autres fonctions donnant plus ou moins de poids aux outliers existent.</p>
+<p>Autre particularité du PMC pour la régression : nous ne voulons pas en sortie un seuil entre 0 et 1 (ou -1 et 1), mais une valeur continue correspondant à la variable de sortie prédite.
+Il faut donc que le neurone de <strong>sortie</strong> soit <strong>sans fonction de seuil</strong>.</p>
+<p>Et voilà, nous avons un PMC adapté à la régression !</p>
+<p>De la même manière que pour la classification, pour un nombre de neurones par couche cachée donné, plus on aura de couches et plus complexes les frontières de décisions pourront être.
+Et dès que l'on a plus d'une couche cachée, on parle d'<strong>apprentissage profond</strong> ("Deep Learning").</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Pour que l'apprentissage d'un PMC pour de la régression se déroule correctement, il est recommandé d'effectuer une <strong>transformation des données</strong> d'entrée et de sortie (voir Chapitre 1).</td>
+</tr>
+</tbody>
+</table>
+<h4 id="implementation-scikit-learn_1">Implémentation Scikit-Learn</h4>
+<p>Il existe une implémentation Scikit-Learn du PMC pour la régression.</p>
+<p>Elle peut être importée avec :</p>
+<pre><code>from sklearn.neural_network import MLPRegressor
+</code></pre>
+<p>On peut ensuite initialiser un PMC pour de la régression <code>mlp</code> avec les hyperparamètres par défaut en utilisant la commande :</p>
+<pre><code>mlp = MLPRegressor()
+</code></pre>
+<p>Nous verrons plus loin quels sont ces hyperparamètres.</p>
+<p>Pour donner le jeu d'entrainement (variables d'entrée avec <code>x_train</code> et variables de sortie avec <code>y_train</code>) à ce modèle, on utilise la méthode :</p>
+<pre><code>mlp.fit(x_train,y_train)
+</code></pre>
+<p>On peut à présent réaliser des prédictions <code>y_test</code> à partir de variables d'entrée de test <code>x_test</code> :</p>
+<pre><code>y_test = mlp.predict(x_test)
+</code></pre>
+<p>Si on veut effectuer un test de notre modèle de régression sur un jeu de données, on peut obtenir un <span class="arithmatex">\(R^2\)</span> avec la commande :</p>
+<pre><code>mlp.score(x_test,y_test)
+</code></pre>
+<p>Voici les hyperparamètres par défaut de l'implémentation Scikit-Learn du PMC :</p>
+<ul>
+<li>
+<p>Nombre de couches cachées : 1</p>
+</li>
+<li>
+<p>Nombre de neurones par couche cachée : 100</p>
+</li>
+<li>
+<p>La fenêtre d'activation pour les couches cachées : ReLU</p>
+</li>
+<li>
+<p>La fenêtre d'activation pour la couche de sortie : Aucune.</p>
+</li>
+<li>
+<p>Le taux d'apprentissage pour la descente de gradient : 0.001</p>
+</li>
+<li>
+<p>Le nombre maximum d'époques d'apprentissage : 200 (par défaut sans arrêt prématuré, mais on peut l'activer)</p>
+</li>
+<li>
+<p>La fonction de coût : erreur quadratique moyenne</p>
+</li>
+</ul>
+<p>Ces hyperparamètres sont presque tous modifiables par l'utilisateur.</p>
+<h4 id="application-a-notre-exemple_1">Application à notre exemple</h4>
+<p>Nous allons à présent entrainer un PMC à résoudre notre problème de régression.</p>
+<p>Comme précédemment, nous importons le fichier CSV depuis son chemin <code>input_path</code> sous la forme d'un DataFrame, puis nous sélectionnons les variables d'entrée et de sortie sous la forme de matrices Numpy :</p>
+<pre><code>df_dataset = pd.read_csv(input_path)
+
+
+df_train=df_dataset.sample(frac=0.8,random_state=0)
+df_test=df_dataset.drop(df_train.index)
+
+x_train = df_train[['sunspots']].to_numpy().reshape(-1, 1) 
+y_train = df_train[['tsi']].to_numpy().reshape(-1, 1) 
+
+x_test = df_test[['sunspots']].to_numpy().reshape(-1, 1) 
+y_test = df_test[['tsi']].to_numpy().reshape(-1, 1) 
+</code></pre>
+<p>Afin d'aider le PMC à converger, nous allons effectuer une transformation centrage-réduction des entrées et des sorties (voir Chapitre 1).
+C'est pourquoi nous avons fait attention à ce que les dimensions des variables d'entrée et de sortie soient celles attendues par <code>StandardScaler</code>.</p>
+<p><strong>Attention ! Il faut calibrer la transformation sur les données d'entrainement, puis l'appliquer aux jeux d'entrainement et de test !</strong></p>
+<pre><code>from sklearn.preprocessing import StandardScaler
+
+x_scaler = StandardScaler()
+x_scaler.fit(x_train)
+
+x_train = x_scaler.transform(x_train)
+x_test = x_scaler.transform(x_test)
+
+y_scaler = StandardScaler()
+y_scaler.fit(y_train)
+
+y_train = y_scaler.transform(y_train)
+y_test = y_scaler.transform(y_test)
+</code></pre>
+<p>Maintenant que les données sont prêtes, nous pouvons créer notre modèle de régression. 
+Voici comment initialiser un PMC pour de la régression, avec les paramètres par défaut :</p>
+<pre><code>from sklearn.neural_network import MLPRegressor
+mlp = MLPRegressor()
+</code></pre>
+<p>Pour l'entrainer, il nous suffit ensuite d'utiliser la commande suivante :</p>
+<pre><code>mlp.fit(x_train,y_train.ravel())
+</code></pre>
+<p>On a fait attention ici à ce que les dimensions de la sortie soient celles attendues par <code>MLPRegressor</code>.</p>
+<p>Et pour obtenir le <span class="arithmatex">\(R^2\)</span> de notre modèle en entrainement et en test :</p>
+<pre><code>print(mlp.score(x_train,y_train))
+print(mlp.score(x_test,y_test))
+</code></pre>
+<p>Pour réaliser des prédictions <code>y_predict</code> à partir d'entrées <code>x_predict</code>, il ne faudra pas oublier d'effectuer une transformation centrage-réduction inverse des sorties :</p>
+<pre><code>x_scaler.fit(x_predict)
+y_predict = mlp.predict(x_predict)
+y_scaler.inverse_transform(y_predict)
+</code></pre>
+<p>Mais comme nous l'avons fait remarquer dans le chapitre précédent, le PMC est sensible au sur-apprentissage.
+Pour cette raison, on peut vouloir appliquer la méthode de régularisation par "arrêt prématuré" (voir Chapitre 1).</p>
+<p>Si on active le paramètre <code>early_stopping</code> du classifieur PMC de Scikit-Learn, au moment de l'apprentissage il va automatiquement mettre de côté une partie du jeu d'entrainement pour faire un jeu de validation.
+On peut même choisir la fraction du jeu d'entrainement à utiliser pour la validation, avec le paramètre <code>validation_fraction</code>.</p>
+<p>Voici un exemple de définition d'un classifieur, avec de l'arrêt prématuré et 20% des données d'entrainement utilisées pour la validation :</p>
+<pre><code>mlp = MLPRegressor(early_stopping=True,validation_fraction=0.2)
+</code></pre>
+<p>Il y a aussi une astuce pour afficher l'évaluation de la fonction de coût au cours des époques, pour l'ensemble d'entrainement et de validation.
+Elle se base sur :</p>
+<ul>
+<li>
+<p>Subdiviser le jeu d'entrainement en un nouveau jeu d'entrainement et un jeu de validation.</p>
+</li>
+<li>
+<p>Utiliser la méthode <code>partial_fit</code> de notre PMC, qui permet de réaliser une itération à la fois.</p>
+</li>
+<li>
+<p>Récupérer la valeur de la fonction de coût sur le jeu d'entrainement, avec l'attribut <code>loss_</code> de notre classifieur.</p>
+</li>
+<li>
+<p>Evaluer la valeur de la fonction de coût sur le jeu de validation, en utilisant la fonction <code>mean_squared_error</code> de Scikit-Learn.</p>
+</li>
+</ul>
+<p>Voici l'affichage des 2 courbes Matplotlib obtenues sur notre base de données, pour 50 époques :</p>
+<pre><code>import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+
+df_train2=df_train.sample(frac=0.8,random_state=0)
+df_validation=df_dataset.drop(df_train2.index)
+
+x_train = df_train2[['sunspots']].to_numpy().reshape(-1, 1) 
+y_train = df_train2[['tsi']].to_numpy().reshape(-1, 1) 
+
+x_validation = df_validation[['sunspots']].to_numpy().reshape(-1, 1) 
+y_validation = df_validation[['tsi']].to_numpy().reshape(-1, 1) 
+
+x_scaler = StandardScaler()
+x_scaler.fit(x_train)
+
+x_train = x_scaler.transform(x_train)
+x_validation = x_scaler.transform(x_validation)
+
+y_scaler = StandardScaler()
+y_scaler.fit(y_train)
+
+y_train = y_scaler.transform(y_train)
+y_validation = y_scaler.transform(y_validation)
+
+mlp = MLPRegressor()
+
+loss_train = []
+loss_validation = []
+
+for idx in range(50):
+    mlp.partial_fit(x_train,y_train.ravel())
+    loss_train.append(mlp.loss_)
+    loss_validation.append(mean_squared_error(y_validation,mlp.predict(x_validation)))
+
+plt.plot(loss_train, label=&quot;train loss&quot;,c='r')
+plt.plot(loss_validation, label=&quot;validation loss&quot;,c='g')
+plt.xlabel('Epoques')
+plt.ylabel('Fonction de coût')
+plt.legend()
+</code></pre>
+<p>Voici un exemple de modèle de régression obtenu avec un PMC ayant les hyperparamètres par défaut :</p>
+<p><img alt="Exemple de régression non-linéaire multiple par un PMC" src="../img/Chap3_exemple_pmc_modele.png" /></p>
+<p>On voit bien que le PMC a été capable d'apprendre une fonction non-linéaire entre les variables d'entrée et de sortie.</p>
+<p>Avec ce modèle, on obtient <span class="arithmatex">\(R^2 \approx 0.900\)</span> en entrainement, et <span class="arithmatex">\(R^2 \approx 0.907\)</span> en test.
+On s'attend donc à de très bonnes performances en généralisation pour ce modèle, mais on peut probablement obtenir mieux avec d'autres hyperparamètres.</p>
+<p><strong>Il faudrait donc à présent se baser sur ces codes pour effectuer une optimisation des hyperparamètres.</strong></p>
+<h4 id="remarques_1">Remarques</h4>
+<p>La méthode du Perceptron Multi-Couche a les <strong>avantages</strong> suivants pour la régression :</p>
+<ul>
+<li>
+<p>Elle permet de dessiner de déterminer des <strong>relations complexes</strong> entre les variables d'entrée et de sortie sans faire de grosses hypothèses statistiques au préalable.</p>
+</li>
+<li>
+<p>Pour des <strong>nombres de variables d'entrées importants</strong>, et des <strong>nombres d'échantillons importants</strong>, l'entrainement d'un PMC devient plus intéressant en termes de <strong>temps de calcul</strong> que les MCO.</p>
+</li>
+<li>
+<p>Une fois le modèle entrainé, l'<strong>espace mémoire</strong> pour contenir le modèle est <strong>plus faible</strong> que celui nécessaire pour manipuler le <span class="arithmatex">\(X\)</span> des MCO</p>
+</li>
+</ul>
+<p>Mais cette méthode a aussi les <strong>limites</strong> suivantes, les mêmes que pour la classification :</p>
+<ul>
+<li>
+<p>Elle a de <strong>nombreux paramètres et hyperparamètres</strong> à optimiser.</p>
+</li>
+<li>
+<p>Elle est <strong>sensible au sur-apprentissage</strong>.</p>
+</li>
+<li>
+<p>Les décisions qu'elle prend sont <strong>difficilement expliquées</strong> et <strong>interprétables</strong> : on a aucun intervalle de confiance ou de prédiction sur les sorties.
+On parle encore une fois de "boîte noire".</p>
+</li>
+<li>
+<p>L'initialisation de la méthode se faisant de manière <strong>aléatoire</strong>, 2 apprentissages ne donneront pas exactement le même modèle.</p>
+</li>
+</ul>
+<p>Comme nous l'avons déjà évoqué, les réseaux de neurones sont à la base des modèles d'apprentissage modernes, fondant ainsi une nouvelle sous-discipline : l'<strong>apprentissage profond</strong>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Chap2_Classification_supervisee/" class="btn btn-neutral float-left" title="II. Classification supervisée"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Chap4_Partitionnement/" class="btn btn-neutral float-right" title="IV. Partitionnement">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Chap2_Classification_supervisee/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Chap4_Partitionnement/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

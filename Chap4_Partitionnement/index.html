@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap4_Partitionnement/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>IV. Partitionnement - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "IV. Partitionnement";
+        var mkdocs_page_input_path = "Chap4_Partitionnement.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap4_Partitionnement/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap1_Introduction/">I. Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap2_Classification_supervisee/">II. Classification supervisée</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap3_Regression/">III. Régression</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">IV. Partitionnement</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#probleme-de-partitionnement">Problème de partitionnement</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#differents-types-de-partitionnement">Différents types de partitionnement</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#la-labelisation">La labélisation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exemple-de-probleme">Exemple de problème</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesures-de-performances">Mesures de performances</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#inertie-intra-classe-et-internie-inter-classe">Inertie intra-classe et internie inter-classe</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#la-methode-du-coude">La méthode du coude</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coefficient-de-silhouette">Coefficient de silhouette</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methodes-de-base">Méthodes de base</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#k-moyennes">K Moyennes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#affichage-des-coefficients-de-silhouette">Affichage des coefficients de silhouette</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple">Application à notre exemple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#remarques">Remarques</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#classification-ascendante-hierarchique">Classification Ascendante Hiérarchique</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#principe_1">Principe</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-scikit-learn_1">Implémentation Scikit-Learn</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#affichage-dun-dendrogramme-avec-scipy">Affichage d'un dendrogramme avec Scipy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#application-a-notre-exemple_1">Application à notre exemple</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#remarques_1">Remarques</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#labelisation-de-lexemple">Labélisation de l'exemple</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#elements-pour-la-labelisation">Eléments pour la labélisation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#verite-terrain">Vérité terrain</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">IV. Partitionnement</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-iv-partitionnement">Chapitre IV : Partitionnement</h1>
+<p>Ce chapitre est une introduction au partitionnement (ou "classification non-supervisée") : principe, mesures de performances et méthodes de base.</p>
+<p><img alt="En-tête chapitre IV" src="../img/Chap4_header.png" /></p>
+<hr />
+<h2 id="probleme-de-partitionnement">Problème de partitionnement</h2>
+<p>Comme mentionné lors du Chapitre I, par "<strong>partitionnement</strong>" on entend diviser des individus non-labélisés en groupes suivant leur proximité dans l'espace des features.
+On essayera d'assigner des labels à ces groupes par la suite.</p>
+<p>L'idée est de <strong>mieux comprendre</strong> un jeu de données, et d'essayer de <strong>classifier de nouvelles données</strong>.</p>
+<h3 id="differents-types-de-partitionnement">Différents types de partitionnement</h3>
+<p>Suivant le problème à résoudre, il existe 2 grands types de partitionnement : <strong>par partition</strong> et <strong>hiérarchique</strong>.</p>
+<p>On parle de partitionnement "<strong>par partition</strong>" lorsque l'on cherche à diviser les individus d'une base de donnée en un nombre fini de groupes <span class="arithmatex">\(k\)</span>, sans tisser de lien entre eux.
+On a alors aucune information sur la proximité des classes entre elles.</p>
+<p>Par opposition, on parle de partitionnement "<strong>hiérarchique</strong>" lorsque l'on va diviser les individus d'une base de données en <span class="arithmatex">\(k\)</span> groupes, hiérarchisés selon leur similarité.
+Cette hiérarchisation sera dite "<strong>descendante</strong>" ou "<strong>ascendante</strong>" suivant si on part de 1 classe vers <span class="arithmatex">\(k\)</span> classes, ou inversement.</p>
+<p>On représente souvent la hiérarchisation des classes sous la forme d'un diagramme appelé <strong>dendrogramme</strong> : un arbre représentant les liens entre classes (en abscisse) et leurs distances (en ordonnée).</p>
+<p><img alt="Par partition ou hiérarchique" src="../img/Chap4_partition_hierachique.png" /></p>
+<h3 id="la-labelisation">La labélisation</h3>
+<p>Une fois les données séparées en <span class="arithmatex">\(k\)</span> groupes, l'étape suivante est souvent d'essayer d'attribuer des labels aux classes ainsi déterminées.
+Ceci permettra de donner une interprétation à notre partition, et à nos futures prédictions.
+On appelle ce processus "<strong>labélisation</strong>".</p>
+<p>En l'absence de vérité terrain pour chacun des individus, la labélisation est délicate.
+On peut néanmoins proposer la méthode suivante :</p>
+<ul>
+<li>
+<p>Essayer de caractériser chaque groupe avec les outils de <strong>statistiques descriptives</strong> vus au Chapitre 1 (moyenne, écart-type, etc.).</p>
+</li>
+<li>
+<p>Si une partition hiérarchique a été réalisée, étudier aussi les <strong>liens entre les groupes</strong>. Sinon, analyser les distances entre groupes.</p>
+</li>
+<li>
+<p>Comparer les caractéristiques de chaque groupe, ainsi que les liens entre groupes, aux <strong>connaissances établies</strong> sur le domaine d'application, ou à un petit échantillon de données labélisées si disponible.</p>
+</li>
+<li>
+<p>Attribuer un label à chaque groupe en se basant sur ces éléments.</p>
+</li>
+</ul>
+<p>La labélisation implique donc une certaine <strong>expertise</strong> dans le domaine où on cherche à appliquer de la classification non-supervisée.</p>
+<h3 id="exemple-de-probleme">Exemple de problème</h3>
+<p><strong>Comment recenser les espèces de chauves-souris présentes sur le site de l'OVSQ ?</strong></p>
+<p>Les chiroptérologues (spécialistes des chauves-souris), utilisent souvent l'identification acoustique pour faire un relevé des espèces de chauves-souris présentes sur un site donné.
+En effet, les ultrasons émis par les chauves-souris sont caractéristiques de leur espèce, et contrairement à la capture, cette méthode n'a aucun impact sur ces animaux, qui sont protégés en France.</p>
+<p>Situé en bordure de la forêt des Sources de la Bièvre à Guyancourt, l'Observatoire de Versailles Saint-Quentin-en-Yvelines (OVSQ) est traversé toutes les nuits d'été par des chauves-souris.
+C'est pourquoi depuis 2024, l'OVSQ installe un enregistreur d'ultrasons sur son site, afin de recenser les différentes espèces présentes.</p>
+<p>Voici quelques exemples de "sonogrammes" obtenus à partir des enregistrements de l'OVSQ :</p>
+<p><img alt="Exemples de sonogrammes" src="../img/Chap4_exemple_sonogrammes.png" /></p>
+<p>Chaque image représente un cri de chauve-souris : en abscisse le temps, en ordonnée la fréquence, et en nuance de gris l'amplitude.
+On a l'impression que ces 5 cris proviennent de 5 espèces différentes : fréquences moyennes différentes, plage de fréquences différentes, durées différentes, formes différentes et nombre d'harmoniques différentes.</p>
+<p>Pour les besoins de ce cours, ont été sélectionnés 474 enregistrements de cris de chauves-souris provenant de l'OVSQ.
+Nous aimerions entrainer un modèle à reconnaitre les espèces de chauves-souris enregistrées, mais nous n'avons pas de vérité terrain pour vérifier ses prédictions. 
+<strong>Est-il tout de même possible de diviser ces enregistrements en plusieurs classes selon leurs similarités, et d'identifier par la suite l'espèce correspondant à chaque classe ?</strong></p>
+<p>Dans ce but, les 2 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz) et la durée du cri (ms).</p>
+<p>Voici le jeu de données complet, au format CSV : <a href="https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap4_bats_dataset.csv">Chap4_bats_dataset</a></p>
+<p>Le tableau de données qu'il contient est de la forme :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">freq_mean</th>
+<th style="text-align: center;">time_len</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">31.000</td>
+<td style="text-align: center;">7.500</td>
+</tr>
+<tr>
+<td style="text-align: center;">30.340</td>
+<td style="text-align: center;">6.250</td>
+</tr>
+<tr>
+<td style="text-align: center;">28.921</td>
+<td style="text-align: center;">4.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">27.218</td>
+<td style="text-align: center;">9.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">29.574</td>
+<td style="text-align: center;">6.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">...</td>
+<td style="text-align: center;">...</td>
+</tr>
+<tr>
+<td style="text-align: center;">26.605</td>
+<td style="text-align: center;">4.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">23.630</td>
+<td style="text-align: center;">5.750</td>
+</tr>
+<tr>
+<td style="text-align: center;">26.000</td>
+<td style="text-align: center;">4.500</td>
+</tr>
+</tbody>
+</table>
+<p>Notre problème de partitionnement sera le suivant : <strong>Identifier les différentes espèces de chauves-souris dans les enregistrements de l'OVSQ, à partir de la fréquence moyenne du fondamental et de la durée du cri</strong>.</p>
+<p>Assurons-nous d'abord qu'une telle partition est possible à partir de ces données.</p>
+<p>Une fois le fichier CSV téléchargé, il peut être importé sous Python en tant que DataFrame Pandas à partir de son chemin d'accès "input_path" :</p>
+<pre><code>import pandas as pd
+df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>Il est possible avec Seaborn d'afficher ces données sous la forme d'un <strong>histogramme 2D</strong>, avec une résolution de 30 intervalles par axes :</p>
+<pre><code>import seaborn as sns
+sns.histplot(data=df_dataset, x='time_len', y='freq_mean',bins=30,cbar=True)
+</code></pre>
+<p>Voici le résultat, à côté du nuage de points correspondant :</p>
+<p><img alt="Histogramme 2D des enregistrements de chauves-souris de l'OVSQ" src="../img/Chap4_histogramme_2D_bats.png" /></p>
+<p>On observe que ces 2 features font apparaitre différents regroupements d'enregistrements : les distributions sont clairement multimodales.
+Si les frontières entre groupes, ainsi que le nombre exact de groupes restent difficiles à établir, il n'y a aucun doute sur la présence de plusieurs groupes.
+Et ces classes sont probablement liées à l'espèce de chauves-souris.</p>
+<p>Essayer de partitionner notre base de données à partir de ces features a donc du sens.
+Restera alors à labéliser les classes ainsi délimitées.</p>
+<p>Cependant, on peut noter que certains groupes visibles ont l'air moins denses que d'autres.
+Ceci est plausible : on imagine bien que certaines espèces sont plus communes sur le site que d'autres.
+Un tel déséquilibre pourrait être problématique pour entrainer notre modèle.</p>
+<p>Aussi, les différents groupes visibles ont l'air d'avoir des formes et des densités différentes.
+On observe même quelques outliers qui pourraient déranger l'entrainement.</p>
+<p>Tout ceci sera à prendre en compte dans notre interprétation des résultats de nos modèles.</p>
+<p><strong>Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.</strong>
+<strong>Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée</strong>.</p>
+<p><strong>L'idée est que nous verrons un exemple plus en détails en TP.</strong></p>
+<h2 id="mesures-de-performances">Mesures de performances</h2>
+<p>Pour mettre au point des méthodes d'apprentissage automatique d'une partition de données, <strong>nous avons besoin de critères pour juger de la qualité de notre partition</strong>.</p>
+<p>Un des grands problèmes en classification non-supervisée est que le nombre de classes est une entrée de la plupart des méthodes de résolution.
+<strong>Mais comment connaitre le nombre de classes pertinentes pour un jeu de données ?</strong></p>
+<p>Il faut tester différents nombres de classes plausibles, et évaluer les performances du modèle obtenu pour chacun.</p>
+<p>Problème : les données auxquelles on veut appliquer une méthode de partitionnement étant par définition non-labélisées, <strong>on ne peut pas calculer une erreur par rapport à une vérité terrain</strong>.
+Il existe néanmoins des critères pour évaluer la pertinence d'un partitionnement.</p>
+<p>Nous allons voir dans cette section différents <strong>critères pour évaluer un partitionnement</strong>, et différentes méthodes pour <strong>déterminer un nombre de classes optimal</strong> pour un jeu de données.</p>
+<h3 id="inertie-intra-classe-et-internie-inter-classe">Inertie intra-classe et internie inter-classe</h3>
+<p>Un bon partitionnement a les 2 caractéristiques suivantes :</p>
+<ul>
+<li>
+<p><strong>Les individus au sein d'un groupe sont les plus similaires possibles</strong> (leurs distances dans l'espace des features sont les plus faibles possibles).</p>
+</li>
+<li>
+<p><strong>Les différents groupes sont les plus différents possibles</strong> (leurs distances dans l'espace des features sont les plus grandes possibles).</p>
+</li>
+</ul>
+<p><img alt="Bon et mauvais partition" src="../img/Chap4_bonne_mauvaise_partition.png" /></p>
+<p>On utilise souvent comme indicateurs de ces 2 caractéristiques l'<strong>inertie</strong> intra-classe et inter-classe.</p>
+<p>L'<strong>inertie d'une classe</strong> <span class="arithmatex">\(i\)</span> contenant <span class="arithmatex">\(n_i\)</span> individus est définie comme la somme des distances au centre de gravité <span class="arithmatex">\(g_i\)</span> de la classe :</p>
+<p><span class="arithmatex">\(I_i = \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2\)</span></p>
+<p>où chaque <span class="arithmatex">\(x_{i,j}\)</span> est un vecteur contenant les réalisations des différentes features pour un individu de la classe <span class="arithmatex">\(i\)</span>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Il s'agit d'une analogie avec la notion de moment d'inertie en Physique : la répartition de la masse dans un objet autour de son centre de gravité va rendre plus ou moins difficile sa mise en mouvement.</td>
+</tr>
+<tr>
+<td style="text-align: left;">D'une manière analogue, la répartition des individus dans un groupe va rendre plus ou moins coûteuse en termes de performances un changement de centre de gravité des groupes (idem pour les groupes vis-à-vis du centre de gravité du jeu de données total).</td>
+</tr>
+</tbody>
+</table>
+<p>Cette formule dépend bien évidemment de la définition du <strong>centre de gravité</strong> <span class="arithmatex">\(g_i\)</span> de la classe <span class="arithmatex">\(i\)</span>, et de la <strong>mesure de distance</strong> <span class="arithmatex">\(d\)</span> choisie.</p>
+<p>Pour le centre de gravité, on va souvent considérer le <strong>barycentre</strong> :</p>
+<p><span class="arithmatex">\(g_i = \frac{1}{n_i} \sum_{j=1}^{n_i} x_{i,j}\)</span></p>
+<p>Pour les mesures de distances, reportez-vous à la section "K plus proches voisins" du Chapitre 2.
+Dans le cas où on se servirait des inerties pour entrainer un modèle de partitionnement, la mesure de distance sera un <strong>hyperparamètre à optimiser</strong>.</p>
+<p>On définit alors l'<strong>inertie intra-classe</strong> comme étant la somme des inerties des <span class="arithmatex">\(k\)</span> classes :</p>
+<p><span class="arithmatex">\(I = \sum_{i=1}^{k} I_i = \sum{i=1}^{k} \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2\)</span></p>
+<p>Il s'agit d'un indicateur de la <strong>similarité des individus au sein de chaque classe</strong>.</p>
+<p>L'<strong>inertie inter-classe</strong> est quant à elle définie comme :</p>
+<p><span class="arithmatex">\(J = \sum_{i=1}^{k} n_i d(g_i,g)^2\)</span></p>
+<p>avec <span class="arithmatex">\(g = \frac{1}{\sum_{i=1}^{k} n_i} \sum_{i=1}^{k} \sum_{j=1}^{n_i} x_{i,j}\)</span> le barycentre du jeu de données complet.</p>
+<p>Il s'agit d'un indicateur de la <strong>séparabilité des différentes classes</strong>.</p>
+<p><img alt="Inertie intra-classe et inter-classe" src="../img/Chap4_inertie_intra_inter_classe.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Théorème de Huygens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">On note <span class="arithmatex">\(T\)</span> l'<strong>inertie totale</strong> d'un jeu de données :</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="arithmatex">\(T = \sum_{i=1}^{k} \sum_{j=1}^{n_i} d(x_{i,j},g)^2\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">De manière analogue au théorème de Huygens en Physique, on a conservation de l'inertie totale d'un jeu de données :</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="arithmatex">\(T = I + J\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Cette somme est <strong>indépendante de la partition</strong> choisie.</td>
+</tr>
+</tbody>
+</table>
+<p>Une bonne partition <strong>minimise l'inertie intra-classe</strong>, ce qui d'après le théorème de Huygens revient à <strong>maximiser l'inertie inter-classe</strong>.</p>
+<p>Les inerties peuvent être utilisées pour comparer les performances de 2 partitions d'un <strong>même jeu de données</strong>, à <strong><span class="arithmatex">\(k\)</span> constant</strong>, mais elles ne permettent pas de comparer 2 partitions de données différentes, ou de <span class="arithmatex">\(k\)</span> différents.</p>
+<p>De plus, l'inertie intra-classe <strong>diminue toujours à mesure que l'on augmente le nombre classes</strong> d'une partition de données optimisée pour chaque valeur de <span class="arithmatex">\(k\)</span> : alors comment choisir un nombre de classe pertinent ?</p>
+<p>Nous allons voir 2 critères pour résoudre ces problèmes.</p>
+<h3 id="la-methode-du-coude">La méthode du coude</h3>
+<p>Comme nous venons de le mentionner, l'inertie intra-classe diminue toujours à mesure que l'on augmente le nombre de classe <span class="arithmatex">\(k\)</span> de notre partition de données (optimisée pour chaque <span class="arithmatex">\(k\)</span>).</p>
+<p>Mais cette diminution a tendance à ralentir à mesure que <span class="arithmatex">\(k\)</span> augmente : plus <span class="arithmatex">\(k\)</span> est élevé, moins on gagne en inertie intra-classe en augmentant <span class="arithmatex">\(k\)</span>.</p>
+<p>Plus précisément, si on trace l'inertie intra-classe en fonction de <span class="arithmatex">\(k\)</span>, on observe typiquement une courbe en forme de coude : au début l'inertie diminue fortement, puis soudainement elle diminue de manière marginale.</p>
+<p>On va alors considérer que la valeur de <span class="arithmatex">\(k\)</span> optimale est celle qui correspond à l'<strong>angle du coude</strong>, c'est-à-dire quand augmenter <span class="arithmatex">\(k\)</span> n'apporte plus grand chose en termes d'inertie intra-classe.
+C'est ce que l'on appelle assez logiquement la "<strong>méthode du coude</strong>".</p>
+<p><img alt="Méthode du coude" src="../img/Chap4_methode_du_coude.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La méthode du coude n'est pas spécifique aux problèmes de partitionnement.</td>
+</tr>
+<tr>
+<td style="text-align: left;">On la retrouve dans la détermination d'un paramètre optimal pour de nombreux types de modèles.</td>
+</tr>
+</tbody>
+</table>
+<p>En pratique, cette méthode n'est pas toujours simple à appliquer "visuellement".
+En effet, on peut parfois obtenir une courbe de l'inertie intra-classe en fonction de <span class="arithmatex">\(k\)</span> sans coude évident.
+Dans un tel cas, le choix de <span class="arithmatex">\(k\)</span> peut s'avérer arbitraire.</p>
+<p><img alt="Cas problématique pour la méthode du coude" src="../img/Chap4_cas_problematique_coude.png" /></p>
+<p>Pour obtenir un résultat plus objectif, on peut baser sa décision sur un <strong>critère statistique</strong>.
+Le plus connu est le <strong>Critère d'Information d'Akaike</strong> (AIC) :</p>
+<p><span class="arithmatex">\(AIC(k) = 2 p - 2 log(L(k))\)</span></p>
+<p>avec <span class="arithmatex">\(p\)</span> le nombre de paramètres à estimer, et <span class="arithmatex">\(L(k)\)</span> la vraisemblance du modèle pour <span class="arithmatex">\(k\)</span> classes.</p>
+<p>L'idée est ici que le nombre de classe optimal est celui qui <strong>minimise l'AIC</strong> : la formule cherche un modèle vraisemblable, tout en pénalisant le choix d'un nombre de classes trop grand.</p>
+<p>Si la méthode de partitionnement choisie ne se base pas sur un modèle statistique, il faudra faire des <strong>hypothèses statistiques</strong> afin de déterminer une fonction de vraisemblance.</p>
+<h3 id="coefficient-de-silhouette">Coefficient de silhouette</h3>
+<p>Nous avons vu que la méthode du coude peux aider à trouver le nombre de classes optimal dans certains cas, mais ce choix peut s'avérer difficile en pratique.
+Et les critères statistiques tels que l'AIC impliquent de faire des hypothèses statistiques plus ou moins justes sur la méthode de partitionnement choisie.</p>
+<p>Dans l'idéal, nous aimerions un critère qui permette de comparer des modèles de partitionnement obtenus pour différents jeux de données, pour différents nombre de classes, et sans hypothèses sur la méthode choisie.</p>
+<p>C'est pourquoi le "<strong>coefficient de silhouette</strong>" est un des critères les plus utilisés pour évaluer une partition de données.</p>
+<p>Pour chaque individu de la base de données, il est définit comme :</p>
+<p><span class="arithmatex">\(s(x_{i,j}) = \frac{D_2(x_{i,j})-D_1(x_{i,j})}{max(D_1(x_{i,j}),D_2(x_{i,j}))}\)</span></p>
+<p>Avec <span class="arithmatex">\(D_1\)</span> la <strong>distance moyenne intra-classe</strong> :</p>
+<p><span class="arithmatex">\(D_1(x_{i,j}) = \frac{1}{n_i-1} \sum_{m=1,m \neq j}^{n_i} d(x_{i,m},x_{i,j})\)</span></p>
+<p>Il s'agit d'un indicateur de la <strong>similarité</strong> d'un individu au reste de sa classe : plus il est faible, plus l'individu est proche du reste de sa classe.</p>
+<p>Et <span class="arithmatex">\(D_2\)</span> la <strong>distance moyenne à la classe la plus proche</strong> :</p>
+<p><span class="arithmatex">\(D_2(x_{i,j}) = min_{1 \leq l \leq k, l \neq i}(\frac{1}{n_l} \sum_{m=1}^{n_l} d(x_{l,m},x_{i,j}))\)</span></p>
+<p>Il s'agit d'un indicateur de <strong>séparabilité</strong> d'un individus par rapport à la classe la plus proche de la sienne : plus il est élevé, plus l'individu est séparable des autres classes</p>
+<p><img alt="Distance moyenne intra-classe et distance moyenne à la classe la plus proche" src="../img/Chap4_distances_moyennes_intra_classe_et_classe_la_plus_proche.png" /></p>
+<p>Le coefficient de silhouette est un score compris entre -1 et 1.
+Si pour un individu :</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(s(x_{i,j}) \approx 1\)</span> alors l'individu est correctement identifié à sa classe.</p>
+</li>
+<li>
+<p><span class="arithmatex">\(s(x_{i,j}) = 0\)</span> alors l'individu est à la frontière entre 2 classes.</p>
+</li>
+<li>
+<p><span class="arithmatex">\(s(x_{i,j}) &lt; 0\)</span> alors l'individu est mal identifié à sa classe.</p>
+</li>
+</ul>
+<p>On peut alors utiliser le coefficient de silhouette moyen <span class="arithmatex">\(S = \frac{1}{\sum_{i=1}^{k} n_i} \sum_{i=1}^{k} \sum_{j=1}^{n_i} s(x_{i,j})\)</span> comme mesure de la qualité d'une partition de données : il doit être le plus proche possible de 1.</p>
+<p>Dans le but de choisir un nombre de classes optimal pour une partition, on peut simplement tracer la courbe de <span class="arithmatex">\(S\)</span> obtenu pour les modèles optimisés par chaque <span class="arithmatex">\(k\)</span>, et choisir la valeur de <span class="arithmatex">\(k\)</span> maximisant <span class="arithmatex">\(S\)</span>.</p>
+<p><img alt="Coefficient de silhouette moyen" src="../img/Chap4_coefficient_de_silhouette_moyen.png" /></p>
+<p>Si on veut essayer de comprendre pourquoi une partition a de mauvaises performances, on peut analyser les valeurs de <span class="arithmatex">\(s(x_{i,j})\)</span> pour chaque individu d'un jeu de données.
+On affiche en général les coefficients de silhouette sous la forme d'un <strong>diagramme en barres</strong>, avec en abscisses <span class="arithmatex">\(s\)</span> et en ordonnées les individus (rangés par classe).</p>
+<p><img alt="Coefficient de silhouette" src="../img/Chap4_coefficient_de_silhouette.png" /></p>
+<p>On peut alors facilement identifier quels individus ont été correctement associés à la bonne classe ou non.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Les coefficients de silhouette obtenus dépendent évidemment de la <strong>mesure de distance</strong> choisie.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methodes-de-base">Méthodes de base</h2>
+<h3 id="k-moyennes">K Moyennes</h3>
+<h4 id="principe">Principe</h4>
+<p>La méthode de base en partitionnement "par partition" est celle des <strong>K-moyennes</strong>.</p>
+<p>Il s'agit d'un algorithme <strong>itératif</strong>, cherchant à réduire à chaque itération l'inertie intra-classe, à partir d'une partition initiale aléatoire.
+L'idée ici est donc d'essayer de faire converger le modèle vers la partition <strong>minimisant l'inertie intra-classe</strong>.
+Le nombre de classes <span class="arithmatex">\(k\)</span> est un paramètre d'entrée de l'algorithme.</p>
+<p>Voici l'algorithme détaillé :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Algorithme des K-moyennes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">On initialise aléatoirement <span class="arithmatex">\(k\)</span> points <span class="arithmatex">\(h_i\)</span> dans l'espace des features choisies, chacun correspondant à une classe.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Jusqu'à ce qu'une critère d'arrêt soit atteint, on va itérer les actions suivantes :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On assigne à chaque individu la classe <span class="arithmatex">\(i\)</span> de point <span class="arithmatex">\(h_i\)</span> le plus proche selon une mesure de distance.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On calcule le barycentre <span class="arithmatex">\(g_i\)</span> de chacune des classes.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On assigne à <span class="arithmatex">\(h_i\)</span> le point <span class="arithmatex">\(g_i\)</span> pour chacune des classes.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Le but est de faire converger les <span class="arithmatex">\(h_i\)</span> vers les barycentres des centres de gravité des classes idéales.</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="K-moyennes" src="../img/Chap4_k_moyennes.png" /></p>
+<p>Il est à noter que dans la plupart des implémentations des K-moyennes, la distance choisie est la <strong>distance euclidienne</strong>.
+Néanmoins, d'autres mesures de distance peuvent être envisagées.</p>
+<p>Il est également essentiel d'avoir en tête que lorsque l'on utilise les K-moyennes, on fait des hypothèses implicites :</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(k\)</span> est bien le nombre de classes optimal.</p>
+</li>
+<li>
+<p>Les différentes classes sont "sphériques" au sens de la distance choisie : on parle "d'<strong>isotropie</strong>" des classes.</p>
+</li>
+<li>
+<p>Chaque classe a la <strong>même variance</strong>.</p>
+</li>
+<li>
+<p>Chaque classe a le même nombre d'individus : elles sont "<strong>équilibrées</strong>".</p>
+</li>
+</ul>
+<p><img alt="Cas problématiques pour les K-moyennes" src="../img/Chap4_cas_problematiques_k_moyennes.png" /></p>
+<p>Plusieurs approches peuvent être proposées en cas de non-respect de ces hypothèse :</p>
+<ul>
+<li>
+<p>Le nombre de classes optimal peut être estimé avec une des méthodes vues précédemment.</p>
+</li>
+<li>
+<p>Si les classes sont <strong>anisotropes</strong>, c'est peut-être parce que les features évoluent sur des ordres de grandeur différents.
+Une <strong>normalisation</strong> des features peut alors aider.</p>
+</li>
+<li>
+<p>Si les classes sont <strong>déséquilibrées</strong>, il est recommandé de tester plusieurs initialisations des K-moyennes, pour éviter de rester bloqué dans un minimum local d'inertie intra-classe.</p>
+</li>
+</ul>
+<p>Dans le cas où aucune de ces approches n'est efficace, il faut tout simplement envisager un autre modèle de partitionnement que les K-moyennes.</p>
+<h4 id="implementation-scikit-learn">Implémentation Scikit-Learn</h4>
+<p>Il existe une implémentation Scikit-Learn de la méthode des K-moyennes.</p>
+<p>Elle peut être importée avec :</p>
+<pre><code>from sklearn.cluster import KMeans
+</code></pre>
+<p>On peut ensuite initialiser un modèle de partition <code>km</code> avec un objet "KMeans" de paramètre <code>k</code> correspondant au nombre de classes à déterminer :</p>
+<pre><code>km = KMeans(n_clusters=k)
+</code></pre>
+<p>Pour diviser le jeu de données en <span class="arithmatex">\(k\)</span> classes <code>clusters</code> à partir des features choisies <code>features</code>, on utilise la méthode :</p>
+<pre><code>clusters = km.fit_predict(features)
+</code></pre>
+<p>Si on veut obtenir le coefficient de silhouette moyen de notre partition, on peut utiliser la commande :</p>
+<pre><code>from sklearn.metrics import silhouette_score
+silhouette_score(features,clusters)
+</code></pre>
+<h4 id="affichage-des-coefficients-de-silhouette">Affichage des coefficients de silhouette</h4>
+<p>Dans les bibliothèques sélectionnées dans le cadre de ce cours, il n'existe pas d'implémentation de l'affichage des coefficients de silhouette sous la forme d'un diagramme en barres.</p>
+<p>Cependant, dans ses tutoriels en ligne, Scikit-Learn propose un code pour réaliser ce type d'affichage "manuellement".</p>
+<p>En partant du principe que l'on a les features choisies dans <code>features</code>, et les classes obtenues par partitionnement en <code>k</code> dans <code>clusters</code>, on peut utiliser la méthode "silhouette_samples" pour récupérer les coefficients de silhouette, et réaliser un affichage avec Matplotlib :</p>
+<pre><code>from sklearn.metrics import silhouette_score,silhouette_samples
+import numpy as np
+import matplotlib.pyplot as plt
+
+sample_scores = silhouette_samples(features,clusters)
+mean_score = silhouette_score(features,clusters)
+
+fig, ax = plt.subplots()
+
+y_lower = 10
+for idx in range(k):
+    sample_scores_idx = sample_scores[clusters == idx]
+    sample_scores_idx.sort()
+
+    size_cluster_idx = sample_scores_idx.shape[0]
+    y_upper = y_lower + size_cluster_idx
+
+    color = plt.cm.tab10(idx)
+    ax.fill_betweenx(
+        np.arange(y_lower, y_upper),
+        0,
+        sample_scores_idx,
+        facecolor=color,
+        edgecolor=color,
+        alpha=0.7
+    )
+
+    ax.text(-0.05, y_lower + 0.5 * size_cluster_idx, str(idx))
+    y_lower = y_upper + 10
+
+ax.axvline(x=mean_score,color=&quot;red&quot;,linestyle=&quot;--&quot;)
+
+ax.set_yticks([])
+ax.set_xlim([-0.1, 1])
+ax.set_xlabel(&quot;Coefficient de silhouette&quot;,fontsize=12)
+ax.set_ylabel(&quot;Classes&quot;,fontsize=12)
+</code></pre>
+<p>Vous pouvez réutiliser ce code tel quel pour vos propres affichages.</p>
+<h4 id="application-a-notre-exemple">Application à notre exemple</h4>
+<p>Nous allons à présent appliquer les K-moyennes à notre problème exemple.</p>
+<p>Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame, depuis le chemin <code>input_path</code> :</p>
+<pre><code>df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>Afin de s'assurer que les 2 features évoluent sur des intervalles comparables, nous leur appliquons une transformation de centrage-réduction (voir Chapitre 1) :</p>
+<pre><code>from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+scaler.fit(df_dataset)
+
+df_dataset[['freq_mean','time_len']] = pd.DataFrame(scaler.transform(df_dataset))
+</code></pre>
+<p>Nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
+Utilisons le <strong>coefficient de silhouette</strong> moyen pour chaque nombre de classes entre 2 et 15, et affichons les scores obtenus :</p>
+<pre><code>from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+silhouette = []
+
+for k in range(2,15):
+
+    km = KMeans(n_clusters=k,random_state=0)
+
+    clusters = km.fit_predict(df_dataset)
+
+    score = silhouette_score(df_dataset,clusters)
+
+    silhouette.append(score)
+
+plt.plot(np.arange(2,15),silhouette,'ro-')
+plt.grid()
+plt.xlabel('Nombre de classes',fontsize=12)
+plt.ylabel('Coefficient de silhouette moyen',fontsize=12)
+</code></pre>
+<p>Voici la courbe obtenue :</p>
+<p><img alt="Exemple de coefficients de silhouette moyens pour les k-moyennes" src="../img/Chap4_exemple_kmeans_coefficient_de_silhouette_moyen.png" /></p>
+<p>On observe que le nombre de classes maximisant le coefficient de silhouette moyen est <span class="arithmatex">\(k=3\)</span>.
+Nous choisirons donc ce paramètre pour la suite.</p>
+<p>La valeur du coefficient moyen obtenu sera de 0,76 environ, ce qui est considéré comme un bon score pour des données réelles.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Il est à noter que nous avons mis le paramètre "random_state" à 0 car le modèle renvoyé par les K-moyennes dépend de l'initialisation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nous nous assurons ainsi que 2 executions de ce code Python donnerons le même résultat.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Il faudrait en toute rigueur vérifier que d'autres initialisation donnent le même <span class="arithmatex">\(k\)</span> optimal.</td>
+</tr>
+</tbody>
+</table>
+<p>Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée, puis inverser le centrage-réduction des features :</p>
+<pre><code>km = KMeans(n_clusters=3,random_state=0)
+
+clusters = km.fit_predict(df_dataset)
+
+df_dataset_clustured = df_dataset.copy()
+df_dataset_clustured['clusters'] = clusters
+
+df_dataset_clustured[['freq_mean','time_len']] = pd.DataFrame(scaler.inverse_transform(df_dataset_clustured[['freq_mean','time_len']]))
+</code></pre>
+<p>Et afficher sous la forme d'un <strong>nuages de points</strong> la partition obtenue, en utilisant Seaborn :</p>
+<pre><code>import seaborn as sns
+sns.scatterplot(data=df_dataset_clustured,x='time_len',y='freq_mean',hue='clusters',palette='tab10')
+</code></pre>
+<p>Voici le graphique obtenu :</p>
+<p><img alt="Exemple de classes déterminées par k-moyennes" src="../img/Chap4_exemple_kmeans_clusters.png" /></p>
+<p>Les classes identifiées ont l'air cohérentes avec les pics que nous avions observés dans les données en début de chapitre.</p>
+<p>Pour vérifier la qualité de cette partition, nous proposons d'afficher le coefficient de silhouette pour chaque individu, sous la forme d'un <strong>diagramme en barres</strong>.
+Voici le graphique obtenu avec le code donné précédemment :</p>
+<p><img alt="Exemple de coefficients de silhouette par échantillon après k-moyennes" src="../img/Chap4_exemple_kmeans_coefficient_de_silhouette.png" /></p>
+<p>Tout d'abord, on observe qu'aucun individu n'a un coefficient de silhouette négatif, ce qui est le signe d'un plutôt bon partitionnement.</p>
+<p>Ensuite, on voit que pour le classe 0, la quasi-intégralité des individus a un coefficient supérieur à 0,5.
+Ceci est cohérent avec la matrice de corrélation que nous avons affichée précédemment : la classe 0 a l'air d'être la mieux séparée des 3.</p>
+<p>Les classes 1 et 2 ont quelques individus avec des coefficients entre 0 et 0,5.
+Ces individus sont donc proches de la frontière avec la classe la plus proche.
+Ce qui une fois de plus colle au résultat précédent : les classes 1 et 2 ont l'air plus difficilement séparables avec les features retenues.</p>
+<p>Il est à noter que, comme beaucoup de cas pratiques, notre problème ne partitionnement ne respecte pas exactement les hypothèses implicites des K-moyennes :</p>
+<ul>
+<li>
+<p>Comme nous l'avions déjà mentionné, nos classes sont déséquilibrées.</p>
+</li>
+<li>
+<p>Nos classes ne sont pas isotropes.</p>
+</li>
+<li>
+<p>La variance de nos classes n'est clairement pas la même.</p>
+</li>
+<li>
+<p>Il y a des outliers dans nos données.</p>
+</li>
+</ul>
+<p>De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, en supprimant les outliers, ou avec une méthode aux hypothèses différentes.</p>
+<h4 id="remarques">Remarques</h4>
+<p>La méthode des K-moyennes a les <strong>avantages</strong> suivants :</p>
+<ul>
+<li>
+<p>Elle est <strong>simple</strong> à implémenter, et son résultat est tout à fait <strong>interprétable</strong> par un humain : on cherche à obtenir les centres de gravité des classes.</p>
+</li>
+<li>
+<p>Elle <strong>converge assez rapidement</strong>, et on peut donc l'utiliser sur de <strong>grands jeux de données</strong>.</p>
+</li>
+</ul>
+<p>Mais cette méthode a aussi les <strong>limites</strong> suivantes :</p>
+<ul>
+<li>
+<p>Les performances de la méthode sont mauvaises si les <strong>hypothèses implicites</strong> sur les données ne sont pas respectées.</p>
+</li>
+<li>
+<p>L'initialisation étant <strong>aléatoire</strong>, 2 executions de l'algorithme ne donneront <strong>pas exactement la même partition</strong>.
+Il est même possible que la méthode tombe dans un minimum local de l'inertie intra-classe.</p>
+</li>
+<li>
+<p>La distance euclidienne étant <strong>sensible aux outliers</strong>, la méthode des K-moyennes l'est aussi.</p>
+</li>
+</ul>
+<p>Les K-moyennes n'étant pas une méthode de partitionnement hiérarchique, elle ne trace aucun lien entre les classes qu'elle détermine.</p>
+<h3 id="classification-ascendante-hierarchique">Classification Ascendante Hiérarchique</h3>
+<h4 id="principe_1">Principe</h4>
+<p>Comme son nom l'indique, la méthode de la <strong>Classification Ascendante Hiérarchique</strong> (CAH) est une méthode de partitionnement <strong>hiérarchique</strong>, qui agrège les classes de manière <strong>ascendante</strong>.
+Il s'agit d'une méthode <strong>itérative</strong>, fusionnant 2 classes à chaque itération, ce qui correspond à fusionner 2 branches d'un dendrogramme.</p>
+<p>Elle s'initialise en considérant chaque individu comme unique représentant de sa propre classe : on a autant de classes que d'individu, <strong>l'inertie intra-classe est nulle</strong>.</p>
+<p>Elle se termine une fois que toutes les classes ont été fusionnées : on a une unique classe, <strong>l'inertie inter-classe est nulle</strong>.</p>
+<p>On peut découper le dendrogramme obtenu au niveau du nombre de classe <span class="arithmatex">\(k\)</span> désiré, ou alors arrêter les itérations de la méthode pour ce <span class="arithmatex">\(k\)</span> si nous ne sommes pas intéressés par le dendrogramme.</p>
+<p>Voici l'algorithme détaillé :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Algorithme de la CAH</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">On initialise <span class="arithmatex">\(n\)</span> classes : une par individu dans le jeu de données.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Jusqu'à ce que l'on atteigne un nombre de classe égal à 1 (ou égal au nombre de classes <span class="arithmatex">\(k\)</span> désiré), on va itérer les actions suivantes :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On mesure la similarité entre les différentes classes.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- Les 2 classes les plus similaires sont fusionnées.</td>
+</tr>
+<tr>
+<td style="text-align: left;">On enregistre les classes obtenues à chaque itération pour pouvoir tracer un dendrogramme.</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="CAH" src="../img/Chap4_CAH.png" /></p>
+<p>Cette méthode implique de décider d'un <strong>critère de similarité</strong> entre 2 classes.
+Il s'agira d'un <strong>hyperparamètre</strong> à choisir.</p>
+<p>Voici les 4 principaux critères utilisables par la CAH pour mesurer la similarité entre 2 classes :</p>
+<ul>
+<li>
+<p><strong>Lien simple</strong> : la distance minimale entre 2 individus issus de ces 2 classes.</p>
+</li>
+<li>
+<p><strong>Lien complet</strong> : la distance maximale entre 2 individus issus de ces 2 classes.</p>
+</li>
+<li>
+<p><strong>Lien moyen</strong> : la moyenne des distances entre tous les couples d'individus issus des 2 classes possibles.</p>
+</li>
+<li>
+<p><strong>Critère de Ward</strong> : l'augmentation de l'inertie intra-classe quand les 2 classes sont fusionnées.</p>
+</li>
+</ul>
+<p><img alt="Les critères de similarité pour la CAH" src="../img/Chap4_CAH_similarites.png" /></p>
+<p>Derrière ces critères, se cache donc le choix d'une <strong>mesure de distance</strong> entre individus.</p>
+<p>Certains critères sont plus rapides à calculer que d'autres, mais lorsque l'on choisis un critère plutôt qu'un autre, on fait un choix sur notre vision de la "proximité" entre classes :</p>
+<ul>
+<li>Lien simple : on voit la notion de similarité à l'<strong>échelle des individus</strong>.</li>
+</ul>
+<p>Ce critère est adapté aux cas de classes très anisotropes, mais aura tendance à relier 2 classes si un outlier se trouve entre elles.
+On la considèrera donc comme <strong>peu conservatrice</strong>.</p>
+<ul>
+<li>Lien complet : on voit la notion de similarité à l'<strong>échelle de la classe entière</strong>.</li>
+</ul>
+<p>Ce critère est adapté aux classes fortement séparées, mais aura aussi tendance à être sensible aux outliers, mais dans l'excès inverse : la méthode sera <strong>très conservatrice</strong>, et un outlier pourra à lui tout seul empêcher de lier 2 classes pourtant proches.</p>
+<ul>
+<li>Lien moyen : on voit la notion de similarité du point de vue de la <strong>moyenne des distances</strong> des individus entre classes.</li>
+</ul>
+<p>On peut donc voir ce critère comme un <strong>compromis entre les 2 précédents</strong>.
+Il aura tendance à favoriser des classes "sphériques" au sens de la distance choisie.</p>
+<ul>
+<li>Critère de Ward : il s'agit du critère pour lequel les hypothèses sont <strong>les plus fortes</strong>.</li>
+</ul>
+<p>Elles sont similaires à celles des K-moyennes : classes isotropes, de même variance, et équilibrées.</p>
+<p>En pratique, on va souvent choisir par défaut le <strong>critère de Ward</strong>. </p>
+<h4 id="implementation-scikit-learn_1">Implémentation Scikit-Learn</h4>
+<p>Il existe une implémentation Scikit-Learn de la méthode de la CAH.</p>
+<p>Elle peut être importée avec :</p>
+<pre><code>from sklearn.cluster import AgglomerativeClustering
+</code></pre>
+<p>On peut ensuite initialiser un modèle de partition <code>hca</code> avec un objet "AgglomerativeClustering" de paramètre <code>k</code> correspondant au nombre de classes à déterminer :</p>
+<pre><code>hca = AgglomerativeClustering(n_clusters=k)
+</code></pre>
+<p>Par défaut, l'implémentation Scikit-Learn utilise le critère de Ward comme mesure de similarité.
+Il est possible de changer cet hyperparamètre avec le paramètre "linkage" de l'objet "AgglomerativeClustering" : 'ward', 'complete', 'average' ou 'single'.</p>
+<p>Pour diviser le jeu de données en <span class="arithmatex">\(k\)</span> classes <code>clusters</code> à partir des features choisies <code>features</code>, on utilise la méthode :</p>
+<pre><code>clusters = hca.fit_predict(features)
+</code></pre>
+<p>Comme pour les K-moyennes, si on veut obtenir le coefficient de silhouette moyen de notre partition, on peut utiliser la commande :</p>
+<pre><code>from sklearn.metrics import silhouette_score
+silhouette_score(features,clusters)
+</code></pre>
+<h4 id="affichage-dun-dendrogramme-avec-scipy">Affichage d'un dendrogramme avec Scipy</h4>
+<p>Dans les bibliothèques sélectionnées dans le cadre de ce cours, il n'existe pas d'implémentation pour afficher le dendrogramme d'une CAH.</p>
+<p>Cependant, dans ses tutoriels en ligne, Scikit-Learn propose une fonction pour réaliser ce type d'affichage "manuellement", en s'appuyant sur la fonction "dendrogramme" de la bibliothèque Scipy.
+La voici, pour un modèle déterminé par CAH <code>model</code> :</p>
+<pre><code>from scipy.cluster.hierarchy import dendrogram
+import numpy as np
+
+def plot_dendrogram(model, **kwargs):
+
+    counts = np.zeros(model.children_.shape[0])
+    n_samples = len(model.labels_)
+
+    for i, merge in enumerate(model.children_):
+        current_count = 0
+        for child_idx in merge:
+            if child_idx &lt; n_samples:
+                current_count += 1
+            else:
+                current_count += counts[child_idx - n_samples]
+        counts[i] = current_count
+
+    linkage_matrix = np.column_stack([
+        model.children_,
+        model.distances_,
+        counts
+    ]).astype(float)
+
+    dendrogram(linkage_matrix, **kwargs)
+</code></pre>
+<p>Vous pouvez réutiliser ce code tel quel pour vos propres affichages.</p>
+<p>Pour pouvoir utiliser cette fonction, il faut créer une partition des features choisies <code>features</code>, avec les paramètres suivants :</p>
+<pre><code>hca = AgglomerativeClustering(distance_threshold=0,n_clusters=None)
+hca.fit(features)
+</code></pre>
+<p>Avec d'autres paramètres, il ne sera pas possible de récupérer le dendrogramme associé au modèle. </p>
+<p>Pour afficher le dendrogramme complet (de 1 classe par individu à 1 classe unique) :</p>
+<pre><code>import maplotlib.pyplot as plt
+plt.figure()
+plot_dendrogram(hca,truncate_mode=&quot;level&quot;)
+plt.xlabel(&quot;Nombre d'individus par classe&quot;,fontsize=12)
+plt.ylabel(&quot;Distance entre classes&quot;,fontsize=12)
+plt.xticks([])
+plt.show()
+</code></pre>
+<p>Mais en général, on va préférer afficher le dendrogramme jusqu'au nombre de classes voulu <code>k</code> :</p>
+<pre><code>import matplotlib.pyplot as plt
+plt.figure()
+plot_dendrogram(hca,truncate_mode=&quot;lastp&quot;,p=k)
+plt.xlabel(&quot;Nombre d'individus par classe&quot;,fontsize=12)
+plt.ylabel(&quot;Distance entre classes&quot;,fontsize=12)
+plt.show()
+</code></pre>
+<h4 id="application-a-notre-exemple_1">Application à notre exemple</h4>
+<p>Nous allons à présent appliquer la CAH à notre problème exemple.</p>
+<p>Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame depuis le chemin <code>input_path</code> :</p>
+<pre><code>df_dataset = pd.read_csv(input_path)
+</code></pre>
+<p>Afin de s'assurer que les 2 features évoluent sur des intervalles comparables, nous leur appliquons une transformation de centrage-réduction (voir Chapitre 1) :</p>
+<pre><code>from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+scaler.fit(df_dataset)
+
+df_dataset[['freq_mean','time_len']] = pd.DataFrame(scaler.transform(df_dataset))
+</code></pre>
+<p>Comme pour les K-moyennes, nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
+Notre exemple étant relativement simple, on s'attend à ce que le résultat soit très similaire.</p>
+<p>Nous utilisons une fois encore le coefficient de silhouette moyen pour chaque nombre de classes entre 2 et 15, et nous affichons les scores obtenus :</p>
+<pre><code>from sklearn.cluster import AgglomerativeClustering
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+
+silhouette = []
+
+for k in range(2,15):
+
+    hca = AgglomerativeClustering(n_clusters=k)
+
+    clusters = hca.fit_predict(df_dataset)
+
+    score = silhouette_score(df_dataset,clusters)
+
+    silhouette.append(score)
+
+plt.plot(np.arange(2,15),silhouette,'ro-')
+plt.grid()
+plt.xlabel('Nombre de classes',fontsize=12)
+plt.ylabel('Coefficient de silhouette moyen',fontsize=12)
+</code></pre>
+<p>La courbe obtenue est en effet très similaire à celle obtenue avec les K-moyennes :</p>
+<p><img alt="Exemple de coefficients de silhouette moyens pour la CAH" src="../img/Chap4_exemple_cah_coefficient_de_silhouette_moyen.png" /></p>
+<p>C'est donc sans surprise que nous choisissons à nouveau <span class="arithmatex">\(k=3\)</span>.
+Le coefficient de silhouette moyen sera alors de 0,76.</p>
+<p>Ce score est environ le même que pour les K-moyenne : de manière générale les 2 partitions sont aussi bonnes aux yeux du coefficient de silhouette.</p>
+<p>Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée, puis inverser le centrage-réduction des features :</p>
+<pre><code>hca = AgglomerativeClustering(n_clusters=3)
+
+clusters = hca.fit_predict(df_dataset)
+
+df_dataset_clustured = df_dataset.copy()
+df_dataset_clustured['clusters'] = clusters
+
+df_dataset_clustured[['freq_mean','time_len']] = pd.DataFrame(scaler.inverse_transform(df_dataset_clustured[['freq_mean','time_len']]))
+</code></pre>
+<p>Et comme pour les K-moyennes, nous pouvons afficher sous la forme d'un <strong>nuage de points</strong> la partition obtenue, en utilisant Seaborn :</p>
+<pre><code>import seaborn as sns
+sns.scatterplot(data=df_dataset_clustured,x='time_len',y='freq_mean',hue='clusters',palette='tab10')
+</code></pre>
+<p>Voici le graphique obtenu :</p>
+<p><img alt="Exemple de classes déterminées par CAH" src="../img/Chap4_exemple_cah_clusters.png" /></p>
+<p>Il est similaire à celui obtenu par les K-moyennes, à l'exception de quelques individus entre les classe
+(Attention, les classes n'ont pas reçu le même numéro).</p>
+<p>Le coefficient de silhouette de chaque individu peut aussi être affiché sous la forme d'un <strong>diagramme en barres</strong>, et sans surprise il est assez similaire à celui obtenu par les K-moyennes :</p>
+<p><img alt="Exemple de coefficients de silhouette par échantillon après CAH" src="../img/Chap4_exemple_cah_coefficient_de_silhouette.png" /></p>
+<p>On remarque tout de même que 2 individus sont attribués à tort à la classe 0 selon le coefficient de silhouette.
+Il s'agit de d'individus situés entre la classe 0 et la classe 1.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Les K-moyennes et la CAH ne donneront pas toujours des partitions aussi similaires pour un même jeu de données.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nous sommes ici dans un cas particulier.</td>
+</tr>
+</tbody>
+</table>
+<p>La CAH étant une méthode de partitionnement hiérarchique, elle permet de tisser des liens entre les différentes classes.
+Nous pouvons tracer ces liens sous la forme d'un <strong>dendrogramme</strong>, en utilisant la fonction présentée précédemment.</p>
+<p>Voici le dendrogramme total, ainsi que le dendrogramme tronqué pour 3 classes :</p>
+<p><img alt="Exemple de dendrogramme obtenu après CAH" src="../img/Chap4_exemple_dendrogramme_cah.png" /></p>
+<p>Selon ce dendrogramme, les classes 1 et 2 (104 et 210 individus) sont plus proches entre elles que de la classe 0 (160 individus).</p>
+<p>Comme nous l'avons mentionné précédémment, l'implémentation Scikit-Learn de la CAH utilise par défaut le critère de Ward comme mesure de similarité entre classes.
+C'est souvent le compromis choisi pour la CAH.</p>
+<p>Selon la définition de la "similarité" du critère de Ward, cela signifie que fusionner les classes 1 et 2 fait moins monter l'inertie intra-classe que fusionner les classe 0 et 1 ou 0 et 2.</p>
+<p>Il est évident que si nous définissons autrement la "similarité" entre classes, le dendrogramme que nous obtiendrons sera différent : 2 groupes peuvent être plus proche selon une mesure de similarité qu'une autre.</p>
+<p>Voici les dendrogrammes obtenus pour les 4 mesures de similarité implémentées dans Scikit-Learn :</p>
+<p><img alt="Exemples de dendrogrammes obtenus pour différentes mesures de similarité" src="../img/Chap4_exemple_dendrogramme_cah_differentes_similarites.png" /></p>
+<p>On remarque directement que les critères de similarité du "lien simple" et du "lien moyen" donnent de mauvais résultats : une des classes n'a qu'un seul individu...</p>
+<p>Pour les autres critères, difficile de dire quelle partition est la meilleure à partir des dendrogrammes seuls.
+On peut vérifier les partitions obtenues avec des nuages de points selon les différentes features.</p>
+<p>Voici un exemple pour la fréquence moyenne du fondamental et la durée du cri :</p>
+<p><img alt="Exemples de nuages de points obtenus pour différentes mesures de similarité" src="../img/Chap4_exemple_nuage_points_cah_differentes_similarites.png" /></p>
+<p>On comprend alors l'origine de la sous-performance des liens "simple" et "moyen": un outlier.</p>
+<p>Dans les 2 cas, la CAH a isolé cet outlier dans une classe dont il est l'unique individu.
+Ceci peut se comprendre intuitivement : un outlier est par définition loin de tous les autres individus, ainsi que de la moyenne des individus, et ceci pour toutes les classes.</p>
+<p>Nous avons ici une illustration de la sensibilité aux outliers de ces 2 types de liens.
+Faire le ménage dans notre base de donnée en retirant les outliers pourrait donc grandement améliorer les performances de la CAH dans ces 2 cas.</p>
+<p>On peut noter que l'outlier est placé comme éloigné des 2 autre classes dans le dendrogramme pour le lien "simple", et comme proche de la classe 1.
+Encore une fois, ceci ce comprend facilement : du point de vue de la distance minimale entre individus, l'outlier est plus éloigné des 2 autres classes, alors que du point de vue de la moyenne il est visiblement plus proche de la classe 1.</p>
+<p>D'après les dendrogrammes obtenus, le lien "complet" et le critère de Ward sont en accord sur les liens entre classes.</p>
+<p>On observe aussi que les 2 types de liens délimitent de la même façon la classe 2.
+Par contre ils ne fixent clairement pas la même frontière entre les classes 0 et 1 : le lien "complet" attribut plus d'individus à la classe 1 que le critère de Ward.</p>
+<p>Ce résultat n'est pas surprenant : le lien "complet" se basant sur la distance maximale entre individus de 2 classes, l'outlier va avoir tendance à "tirer" la frontière entre les classes 0 et 1 de sont côté.
+Ce n'est pas le cas pour le critère de Ward, qui ne regardera que l'inertie intra-classe.</p>
+<p>Nous avons ici une illustration de la sensibilité aux outlier du lien "complet".
+On aurait tendance à choisir la partition obtenue avec le critère de Ward.</p>
+<p>Pour faire un choix définitif, on peut évaluer le coefficient de silhouette moyen de la partition obtenue pour chaque critère de similarité :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Critère de similarité</th>
+<th style="text-align: center;">Coefficient de silhouette moyen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Simple</td>
+<td style="text-align: center;">0.55</td>
+</tr>
+<tr>
+<td style="text-align: center;">Complet</td>
+<td style="text-align: center;">0.72</td>
+</tr>
+<tr>
+<td style="text-align: center;">Moyen</td>
+<td style="text-align: center;">0.63</td>
+</tr>
+<tr>
+<td style="text-align: center;">Ward</td>
+<td style="text-align: center;">0.76</td>
+</tr>
+</tbody>
+</table>
+<p>Selon le coefficient de silhouette moyen, sans surprise la meilleure partition est celle obtenue avec le critère de Ward.</p>
+<p>Comme nous l'avons mentionné précédemment, le critère de Ward est souvent le choix par défaut.
+Cependant, suivant le problème auquel on est confronté, une autre mesure de similarité peut être plus pertinente.</p>
+<p>Dans le cas de notre exemple, nettoyer notre base de données des outliers permettrait probablement d'améliorer les performances obtenues pour tous les types de liens. </p>
+<p>Comme pour les K-moyennes, les performances que nous obtenons ici avec le critère de Ward sont limitées, car celui-ci implique des hypothèses fortes, qui ne sont pas respectées ici (isotropie, variance constante, classes équilibrées). </p>
+<h4 id="remarques_1">Remarques</h4>
+<p>La méthode de la CAH a les <strong>avantages</strong> suivants :</p>
+<ul>
+<li>
+<p>Elle permet de <strong>tisser des liens</strong> entre les classes déterminées, ce qui rend le modèle <strong>très interprétable</strong>.</p>
+</li>
+<li>
+<p>On peut décider du nombre optimal de classes <span class="arithmatex">\(k\)</span> <strong>a posterio</strong>, en coupant le dendrogramme.</p>
+</li>
+<li>
+<p>Pour chaque <span class="arithmatex">\(k\)</span>, le modèle renvoyé par le CAH est <strong>déterministe</strong> : il n'y a pas ici d'initialisation aléatoire comme pour les K-moyennes.</p>
+</li>
+<li>
+<p>Il est possible d'<strong>adapter le critère de similarité</strong> selon notre problème.</p>
+</li>
+</ul>
+<p>Mais cette méthode a aussi les <strong>limites</strong> suivantes :</p>
+<ul>
+<li>
+<p>Elle est relativement <strong>gourmande en temps de calcul</strong>, ce qui la rend difficile à appliquer à des grands jeux de données.</p>
+</li>
+<li>
+<p>Suivant le critère de similarité choisie, elle peut être plus ou moins <strong>sensible aux outliers</strong>.</p>
+</li>
+</ul>
+<h2 id="labelisation-de-lexemple">Labélisation de l'exemple</h2>
+<h3 id="elements-pour-la-labelisation">Eléments pour la labélisation</h3>
+<p>Nous allons à présent essayer de labéliser les 3 classes obtenues avec les k-moyennes (sachant que les classes obtenues par CAH sont identiques).</p>
+<p>Commençons par caractériser avec les <strong>statistiques descriptives</strong> les différents groupes.</p>
+<p>Voici les moyennes des classes identifiées selon les différentes features :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">Classe 0</th>
+<th style="text-align: center;">Classe 1</th>
+<th style="text-align: center;">Classe 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">freq_mean</td>
+<td style="text-align: center;">48.85</td>
+<td style="text-align: center;">19.75</td>
+<td style="text-align: center;">26.07</td>
+</tr>
+<tr>
+<td style="text-align: center;">time_len</td>
+<td style="text-align: center;">4.09</td>
+<td style="text-align: center;">22.08</td>
+<td style="text-align: center;">5.87</td>
+</tr>
+</tbody>
+</table>
+<p>Pour attribuer une espèce à chaque groupe, nous allons nous appuyer sur la clé d'identification acoustique du chercheur du Museum d'Histoire Naturelle Yves Bas.</p>
+<p>Commençons par la classe 0.
+Nous voyons que la durée des cris est assez courte, de 4.09 ms, et la fréquence moyenne du fondamental est plutôt élevée, de 48.85 kHz.
+Voici la table  d'identification pour ce type de cris, à fréquence élevée :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Espèce</th>
+<th style="text-align: center;">Fréquences (kHz)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Pipistrelle de Kuhl</td>
+<td style="text-align: center;">34-40</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pipistrelle de Nathusius</td>
+<td style="text-align: center;">38-42</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pipistrelle commune</td>
+<td style="text-align: center;">43-50</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pipistrelle pygmée</td>
+<td style="text-align: center;">53-60</td>
+</tr>
+</tbody>
+</table>
+<p>Il est alors évident que la seule espèce plausible est la <strong>Pipistrelle commune</strong></p>
+<p>Ensuite, nous voyons que la classe 1 a des longs cris de 22.08 ms.
+La fréquence moyenne du cri est de 19.75 kHz, ce qui est plutôt faible (à la limite de l'audition d'un humain).
+Voici la table d'identification pour des cris de longue durée, à fréquence basse :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Espèce</th>
+<th style="text-align: center;">Fréquences (kHz)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Molosse de Cestoni</td>
+<td style="text-align: center;">9-12</td>
+</tr>
+<tr>
+<td style="text-align: center;">Grande Noctule</td>
+<td style="text-align: center;">13-15</td>
+</tr>
+<tr>
+<td style="text-align: center;">Noctule commune</td>
+<td style="text-align: center;">17-20</td>
+</tr>
+<tr>
+<td style="text-align: center;">Noctule de Leisler</td>
+<td style="text-align: center;">22-26</td>
+</tr>
+</tbody>
+</table>
+<p>Il est alors évident que la seule espèce plausible est la <strong>Noctule commune</strong>.</p>
+<p>Enfin, nous voyons que la classe 2 a une fréquence moyenne intermédiaire de 26.07 kHz, avec une durée de 5.87 ms.
+Ce type de cris est généralement associé à des chauves-souris de la famille des <strong>Sérotines</strong> ou des <strong>Oreillards</strong>.</p>
+<p>D'après le document de Yves Bas, il est très difficile de différencier les cris des différentes espèces d'Oreillards.
+Et sans informations sur la forme des cris, il nous est impossible d'attribuer avec certitude ces cris aux Oreillards ou aux Sérotines.
+Nous ne pouvons donc pas aller plus loin dans la labélisation de cette classe.</p>
+<p>D'où les labels que nous avons choisis pour les 3 classes : Noctule commune, Pipistrelle commune et Oreillards / Sérotine.</p>
+<p>On trouve facilement dans la littérature spécialisée que ces 3 espèces sont crédibles pour une lisière de forêt en Ile-de-France.</p>
+<p>De plus, cette labélisation est cohérente avec les lien tracés entre les classes par la CAH : les cris de noctules étant beaucoup plus longs en moyenne que ceux des pipistrelles communes et des oreillards / sérotines, on comprend pourquoi ils seraient considérés comme "moins similaires".</p>
+<p>Comme nous l'avions anticipé, la labélisation a nécessité ici des recherches bibliographiques sur l'identification acoustique des chauves-souris française.
+De manière générale, une labélisation correcte nécessite souvent une <strong>expertise</strong> dans le domaine d'étude.</p>
+<h3 id="verite-terrain">Vérité terrain</h3>
+<p>En 2006, le Muséum d'Histoire Naturelle lance le programme de sciences participatives "Vigie-Chiro".
+L'idée est de collecter des enregistrements de chauves-souris réalisés par des amateurs dans toute la France, afin de réaliser un suivi des différentes espèces d'une année sur l'autre, par région.
+Dans le cadre de ce programme, l'OVSQ partage tous les ans l'intégralité de ses enregistrements avec le Muséum.</p>
+<p>Sur sa plateforme en ligne, "Vigie-Chiro" propose un logiciel d'identification automatique des enregistrements de chauves-souris : Tadarida (Bas et al., 2017).</p>
+<p>Nous avons labélisé nos 474 enregistrements à l'aide de Tadarida, et 5 espèces ont été identifiées :</p>
+<ul>
+<li>
+<p>La sérotine commune (<em>Eptesicus serotinus</em>), de label : <strong>Eptser</strong>.</p>
+</li>
+<li>
+<p>Le murin de Daubenton (<em>Myotis daubentonii</em>), de label : <strong>Myodau</strong>.</p>
+</li>
+<li>
+<p>La noctule commune (<em>Nyctalus noctula</em>), de label : <strong>Nycnoc</strong>.</p>
+</li>
+<li>
+<p>La pipistrelle commune (<em>Pipistrellus pipistrellus</em>), de label : <strong>Pippip</strong>.</p>
+</li>
+<li>
+<p>L'Oreillard roux (<em>Plecotus auritus</em>), de label : <strong>Pleaur</strong>.</p>
+</li>
+</ul>
+<p>Voici l'identification Tadarida des différents enregistrements, sous la forme d'un <strong>nuage de points</strong> :</p>
+<p><img alt="Exemple labélisé par Tadarida" src="../img/Chap4_exemple_labelise.png" /></p>
+<p>Et pour informations, les 5 exemples de sonogrammes présentés en début de chapitre correspondent chacun à une espèce différente parmi celles identifiées par Tadarida :</p>
+<p><img alt="Exemples de sonogrammes labélisé par Tadarida" src="../img/Chap4_exemple_sonogrammes_labelise.png" /></p>
+<p>On remarque que les noctules communes, les pipistrelles communes, ainsi que les oreillard roux ont été assez bien identifiées par nos méthodes de partitions.
+Par contre, la sérotine commune et le murin de Daubenton n'ont pas été clairement identifiées.</p>
+<p>On peut avancer plusieurs explications :</p>
+<ul>
+<li>
+<p>La sérotine commune et le murin de Daubenton sont sous représentés dans les observations (26 et 41, contre 159 pour la noctule commune, 169 pour la pipistrelle commune, et 79 pour l'oreillard roux).</p>
+</li>
+<li>
+<p>La sérotine commune a l'air difficilement séparable de l'oreillard roux, et le murin de Daubenton difficilement séparable de la pipistrelle commune. 
+Il faudrait donc potentiellement ajouter de nouvelles features, ou appliquer une transformation aux features choisies afin de séparer ces espèces.</p>
+</li>
+<li>
+<p>Par défaut, nos méthodes de partitionnement utilisent la distance euclidienne.
+Une autre mesure de distance donnerait peut-être de meilleurs résultats.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nota Bene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">En général, une vérité terrain n'est pas disponible dans un cas de partitionnement, ou alors pour un échantillon restreint.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dans les cas où des labels sont accessibles ulterieurement, on peut utiliser les mêmes mesures de performances que pour la classification supervisée.</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Chap3_Regression/" class="btn btn-neutral float-left" title="III. Régression"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Chap3_Regression/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
