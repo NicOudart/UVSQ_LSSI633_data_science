@@ -67,25 +67,25 @@ Pour les besoins de ce cours, ont été sélectionnés 474 enregistrements de cr
 Nous aimerions entrainer un modèle à reconnaitre les espèces de chauves-souris enregistrées, mais nous n'avons pas de vérité terrain pour vérifier ses prédictions. 
 **Est-il tout de même possible de diviser ces enregistrements en plusieurs classes selon leurs similarités, et d'identifier par la suite l'espèce correspondant à chaque classe ?**
 
-Dans ce but, les 3 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz), l'écart-type en fréquence du fondamental (kHz), et la durée du cri (ms).
+Dans ce but, les 2 features suivantes ont été retenues pour chaque enregistrement de cri de chauve-souris : la fréquence moyenne du fondamental (kHz) et la durée du cri (ms).
 
 Voici le jeu de données complet, au format CSV : [Chap4_bats_dataset](https://github.com/NicOudart/UVSQ_LSSI633_data_science/tree/master/datasets/Chap4_bats_dataset.csv)
 
 Le tableau de données qu'il contient est de la forme :
 
-|freq_mean|freq_std|time_len|
-|:-------:|:------:|:------:|
-|31.000   |3.566   |7.500   |
-|30.340   |3.068   |6.250   |
-|28.921   |2.278   |4.750   |
-|27.218   |2.136   |9.750   |
-|29.574   |4.091   |6.750   |
-|...      |...     |...     |
-|26.605   |4.166   |4.750   |
-|23.630   |6.046   |5.750   |
-|26.000   |3.716   |4.500   |
+|freq_mean|time_len|
+|:-------:|:------:|
+|31.000   |7.500   |
+|30.340   |6.250   |
+|28.921   |4.750   |
+|27.218   |9.750   |
+|29.574   |6.750   |
+|...      |...     |
+|26.605   |4.750   |
+|23.630   |5.750   |
+|26.000   |4.500   |
 
-Notre problème de partitionnement sera le suivant : **Identifier les différentes espèces de chauves-souris dans les enregistrements de l'OVSQ, à partir de la fréquence moyenne du fondamental, de l'écart-type en fréquence du fondamental, et de la durée du cri**.
+Notre problème de partitionnement sera le suivant : **Identifier les différentes espèces de chauves-souris dans les enregistrements de l'OVSQ, à partir de la fréquence moyenne du fondamental et de la durée du cri**.
 
 Assurons-nous d'abord qu'une telle partition est possible à partir de ces données.
 
@@ -96,18 +96,18 @@ import pandas as pd
 df_dataset = pd.read_csv(input_path)
 ~~~
 
-Il est possible avec Seaborn d'afficher ces données sous la forme d'une **matrice de nuages de points**, avec des densités estimées par **KDE** 2D :
+Il est possible avec Seaborn d'afficher ces données sous la forme d'un **histogramme 2D**, avec une résolution de 30 intervalles par axes :
 
 ~~~
 import seaborn as sns
-sns.pairplot(df_dataset,kind='kde')
+sns.histplot(data=df_dataset, x='time_len', y='freq_mean',bins=30,cbar=True)
 ~~~
 
 Voici le résultat :
 
-![matrice de nuages de points des enregistrements de chauves-souris de l'OVSQ](img/Chap4_correlation_matrix_kde_bats.png)
+![Histogramme 2D des enregistrements de chauves-souris de l'OVSQ](img/Chap4_histogramme_2D_bats.png)
 
-On observe que ces 3 features font apparaitre différents regroupements d'enregistrements : les distributions sont clairement multimodales.
+On observe que ces 2 features font apparaitre différents regroupements d'enregistrements : les distributions sont clairement multimodales.
 Si les frontières entre groupes, ainsi que le nombre exact de groupes restent difficiles à établir, il n'y a aucun doute sur la présence de plusieurs groupes.
 Et ces classes sont probablement liées à l'espèce de chauves-souris.
 
@@ -118,9 +118,10 @@ Cependant, on peut noter que certains groupes visibles ont l'air moins denses qu
 Ceci est plausible : on imagine bien que certaines espèces sont plus communes sur le site que d'autres.
 Un tel déséquilibre pourrait être problématique pour entrainer notre modèle.
 
-Aussi, les valeurs d'écart-type sur la fréquence du fondamental sont plus faibles en ordre de grandeur que celles des 2 autres features.
-Ceci peu aussi être problématique pour l'apprentissage de notre modèle.
-Une normalisation pourrait donc en améliorer les performances.
+Aussi, les différents groupes visibles ont l'air d'avoir des formes et des densités différentes.
+On observe même quelques outliers qui pourraient déranger l'entrainement.
+
+Tout ceci sera à prendre en compte dans notre interprétation des résultats de nos modèles.
 
 **Il est à noter que nous avons ici grandement simplifié le problème et sa résolution pour les besoins de ce cours.**
 **Une vraie stratégie de validation pour optimiser les hyperparamètres et éviter le sur-apprentissage ne sera pas appliquée**.
@@ -357,7 +358,7 @@ from sklearn.cluster import KMeans
 On peut ensuite initialiser un modèle de partition `km` avec un objet "KMeans" de paramètre `k` correspondant au nombre de classes à déterminer :
 
 ~~~
-km = KMeans(n_clusters=3)
+km = KMeans(n_clusters=k)
 ~~~
 
 Pour diviser le jeu de données en $k$ classes `clusters` à partir des features choisies `features`, on utilise la méthode :
@@ -432,6 +433,17 @@ Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame, dep
 df_dataset = pd.read_csv(input_path)
 ~~~
 
+Afin de s'assurer que les 2 features évoluent sur des intervalles comparables, nous leur appliquons une transformation de centrage-réduction (voir Chapitre 1) :
+
+~~~
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+scaler.fit(df_dataset)
+
+df_dataset[['freq_mean','time_len']] = pd.DataFrame(scaler.transform(df_dataset))
+~~~
+
 Nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
 Utilisons le **coefficient de silhouette** moyen pour chaque nombre de classes entre 2 et 15, et affichons les scores obtenus :
 
@@ -473,7 +485,7 @@ La valeur du coefficient moyen obtenu sera de 0,76 environ, ce qui est considér
 |Nous nous assurons ainsi que 2 executions de ce code Python donnerons le même résultat.|
 |Il faudrait en toute rigueur vérifier que d'autres initialisation donnent le même $k$ optimal.|
 
-Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée :
+Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée, puis inverser le centrage-réduction des features :
 
 ~~~
 km = KMeans(n_clusters=3,random_state=0)
@@ -482,13 +494,15 @@ clusters = km.fit_predict(df_dataset)
 
 df_dataset_clustured = df_dataset.copy()
 df_dataset_clustured['clusters'] = clusters
+
+df_dataset_clustured[['freq_mean','time_len']] = pd.DataFrame(scaler.inverse_transform(df_dataset_clustured[['freq_mean','time_len']]))
 ~~~
 
-Et afficher sous la forme d'une **matrice de nuages de points** la partition obtenue, en utilisant Seaborn :
+Et afficher sous la forme d'un **nuages de points** la partition obtenue, en utilisant Seaborn :
 
 ~~~
 import seaborn as sns
-sns.pairplot(df_dataset_clustured,hue='clusters',palette='deep')
+sns.scatterplot(data=df_dataset_clustured,x='time_len',y='freq_mean',hue='clusters',palette='tab10')
 ~~~
 
 Voici le graphique obtenu :
@@ -710,6 +724,17 @@ Tout d'abord, nous importons notre fichier CSV sous la forme d'un DataFrame depu
 df_dataset = pd.read_csv(input_path)
 ~~~
 
+Afin de s'assurer que les 2 features évoluent sur des intervalles comparables, nous leur appliquons une transformation de centrage-réduction (voir Chapitre 1) :
+
+~~~
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+scaler.fit(df_dataset)
+
+df_dataset[['freq_mean','time_len']] = pd.DataFrame(scaler.transform(df_dataset))
+~~~
+
 Comme pour les K-moyennes, nous allons dans un premier temps essayer de trouver le nombre de classes optimal pour notre partition.
 Notre exemple étant relativement simple, on s'attend à ce que le résultat soit très similaire.
 
@@ -745,7 +770,7 @@ La courbe obtenue est en effet très similaire à celle obtenue avec les K-moyen
 C'est donc sans surprise que nous choisissons à nouveau $k=3$.
 Le coefficient de silhouette moyen sera alors de 0,76.
 
-Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée :
+Nous pouvons ajouter les 3 classes identifiées au DataFrame d'entrée, puis inverser le centrage-réduction des features :
 
 ~~~
 hca = AgglomerativeClustering(n_clusters=3)
@@ -754,13 +779,15 @@ clusters = hca.fit_predict(df_dataset)
 
 df_dataset_clustured = df_dataset.copy()
 df_dataset_clustured['clusters'] = clusters
+
+df_dataset_clustured[['freq_mean','time_len']] = pd.DataFrame(scaler.inverse_transform(df_dataset_clustured[['freq_mean','time_len']]))
 ~~~
 
-Et comme pour les K-moyennes, nous pouvons afficher sous la forme d'une **matrice de corrélation** la partition obtenue, en utilisant Seaborn :
+Et comme pour les K-moyennes, nous pouvons afficher sous la forme d'un **nuage de points** la partition obtenue, en utilisant Seaborn :
 
 ~~~
 import seaborn as sns
-sns.pairplot(df_dataset_clustured,hue='clusters',palette='deep')
+sns.scatterplot(data=df_dataset_clustured,x='time_len',y='freq_mean',hue='clusters',palette='tab10')
 ~~~
 
 Voici le graphique obtenu :
@@ -814,9 +841,9 @@ On peut évaluer le coefficient de silhouette moyen de la partition obtenue pour
 
 |Critère de similarité|Coefficient de silhouette moyen|
 |:-------------------:|:-----------------------------:|
-|Simple               |0.59                           |
-|Complet              |0.76                           |
-|Moyen                |0.72                           |
+|Simple               |0.55                           |
+|Complet              |0.72                           |
+|Moyen                |0.63                           |
 |Ward                 |0.76                           |
 
 Selon le coefficient de silhouette moyen, la meilleure partition est celle obtenue avec le lien "simple" et le critère de Ward.
@@ -857,15 +884,14 @@ Voici les moyennes des classes identifiées selon les différentes features :
 
 |         |Classe 0|Classe 1|Classe 2|
 |:-------:|:------:|:------:|:------:|
-|freq_mean|48.85   |19.77   |26.16   |
-|freq_std |2.54    |0.56    |3.50    |
-|time_len |4.09    |21.97   |1.40    |
+|freq_mean|48.85   |19.75   |26.07   |
+|time_len |4.09    |22.08   |5.87    |
 
 Pour attribuer une espèce à chaque groupe, nous allons nous appuyer sur la clé d'identification acoustique du chercheur du Museum d'Histoire Naturelle Yves Bas.
 
 Commençons par la classe 0.
-Nous voyons que l'écart-type en fréquence est faible mais non-négligeable (2.54 kHz), et que la durée est de 4.09 ms.
-Voici la table  d'identification pour ce type de cris, autour de la fréquence moyenne de 48.85 kHz :
+Nous voyons que la durée des cris est assez courte, de 4.09 ms, et la fréquence moyenne du fondamental est plutôt élevée, de 48.85 kHz.
+Voici la table  d'identification pour ce type de cris, à fréquence élevée :
 
 |Espèce                  |Fréquences (kHz)|
 |:----------------------:|:--------------:|
@@ -876,9 +902,9 @@ Voici la table  d'identification pour ce type de cris, autour de la fréquence m
 
 Il est alors évident que la seule espèce plausible est la **Pipistrelle commune**
 
-Ensuite, nous voyons que la classe 1 a un écart-type en fréquences très faible (0.56 kHz), il s'agit donc de cris à fréquence quasi-constante.
-La fréquence moyenne du cri est de 19.77 kHz, ce qui est plutôt faible (à la limite de l'audition d'un humain).
-Voici la table d'identification pour les cris à fréquence basse, quasi-constante :
+Ensuite, nous voyons que la classe 1 a des longs cris de 22.08 ms.
+La fréquence moyenne du cri est de 19.75 kHz, ce qui est plutôt faible (à la limite de l'audition d'un humain).
+Voici la table d'identification pour des cris de longue durée, à fréquence basse :
 
 |Espèce            |Fréquences (kHz)|
 |:----------------:|:--------------:|
@@ -888,10 +914,8 @@ Voici la table d'identification pour les cris à fréquence basse, quasi-constan
 |Noctule de Leisler|22-26           |
 
 Il est alors évident que la seule espèce plausible est la **Noctule commune**.
-De plus, la durée du cri est plutôt longue (21.97 ms), ce qui corrobore notre identification d'après la littérature spécialisée.
 
-Enfin, nous voyons que la classe 2 a une fréquence moyenne intermédiaire de 26.16 kHz, avec un large écart-type de 3.50 kHz.
-La durée du cri est assez courte, à peine 1.40 ms.
+Enfin, nous voyons que la classe 2 a une fréquence moyenne intermédiaire de 26.07 kHz, avec une durée de 5.87 ms.
 Ce type de cris est généralement associé à des chauves-souris de la famille des **Oreillards**.
 
 D'après le document de Yves Bas, il est très difficile de différencier les cris des différentes espèces d'Oreillards.
@@ -924,7 +948,7 @@ Nous avons labélisé nos 474 enregistrements à l'aide de Tadarida, et 5 espèc
 
 * L'Oreillard roux (_Plecotus auritus_), de label : **Pleaur**.
 
-Voici l'identification Tadarida des différents enregistrements, sous la forme d'une matrice de confusion :
+Voici l'identification Tadarida des différents enregistrements, sous la forme d'un **nuage de points** :
 
 ![Exemple labélisé par Tadarida](img/Chap4_exemple_labelise.png)
 
