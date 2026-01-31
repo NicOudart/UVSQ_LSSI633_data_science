@@ -529,11 +529,13 @@ Il est à noter que, comme beaucoup de cas pratiques, notre problème ne partiti
 
 * Comme nous l'avions déjà mentionné, nos classes sont déséquilibrées.
 
-* Nos classes ne sont pas isotropes. Comme nous l'avions déjà mentionné, les features n'évoluent pas toutes sur le même ordre de grandeur.
+* Nos classes ne sont pas isotropes.
 
 * La variance de nos classes n'est clairement pas la même.
 
-De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, avec des features normalisées, ou avec une méthodes aux hypothèses différentes.
+* Il y a des outliers dans nos données.
+
+De meilleurs résultats pourraient donc potentiellement être obtenus avec plus d'observations pour équilibrer les classes, en supprimant les outliers, ou avec une méthodes aux hypothèses différentes.
 
 #### Remarques
 
