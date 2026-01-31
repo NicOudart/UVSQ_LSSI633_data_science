@@ -620,7 +620,7 @@ Dans la section qui suit, nous aurons un aperçu des grandes difficultées que l
 
 S'il n'y a pas de règle précise pour déterminer la **quantité de données** nécessaire à un apprentissage, il y a 2 maximes à retenir :
 
-* Plus on a données d'entrainement, meilleur sera l'apprentissage par le modèle.
+* Plus on a de données d'entrainement, meilleur sera l'apprentissage par le modèle.
 
 * Plus le problème complexe, plus il faudra de données d'entrainement.
 
@@ -823,7 +823,7 @@ Le **choix d'un taux d'apprentissage adapté** est donc toujours affaire de **co
 Nous avons également vu précédemment que l'on peut placer dans l'algorithme un critère sur le gradient pour arrêter les itérations.
 Cependant, il est possible que ce critère ne soit jamais vérifié si l'algorithme diverge.
 
-On va donc en général choisir par sécurité un **nombre d'époques maximal** comme critère d'arrêt.
+On va donc en général choisir par sécurité un **nombre d'époques maximal** comme critère d'arrêt additionnel.
 
 Un autre problème courant est le fait que l'espace des valeurs de la fonction de coût a souvent des **minima locaux**, dans lesquels l'algorithme peut se retrouver **bloqué**.
 
