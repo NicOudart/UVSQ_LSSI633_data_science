@@ -176,7 +176,7 @@ Dans le cas où on se servirait des inerties pour entrainer un modèle de partit
 
 On définit alors l'**inertie intra-classe** comme étant la somme des inerties des $k$ classes :
 
-$I = \sum_{i=1}^{k} I_i = \sum{i=1}^{k} \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2$
+$I = \sum_{i=1}^{k} I_i = \sum_{i=1}^{k} \sum_{j=1}^{n_i} d(x_{i,j},g_i)^2$
 
 Il s'agit d'un indicateur de la **similarité des individus au sein de chaque classe**.
 
