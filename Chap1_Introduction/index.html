@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Nicolas OUDART" /><link rel="canonical" href="https://nicoudart.github.io/UVSQ_LSSI633_data_science/Chap1_Introduction/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>I. Introduction - UVSQ_LSSI633_data_science</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "I. Introduction";
+        var mkdocs_page_input_path = "Chap1_Introduction.md";
+        var mkdocs_page_url = "/UVSQ_LSSI633_data_science/Chap1_Introduction/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> UVSQ_LSSI633_data_science
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Accueil</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">I. Introduction</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#analyse-de-donnees">Analyse de données</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#nature-et-type-des-donnees">Nature et type des données</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#donnees-de-differentes-natures">Données de différentes natures</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#donnees-multidimensionnelles">Données multidimensionnelles</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#donnees-structurees">Données structurées</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#visualisation-graphique">Visualisation graphique</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#courbes-et-nuages-de-points">Courbes et nuages de points :</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#diagrammes-en-barres-et-histogrammes">Diagrammes en barres et histogrammes :</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#boites-a-moustaches">Boîtes à moustaches :</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#kernel-density-estimation-kde">Kernel Density Estimation (KDE) :</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#diagramme-circulaire-camembert">Diagramme circulaire (camembert) :</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#graphique-en-aires">Graphique en aires :</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#en-python">En Python</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#statistiques-descriptives">Statistiques descriptives</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#moyenne-mediane-et-mode">Moyenne, médiane et mode</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#variance-et-ecart-type">Variance et écart-type</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#quantiles">Quantiles</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#asymetrie-et-kurtosis">Asymétrie et kurtosis</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#recherche-de-correlation">Recherche de corrélation</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#matrice-de-correlation">Matrice de corrélation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#analyse-en-composantes-principales-acp">Analyse en Composantes Principales (ACP)</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#preparation-des-donnees">Préparation des données</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#transformation-min-max">Transformation min-max</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#transformation-centrage-reduction">Transformation centrage-réduction</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#autres-transformations">Autres transformations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#encodage-des-donnees">Encodage des données</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#les-apprentissages">Les apprentissages</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#lapprentissage-automatique">L'apprentissage automatique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#les-3-grands-types-dapprentissages">Les 3 grands types d'apprentissages</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#apprentissage-supervise-ou-non-supervise">Apprentissage supervisé ou non-supervisé</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification-et-regression">Classification et régression</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pour-aller-plus-loin">Pour aller plus loin...</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#difficultes-de-lapprentissage">Difficultés de l'apprentissage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#quantite-et-qualite-des-donnees">Quantité et qualité des données</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#representativite-et-equilibre-des-donnees">Représentativité et équilibre des données</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pertinence-des-variables">Pertinence des variables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#la-selection-de-variables">La sélection de variables</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lextraction-de-variables">L'extraction de variables</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sur-apprentissage-sous-apprentissage">Sur-apprentissage / sous-apprentissage</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#strategie-pour-lapprentissage">Stratégie pour l'apprentissage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#hyperparametres">Hyperparamètres</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#fonction-de-cout">Fonction de coût</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#algorithme-doptimisation">Algorithme d'optimisation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#vitesse-de-convergence-et-nombre-diterations">Vitesse de convergence et nombre d'itérations</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#architecture-du-modele">Architecture du modèle</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#entrainement-validation-et-test">Entrainement, validation et test</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#performances-en-generalisation">Performances en généralisation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#validation-par-exclusion">Validation par exclusion</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#validation-croisee">Validation croisée</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#regularisation-par-arret-premature">Régularisation par arrêt prématuré</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#import-de-donnees-et-fichiers-csv">Import de données et fichiers CSV</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#outils-python-pour-lapprentissage">Outils Python pour l'apprentissage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pandas">Pandas</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#scipy">Scipy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#scikit-learn">Scikit-Learn</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#seaborn">Seaborn</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#keras-tensorflow-pytorch">Keras-Tensorflow, Pytorch</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap2_Classification_supervisee/">II. Classification supervisée</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap3_Regression/">III. Régression</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Chap4_Partitionnement/">IV. Partitionnement</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">UVSQ_LSSI633_data_science</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">I. Introduction</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="chapitre-i-introduction-aux-sciences-des-donnees">Chapitre I : Introduction aux sciences des données</h1>
+<p>Ce chapitre porte sur les grands concepts et les enjeux des sciences des données.</p>
+<p><img alt="En-tête chapitre I" src="../img/Chap1_header.png" /></p>
+<hr />
+<h2 id="analyse-de-donnees">Analyse de données</h2>
+<p>L'explosion des capacités de stockage de données est à l'origine d'une explosion de la taille des jeux de données à traiter.
+D'où la nécessité de trouver de nouvelles manières de manipuler, traiter, analyser et interpréter nos données. </p>
+<p><strong>La 1ère étape lorsque l'on est confronté à un vaste jeu de données est toujours de l'analyser, afin d'essayer de le comprendre :</strong></p>
+<p>Quels types de données contient-il ?
+Ces données sont-elles de qualité ?
+Comment ces données sont-elles réparties ?
+Peut-on tisser des liens entre les différentes variables ? 
+Peut-on regrouper les différentes réalisations de ces variables en groupes ?</p>
+<p>Cette étape est essentielle si l'on veut par la suite entrainer un modèle à "apprendre" de nos données.</p>
+<h3 id="nature-et-type-des-donnees">Nature et type des données</h3>
+<p>Une des difficultés rencontrées en sciences des données provient de la <strong>grande variétés des données</strong>.</p>
+<h4 id="donnees-de-differentes-natures">Données de différentes natures</h4>
+<p>Tout d'abord, les variables étudiées peuvent être de <strong>nature</strong> différente :</p>
+<p><img alt="Nature des données" src="../img/Chap1_nature_donnees.png" /></p>
+<ul>
+<li>
+<p>Une donnée <strong>quantitative continue</strong> peut prendre n'importe quelle valeur numérique : par exemple, le prix d'un kilo de farine.</p>
+</li>
+<li>
+<p>Une donnée <strong>quantitative discrète</strong> ne peut prendre qu'un nombre fini de valeurs numériques dans un intervalle : par exemple, le nombre de pépites de chocolats dans une brioche.</p>
+</li>
+<li>
+<p>Une donnée <strong>qualitative nominale</strong> est descriptive sans ordre hiérarchique : par exemple, la région d'origine d'une pâtisserie.</p>
+</li>
+<li>
+<p>Une donnée <strong>qualitative ordinale</strong> est descriptive avec un ordre hiérarchique : par exemple, le niveau de cuisson d'une baguette de pain (blanche, pas trop cuite, bien cuite).</p>
+</li>
+</ul>
+<h4 id="donnees-multidimensionnelles">Données multidimensionnelles</h4>
+<p>Les données étudiées peuvent aussi être <strong>multidimensionnelles</strong>.</p>
+<p>En effet, dans la pluplart des situations, notre jeu de données peut se mettre sous la forme d'un tableau, dont </p>
+<ul>
+<li>
+<p>Les colonnes correspondront aux "<strong>variables</strong>".</p>
+</li>
+<li>
+<p>Les lignes correspondront aux "<strong>individus</strong>" : les différentes réalisations de ces variables.</p>
+</li>
+</ul>
+<p>L'ensemble des individus sera nommé "<strong>population</strong>", une sélection des individus un "<strong>échantillon</strong>".</p>
+<p>Voici un exemple de jeu de données multidimensionnelles :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Brioche n°1</th>
+<th style="text-align: center;">Poids (g)</th>
+<th style="text-align: center;">Nombre de pépites de chocolat</th>
+<th style="text-align: center;">Prix (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">3.5</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">3.6</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">3.7</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">3.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">3.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">3.5</td>
+</tr>
+</tbody>
+</table>
+<p>Nous avons ici 6 individus, les brioches, pour lesquelles nous avons mesuré 3 variables, le poids, le nombre de pépites de chocolat, et le prix.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Pour stocker puis manipuler des données multidimensionnelles, on utilise souvent en Python un type de conteneur de la bibliothèque <strong>Pandas</strong> : les "<strong>DataFrames</strong>".</td>
+</tr>
+<tr>
+<td style="text-align: left;">Les DataFrames se présentent comme des tableaux pouvant contenir des variables de types différents, avec un label associé à chaque colonne du tableau (variable).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Nous reparlerons de Pandas plus loin dans ce chapitre.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="donnees-structurees">Données structurées</h4>
+<p>Enfin, les données étudiées peuvent être <strong>structurées</strong>.</p>
+<p>On entend par là que des données peuvent avoir un cohérence chronologique (série temporelle, un son) ou spatiale (une carte, une image, un texte, une vidéo).</p>
+<p>Par exemple, dans le cas d'une image :</p>
+<p><img alt="Données structurées" src="../img/Chap1_image.png" /></p>
+<p>Chaque pixel de l'image doit être compris dans le contexte global de l'image. 
+Il est évident que changer la position des pixels les uns par rapport aux autres change le jeu de données : </p>
+<p><img alt="Données déstructurées" src="../img/Chap1_image_shuffled.png" /></p>
+<p>Dans certains cas, l'<strong>ordre des données</strong> est donc en soit une information nécessaire à leur interprétation.</p>
+<p>Vous l'aurez compris, la nature des données, leur dimensionnalité, ainsi que leur structure, <strong>peuvent rendre leur compréhension difficile</strong>.
+Nous allons dans la suite voir comment on peut essayer de tirer des informations pertinentes de nos données.</p>
+<h3 id="visualisation-graphique">Visualisation graphique</h3>
+<p>La 1ère étape lorsque l'on cherche à comprendre ses données, c'est d'essayer de les <strong>visualiser</strong> de manière pertinente.
+Nous allons voir les types de <strong>représentations graphiques</strong> les plus classiques pour visualiser un jeu de données.</p>
+<h4 id="courbes-et-nuages-de-points">Courbes et nuages de points :</h4>
+<p>Lorsque l'on veut afficher les différentes réalisations de 2 variables <span class="arithmatex">\(X\)</span> et <span class="arithmatex">\(Y\)</span> <strong>l'une en fonction de l'autre</strong>, on va classiquement utiliser une <strong>courbe</strong> ou un <strong>nuage de points</strong>.</p>
+<p>Si les données ne sont <strong>pas structurées</strong>, on peut utiliser un <strong>nuage de points</strong>, qui va simplement afficher chaque réalisation comme un point sur le graphique.</p>
+<p>Si les données sont <strong>structurées</strong>, on peut tracer des lignes entre les différentes réalisations, dans l'ordre, ce qui va donner une <strong>courbe</strong>.</p>
+<p><img alt="Courbe et nuage de points" src="../img/Chap1_nuage_points_courbe.png" /></p>
+<h4 id="diagrammes-en-barres-et-histogrammes">Diagrammes en barres et histogrammes :</h4>
+<p>Lorsque l'on veut rapidement comparer des quantités les unes aux autres, on va classiquement utiliser un <strong>diagramme en barres</strong> ou <strong>un histogramme</strong>.</p>
+<p>Si on a des individus <span class="arithmatex">\(A\)</span>, <span class="arithmatex">\(B\)</span> et <span class="arithmatex">\(C\)</span> et que l'on veut <strong>comparer les valeurs d'une variable</strong> <span class="arithmatex">\(X\)</span> pour ces 3 individus, on peut utiliser un <strong>diagramme en barres</strong>.
+On peut également utiliser un diagramme en barres pour afficher le <strong>nombre d'occurences d'une étiquette</strong> d'une variable qualitative.</p>
+<p>Si on veut représenter la distribution des valeurs d'une variable <span class="arithmatex">\(X\)</span> parmi les différents individus d'une population, on va utiliser un <strong>histogramme</strong>.
+Un histogramme affiche le <strong>nombre d'occurences</strong> <span class="arithmatex">\(N\)</span> des valeurs sur <strong>un intervalle</strong> de <span class="arithmatex">\(X\)</span>.
+Ceci implique donc de diviser au préalable les valeurs de <span class="arithmatex">\(X\)</span> en intervalles. </p>
+<p><img alt="Diagramme en barres et histogramme" src="../img/Chap1_diagramme_barres_histogramme.png" /></p>
+<h4 id="boites-a-moustaches">Boîtes à moustaches :</h4>
+<p>Lorsque l'on veut afficher de manière visuellement compréhensible la <strong>distribution individus pour différentes variables quantitatives</strong> <span class="arithmatex">\(X\)</span>, <span class="arithmatex">\(Y\)</span> et <span class="arithmatex">\(Z\)</span>, on peut utiliser des <strong>boîtes à moustaches</strong>.
+On peut également l'utiliser pour visualiser la <strong>distribution d'une même variable pour différentes sous-populations</strong>. </p>
+<p>On appelle "boîte à moustaches" une représentation graphique des principaux indicateurs de distribution d'une population pour une variable donnée. 
+En général : le minimum, le 1er quartile, la médiane, le 3ème quartile et le maximum.
+Nous reparlerons de ces indicateurs plus loin dans ce chapitre.</p>
+<p><img alt="Boîte à moustaches" src="../img/Chap1_boites_a_moustaches.png" /></p>
+<h4 id="kernel-density-estimation-kde">Kernel Density Estimation (KDE) :</h4>
+<p>La <strong>KDE</strong> ou "estimation par noyau" (Kernel Density Estimation) est une méthode non-paramétrique pour <strong>estimer la distribution de probabilité d'une variable</strong>.
+L'avantage est que contrairement à un histogramme, on a des <strong>valeurs continues entre 0 et 1</strong> (on ne divise pas en intervalles).</p>
+<p>On peut l'utiliser pour afficher sous la forme d'une courbe la densité de probabilité d'une variable <span class="arithmatex">\(X\)</span> (KDE 1D).
+On peut aussi afficher la densité de probabilité d'une variable <span class="arithmatex">\(X\)</span> par rapport à une autre variable <span class="arithmatex">\(Y\)</span>, sous la forme d'une carte 2D avec des isolignes de densité de probabilité (KDE 2D).</p>
+<p><img alt="KDE" src="../img/Chap1_KDE.png" /></p>
+<h4 id="diagramme-circulaire-camembert">Diagramme circulaire (camembert) :</h4>
+<p>Lorsque l'on veut afficher des proportions à comparer, on utilise souvent le <strong>diagramme circulaire</strong>, aussi connu sous le nom de "diagramme camembert".</p>
+<p>Il s'agit simplement de diviser un cercle en sections, dont la largeur représentera une proportion, et le cercle complet la proportion totale.
+On peut par exemple l'utiliser pour vérifier la répartition de variables qualitatives au sein d'une base de données.</p>
+<p><img alt="Camembert" src="../img/Chap1_camembert.png" /></p>
+<h4 id="graphique-en-aires">Graphique en aires :</h4>
+<p>Lorsque l'on veut afficher l'évolution d'une proportion au cours d'un variable (souvent au cours du temps), on utilise en général un <strong>graphique en aires</strong>.
+On peut par exemple l'utiliser pour vérifier la répartition de variables qualitatives au sein d'une base de données, en fonction d'une variable quantitative <span class="arithmatex">\(X\)</span>, par exemple le temps.</p>
+<p><img alt="Diagramme en aires" src="../img/Chap1_diagramme_aires.png" /></p>
+<h4 id="en-python">En Python</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, propose une méthode "plot" à ses objets "DataFrame" qui permet des affichages graphiques à partir de jeux de données.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Il suffit donner le bon paramètre "kind" en entrée pour obtenir le type d'affichage voulu :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "line" : une courbe.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "scatter" : un nuage de points.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "bar" : un diagramme en barres vertical.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "barh" : un diagramme en barres horizontal.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "hist" : un histogramme.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "box" : des boîtes à moustaches.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "kde" : une "kernel density estimation".</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "pie" : un diagramme circulaire.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- "area" : un graphique en aires.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="statistiques-descriptives">Statistiques descriptives</h3>
+<p>Toujours dans l'objectif de comprendre notre jeu de données, on peut essayer de <strong>décrire</strong> chaque variable par des <strong>indicateurs statistiques</strong>.
+Nous allons voir ici les indicateurs les plus communs en statistiques descriptives.</p>
+<p>Il est important de savoir comment ces indicateurs sont définis afin de comprendre les informations qu'ils donnent ou ne donnent pas sur un jeu de données.</p>
+<h4 id="moyenne-mediane-et-mode">Moyenne, médiane et mode</h4>
+<p>Lorsque l'on veut connaitre l'ordre de grandeur des valeurs d'une variable, là où se rassemblent la plupart des valeurs, on va utiliser un indicateur de <strong>tendance centrale</strong> : moyenne, médiane ou mode.</p>
+<ul>
+<li>Il existe plusieurs façon de définir la moyenne, mais la plus connue est la <strong>moyenne arithmétique</strong> :</li>
+</ul>
+<p><span class="arithmatex">\(\overline{x} = \frac{1}{N} \sum_{i=1}^{N} x_i\)</span></p>
+<p>On note en effet souvent <span class="arithmatex">\(\overline{x}\)</span> la moyenne d'une variable <span class="arithmatex">\(x\)</span>.</p>
+<ul>
+<li>
+<p>La <strong>médiane</strong> est la valeur séparant les valeurs de la variable en 2 groupes de même taille : la moitié des valeurs sont supérieures à la médiane, l'autre moitié lui sont inférieures.</p>
+</li>
+<li>
+<p>Le <strong>mode</strong> est la valeur la plus représentée dans l'ensemble des valeurs de la variable.</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a ces méthodes associées aux objets DataFrames :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- ".mean()": la moyenne.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- ".median()": la médiane.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- ".mode()": le mode.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="variance-et-ecart-type">Variance et écart-type</h4>
+<p>Lorsque l'on veut savoir à quel point les valeurs d'une variable fluctuent autour de la valeur centrale, on va utiliser des <strong>indicateurs de dispersion</strong>.</p>
+<ul>
+<li>
+<p>Les valeurs extrêmes de la variable, le <strong>min</strong> et le <strong>max</strong>, pour connaitre l'étendue de la variable.</p>
+</li>
+<li>
+<p>La <strong>variance</strong> est définie par la moyenne des carrées des écarts à la moyenne :</p>
+</li>
+</ul>
+<p><span class="arithmatex">\(\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \overline{x})^2\)</span></p>
+<ul>
+<li>L'<strong>écart-type</strong> (souvent noté <span class="arithmatex">\(\sigma\)</span>) est la racine carrée de la variance, soit a moyenne quadratique de écarts à la moyenne. 
+Contrairement à la variance, il a l'avantage d'être <strong>homogène à la variable étudiée</strong>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a ces méthodes associées aux objets DataFrames :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- ".min()" et ".max()": le minimum et le maximum.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- ".var()": la variance.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- ".std()": l'écart-type.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="quantiles">Quantiles</h4>
+<p>Afin d'avoir plus d'informations sur la répartition de valeurs d'une variable, on peut généraliser la notion de médiane en utilisant ce que l'on appelle les <strong>quantiles</strong> :
+La division des valeurs de la variables en groupes de tailles égales.</p>
+<ul>
+<li>
+<p><strong>Quartiles</strong> : 3 indicateurs en divisant les valeurs de la variable en 4 groupes (25%,50% et 75%).</p>
+</li>
+<li>
+<p><strong>Déciles</strong> : 9 indicateurs en divisant les valeurs de la variable en 10 groupes (10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%).</p>
+</li>
+<li>
+<p><strong>Centiles</strong> : 99 indicateurs en divisant les valeurs de la variable en 100 groupes (1%, 2%, 3%, ..., 98%, 99%).</p>
+</li>
+</ul>
+<h4 id="asymetrie-et-kurtosis">Asymétrie et kurtosis</h4>
+<p>Enfin, si l'on veut une information sur la répartition des valeurs d'une variable, sous la forme d'un indicateur unique, on va utiliser un <strong>indicateur de forme</strong>.</p>
+<ul>
+<li>Le coefficient d'<strong>asymétrie</strong> ("skewness" en anglais, souvent noté <span class="arithmatex">\(\gamma_1\)</span>) permet de quantifier le désequilibre de la répartition des valeurs de la variable de chaque côté de sa valeur centrale. </li>
+</ul>
+<p><span class="arithmatex">\(\gamma_1 = \frac{1}{N \sigma^3} \sum_{i=1}^{N} (x_i - \overline{x})^3\)</span></p>
+<p>Un coefficient négatif indique un décalage à droite, un coefficient positif un décalage à gauche, et un coefficient nul une distribution symétrique.</p>
+<p>NB : Pour la loi normale, on a <span class="arithmatex">\(\gamma_1 = 0\)</span>.</p>
+<ul>
+<li>Le <strong>kurtosis</strong> (souvent noté <span class="arithmatex">\(\gamma_2\)</span>) permet de quantifier l'acuité ou l'applatissement de la répartition des valeurs de la variable autour de sa valeur centrale.</li>
+</ul>
+<p><span class="arithmatex">\(\gamma_2 = \frac{1}{N \sigma^4} \sum_{i=1}^{N} (x_i - \overline{x})^4\)</span></p>
+<p>Un kurtosis positif est un indicateur de valeurs anormales de la variable (aux extrêmités, aussi appelées "outliers") plus fréquentes.
+Un kurtosis négatif est un indicateur d'une distribution très applatie des valeurs de la variable.</p>
+<p>NB : Pour la loi normale, on a <span class="arithmatex">\(\gamma_2 = 0\)</span>.</p>
+<p><img alt="Statistiques descriptives" src="../img/Chap1_statistiques_descriptives.png" /></p>
+<h3 id="recherche-de-correlation">Recherche de corrélation</h3>
+<p>Une fois que l'on a décrit statistiquement les différentes variables de notre jeu de données, on va souvent vouloir essayer des tisser des liens entre ces variables.
+Cette <strong>analyse exploratoire</strong> des données a 2 principales utilités :</p>
+<ul>
+<li>
+<p>Voir si une ou plusieurs variables pourraient servir à en <strong>prédire</strong> une ou plusieurs autres.</p>
+</li>
+<li>
+<p>Essayer de <strong>réduire la dimensionnalité</strong> d'un problème basé sur ces variables.</p>
+</li>
+</ul>
+<p>En effet, comme évoqué précédemment, les jeux de données sont souvent multidimensionnels.
+Quand la dimension des données devient très grande, la quantité de données devient peu dense en comparaison, ce qui rend difficile leur interprétation.
+On appelle communément ce problème le "Fléau de la dimension" ("curse of dimensionality" en anglais).</p>
+<p>Nous allons voir dans un 1er temps comment essayer de déterminer ce que l'on appelle des "<strong>corrélations</strong>" entre variables.
+Puis nous verrons une méthode classique de réduction de dimension appelée "<strong>Analyse en Composantes Principales</strong>".</p>
+<h4 id="matrice-de-correlation">Matrice de corrélation</h4>
+<p>Une 1ère approche pour essayer de tisser des liens ou "<strong>corrélations</strong>" entre les variables et de tracer ce que l'on appelle une matrice de nuages de points, ou "<strong>scatter-matrix</strong>" en anglais.</p>
+<p>L'idée est d'afficher une <strong>matrice de graphiques</strong>, représentant chacun <strong>une variable en fonction d'une autre</strong>, sous la forme d'un nuage de points.
+La diagonale n'étant pas très utile (une variable en fonction d'elle-même), on la remplace en général par un histogramme de la variable en question.</p>
+<p>Ce type de représentation permet de détecter visuellement des <strong>relations entre les variables</strong>.</p>
+<p>Voici un exemple :</p>
+<p><img alt="Matrice de nuages de points" src="../img/Chap1_scatter_matrix.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "plotting.scatter_matrix()", qui permet d'afficher une "scatter_matrix".</td>
+</tr>
+</tbody>
+</table>
+<p>Pour quantifier la corrélation entre 2 variables <span class="arithmatex">\(x\)</span> et <span class="arithmatex">\(y\)</span>, on va souvent se contenter de mesurer à quel point une <strong>relation linéaire</strong> <span class="arithmatex">\(y = a x + b\)</span> peut être tirée de ces variables.
+Pour cela, on va calculer le <strong>coefficient de corrélation</strong> de Pearson :</p>
+<p><span class="arithmatex">\(r = \frac{\sum_{i=1}^{N} (x_i - \overline{x})(y_i - \overline{y})}{\sqrt{\sum_{i=1}^{N} (x_i - \overline{x})^2 \sum_{i=1}^{N} (y_i - \overline{y})^2}}\)</span></p>
+<p>La valeur de ce coefficient est toujours compris entre -1 et 1 : </p>
+<ul>
+<li>
+<p>Une valeur de 1 signifie une <strong>corrélation</strong> parfaite entre les variables.</p>
+</li>
+<li>
+<p>Une valeur de -1 signifie une <strong>anti-corrélation</strong> parfaite entre les variables.</p>
+</li>
+<li>
+<p>Une valeur de 0 signifie une <strong>décorrélation</strong> parfaite entre les variables : elles sont <strong>indépendantes</strong>.</p>
+</li>
+</ul>
+<p>Il y a du sens à vouloir prédire une variable à partir d'une autre si elles sont corrélées / anti-corrélées.
+On peut aussi imaginer réduire la dimensionnalité d'un problème s'il se base sur plusieurs variables qui ne sont pas indépendantes.</p>
+<p>NB : <strong>Attention !</strong> Corrélation entre variables n'implique pas causalité entre variables !</p>
+<p>On affiche souvent les coefficients de corrélation obtenus pour toutes les combinaisons de variables possibles sous la forme d'une matrice : la <strong>matrice de corrélation</strong> de ces variables.
+La diagonale de la matrice ne contient bien évidemment que des 1.</p>
+<p>Voici un exemple où cherche les corrélations entre le diamètre, le temps de cuisson, la masse de frangipane et le prix d'une galette des rois :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">Diamètre</th>
+<th style="text-align: center;">Cuisson</th>
+<th style="text-align: center;">Frangipane</th>
+<th style="text-align: center;">Prix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Diamètre</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.8</td>
+<td style="text-align: center;">0.7</td>
+<td style="text-align: center;">0.9</td>
+</tr>
+<tr>
+<td style="text-align: center;">Cuisson</td>
+<td style="text-align: center;">0.8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">0.2</td>
+</tr>
+<tr>
+<td style="text-align: center;">Frangipane</td>
+<td style="text-align: center;">0.7</td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.6</td>
+</tr>
+<tr>
+<td style="text-align: center;">Prix</td>
+<td style="text-align: center;">0.9</td>
+<td style="text-align: center;">0.2</td>
+<td style="text-align: center;">0.6</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>La moitié de l'information contenue dans cette matrice étant redondante, on n'affiche parfois que la partie triangulaire supérieure ou inférieure de cette matrice.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "corr()" associée aux DataFrames.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Elle retourne une matrice de corrélation du jeu de données.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="analyse-en-composantes-principales-acp">Analyse en Composantes Principales (ACP)</h4>
+<p>Comme mentionné précédemment, les jeux de données que l'on rencontre sont souvent multidimensionels.
+Ceci rend difficile voir impossible un affichage graphique compréhensible des individus d'une variable par rapport à une autre (il faudrait un graphique 2D pour 2 variables, 3D pour 3 variables, 4D pour 4 variables, etc.).</p>
+<p>Afin de représenter des données multidimensionnelles sous la forme d'un affichage graphique de <strong>dimension faible</strong> (en général 1, 2 ou 3), on utilise souvent une <strong>méthode de réduction de dimensionnalité</strong> connue sous le nom d'<strong>Analyse en Composantes Principales</strong> (ACP).</p>
+<p>L'idée est la suivante.
+Soit un jeu de données contenant <span class="arithmatex">\(p\)</span> variables et <span class="arithmatex">\(n\)</span> individus. 
+On va chercher <span class="arithmatex">\(q\)</span> nouvelles variables par <strong>projections linéaires</strong> des <span class="arithmatex">\(p\)</span> variables d'origine, avec <span class="arithmatex">\(q &lt; p\)</span>, de manière à <strong>perdre le moins d'information possible</strong> sur le jeu de données.</p>
+<p>Ces <span class="arithmatex">\(q\)</span> nouvelles variables sont alors nommées <strong>composantes principales</strong>.</p>
+<p>Il existe plusieurs algorithmes pour obtenir ce résultat, celui implémenté dans la bibliothèque Python Scikit-Learn se base sur la Décomposition en Valeurs Singulières (SVD) de la matrice de données :</p>
+<p><span class="arithmatex">\(X = 
+\begin{pmatrix}
+x_{1,1} &amp; x_{1,2} &amp; \cdots &amp; x_{1,p} \\
+x_{2,1} &amp; x_{2,2} &amp; \cdots &amp; x_{2,p} \\
+\vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\
+x_{n,1} &amp; x_{n,2} &amp;\cdots &amp; x_{n,p} 
+\end{pmatrix}\)</span></p>
+<p>où chaque colonne correspond à une variable, et chaque ligne correspond à un individu.</p>
+<p>On peut voir l'ACP comme le choix du sous-espace de dimension <span class="arithmatex">\(q\)</span> tel que le nuage de points projetés ait la variance la plus grande possible.</p>
+<p>Les résultats d'une ACP peuvent être affichés sous la forme d'un <strong>nuage de points 2D ou 3D</strong> (<span class="arithmatex">\(q = 2\)</span> ou <span class="arithmatex">\(3\)</span>) représentant les différents individus, avec pour axes les composantes principales :</p>
+<p><img alt="ACP nuage de points" src="../img/Chap1_ACP_scatter.png" /></p>
+<p>L'idée est de voir si on peut séparer les individus en différents groupes à partir des composantes principales.</p>
+<p>Pour juger de la qualité d'une ACP, on utilise un type de graphique appelé "<strong>cercle des corrélations</strong>".
+Ce graphique 2D représente sur chaque axe la corrélation des <span class="arithmatex">\(p\)</span> variables d'origine avec les <span class="arithmatex">\(q\)</span> composantes principales.
+Chacune des <span class="arithmatex">\(p\)</span> variables correspond à un vecteur sur ce graphique, et un cercle de rayon 1 est également affiché pour comparaison.</p>
+<p>Voici un exemple :</p>
+<p><img alt="ACP cercle de corrélations" src="../img/Chap1_ACP_cercle_correlations.png" /></p>
+<p>Un cercle des corrélations permet donc de juger de la corrélation des variables d'origines avec les composantes principales, et de la corrélation des variables d'origine entre elles :</p>
+<ul>
+<li>
+<p>Plus une variable d'origine est proche du cercle, plus elle est fidèlement représentée par l'ACP. Dans l'idéal, on voudrait donc que toutes les variables soient proches du cercle.</p>
+</li>
+<li>
+<p>Pour 2 variables d'origine proches du cercle, si l'angle entre 2 les variables est aigu elles sont corrélées, s'il est obtu elles sont anti-corrélées, et s'il est droit elles sont décorrélées.</p>
+</li>
+</ul>
+<p>On pourra utiliser la projection des données renvoyée par l'ACP pour entrainer des modèles d'apprentissage.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La classe "sklearn.decomposition.PCA" de la bibliothèque "Scikit-Learn" vous permet de réaliser l'ACP d'une matrice de données.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Le nombre de composantes principales à trouver est un des attributs de la classe à initialiser ("n_components").</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pour obtenir les composantes principales d'une matrice de données, il faut lui appliquer la méthode "fit_transform()" de la classe.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pour aller plus loin</strong> : D'autres méthodes de réduction de dimensionnalité existent, on peut citer entre autres les "auto-encodeurs" et la "t-SNE".</p>
+<h2 id="preparation-des-donnees">Préparation des données</h2>
+<p>Une fois les données analysées, on a normalement une bonne idée de ce qu'un outil automatique pourra en "apprendre" ou non.
+Cependant, la plupart de ces outils (dont nous parlerons dans la section suivante), ont besoin que les données soient "<strong>transformées</strong>" d'une certaine manière.</p>
+<p>C'est pourquoi nous allons voir dans cette section quelques transformations classiques pour <strong>préparer nos données</strong>.</p>
+<p>Tout d'abord, il est possible que le jeu de données contienne des <strong>valeurs erronées</strong> ou <strong>manquantes</strong>, souvent marquées par des NaN ("Not a Number").
+Il convient alors de se débarrasser de ces valeurs avant apprentissage, car la plupart des outils ne savent pas gérer ce problème.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Dans la bibliothèque Python "Pandas", dont nous reparlerons plus tard dans ce chapitre, il y a une méthode "dropna" associée aux objets DataFrames.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cette méthode permet de supprimer les NaN d'un DataFrame.</td>
+</tr>
+</tbody>
+</table>
+<p>Nous allons voir que les données <strong>qualitatives</strong> doivent être encodées avant apprentissage, soit en "ordinal", soit en "one-hot".</p>
+<p>Enfin, les outils d'apprentissage sont affectés par les <strong>différences d'ordre de grandeur entre les variables</strong>.
+C'est pourquoi une remise à l'échelle des différentes variables d'un jeu de données est nécessaire avant apprentissage.
+On appelle ce processus <strong>recalibration</strong>, ou "<strong>feature scaling</strong>" en anglais.</p>
+<p>Nous allons voir en particulier 2 types de transformation pour recalibrer des données : la <strong>transformation min-max</strong> et le <strong>centrage-réduction</strong>.</p>
+<h3 id="transformation-min-max">Transformation min-max</h3>
+<p>Certains types de modèles d'apprentissage nécessitent des valeurs d'entrée entre 0 et 1.
+C'est pourquoi la <strong>transformation min-max</strong> ("normalization" en anglais) va recalibrer toutes les variables de manière à ce que leurs valeurs restent <strong>entre 0 et 1</strong>.</p>
+<p>Pour ce faire, on va appliquer la formule suivante au i-ème individu <span class="arithmatex">\(x_i\)</span> de la j-ème variable d'un jeu de données  :</p>
+<p><span class="arithmatex">\(\frac{x_i-min_j}{max_j-min_j}\)</span></p>
+<p>avec <span class="arithmatex">\(min_j\)</span> le minimum et <span class="arithmatex">\(max_j\)</span> le maximum des individus de la j-ème variable.</p>
+<p>(Il est également possible d'adapter cette transformation pour les modèles prenant des valeurs entre -1 et 1 en entrée).</p>
+<p>Le problème majeur avec cette transformation est sa sensibilité aux valeurs aberrantes.
+En effet, il suffit qu'une variable ait une valeur aberrante pour qu'elle devienne le minimum ou le maximum, impactant ainsi la transformation.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" contient une fonction "MinMaxScaler".</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transformation-centrage-reduction">Transformation centrage-réduction</h3>
+<p>La transformation <strong>centrage-reduction</strong> ("standardization" en anglais) applique la formule suivante au i-ème individu <span class="arithmatex">\(x_i\)</span> de la j-ème variable d'un jeu de données :</p>
+<p><span class="arithmatex">\(\frac{x-\overline{x_p}}{\sigma_p}\)</span></p>
+<p>avec <span class="arithmatex">\(\overline{x_p}\)</span> la moyenne et <span class="arithmatex">\(\sigma_p\)</span> l'écart-type des individus de la j-ème variable.</p>
+<p>Cette transformation est beaucoup moins sensible aux valeurs aberrantes, mais elle ne garanti pas que les valeurs des différentes variables seront entre 0 et 1 (ou -1 et 1).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" contient une fonction "StandardScaler".</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autres-transformations">Autres transformations</h3>
+<p>Nous l'avons précédemment, on peut découvrir que les individus d'une variable ont une distribution asymétrique.
+Par exemple, la distribution des individus peut avoir une <strong>longue traîne</strong> d'un côté de la médiane.</p>
+<p>On peut aussi avoir une distribution multimodale (c'est-à-dire avec plusieurs pics).</p>
+<p>Ceci peut perturber un apprentissage automatique.</p>
+<p>Dans ces situations, d'autres types de transformation pourrons alors être envisagées en addition des 2 précédentes : utiliser la racine carrée ou le logarithme de la variable, utiliser les quantiles de la variable, utiliser un encodage de la variable, etc.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La classe "sklearn.preprocessing" de la bibliothèque "Scikit-Learn" permet de créer sa propre transformation, avec "FunctionTransformer".</td>
+</tr>
+</tbody>
+</table>
+<h3 id="encodage-des-donnees">Encodage des données</h3>
+<p>La plupart des modèles d'apprentissage automatique dont nous allons parler dans ce cours ne peuvent manipuler que des valeurs numériques.</p>
+<p>On va donc en général <strong>encoder</strong> des données <strong>qualitatives</strong> avec des <strong>valeurs numériques</strong>. Par exemple :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Cuisson du pain</th>
+<th style="text-align: center;">Encodage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Blanc</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">Pas trop cuit</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;">Bien cuit</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+<p>On appelle cet encodage, <strong>encodage par étiquette</strong> ("label encoding").</p>
+<p>Cette méthode fonctionne toujours pour des données <strong>ordinales</strong> comme la cuisson du pain, mais pour des données nominales le modèle risque de croire qu'il y a un ordre hiérarchique dans les données qui n'existe pas.
+C'est pourquoi on utilise souvent l'encodage <strong>one-hot</strong>.</p>
+<p>L'idée est de faire comme si chaque nom possible pour une variable qualitative était une variable en soit. 
+On appelle parfois ces variables imaginaires des "dummy variables".</p>
+<p>Par exemple, pour la région d'origine des pâtisseries, on passe de :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Pâtisserie</th>
+<th style="text-align: center;">Région</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Croissant</td>
+<td style="text-align: center;">Paris</td>
+</tr>
+<tr>
+<td style="text-align: center;">Merveilleux</td>
+<td style="text-align: center;">Nord</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kouign-amann</td>
+<td style="text-align: center;">Bretagne</td>
+</tr>
+<tr>
+<td style="text-align: center;">Cannelé</td>
+<td style="text-align: center;">Sud-Ouest</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kougelhopf</td>
+<td style="text-align: center;">Est</td>
+</tr>
+</tbody>
+</table>
+<p>à l'encodage one-hot suivant :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Pâtisserie</th>
+<th style="text-align: center;">Paris</th>
+<th style="text-align: center;">Nord</th>
+<th style="text-align: center;">Bretagne</th>
+<th style="text-align: center;">Sud-Ouest</th>
+<th style="text-align: center;">Est</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Croissant</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Merveilleux</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kouign-amann</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Cannelé</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;">Kougelhopf</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>Pour le Merveilleux, on donnera donc en entrée d'un modèle le binaire 01000.</p>
+<p>On remarque ici que plus la variable a de noms possibles, et plus les binaires d'encodage one-hot seront longs, ce qui peut être problématique.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La bibliothèque Scikit-Learn possède dans son package "preprocessing" des fonctions "LabelEncoder" et "OrdinalEncoder", permettant d'assigner un entier à des variables qualitatives nominales ou ordinales.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dans ce même package, vous trouverez également une fonction "OneHotEncoder", permettant d'encoder en one-hot des variables qualitatives nominales.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dans les 2 cas, il vous faut créer une instance de "OrdinalEncoder" ou de "OneHotEncoder", puis utiliser la méthode "fit_transform()" avec vos données en entrée.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="les-apprentissages">Les apprentissages</h2>
+<p>Une fois que l'on a bien cerné notre jeu de données, et qu'on l'a transformé de manière adéquate, on va en général vouloir le <strong>modéliser</strong>.
+L'idée du modèle sera de prendre une décision sur à partir de nouvelles données, en se basant sur la connaissance des données de la base d'origine.
+On parle alors d'"apprendre" des données.</p>
+<h3 id="lapprentissage-automatique">L'apprentissage automatique</h3>
+<p>Par "modéliser", on entend trouver une fonction paramétrique <span class="arithmatex">\(M\)</span> qui permet de déduire une sortie vectorielle <span class="arithmatex">\(y\)</span> voulue à partir d'une entrée vectorielle de nouvelles données <span class="arithmatex">\(x\)</span> et de nos connaissances sur les données d'origine :</p>
+<p><span class="arithmatex">\(y = M(x,\theta)\)</span></p>
+<p>avec <span class="arithmatex">\(\theta\)</span> les paramètres du modèle, qui correspondent à notre connaissance du jeu de données initial.</p>
+<p>Il nous faut donc ajuster les paramètres <span class="arithmatex">\(\theta\)</span> pour obtenir la sortie <span class="arithmatex">\(y\)</span> attendue en fonction de <span class="arithmatex">\(x\)</span> qui colle le plus aux données.
+C'est ce processus d'<strong>optimisation</strong> de <span class="arithmatex">\(\theta\)</span> que l'on appelle "<strong>apprentissage</strong>".</p>
+<p>Les jeux de données dont on doit apprendre sont en général énormes, ce qui rend souvent un ajustement manuel des paramètres impossible.
+C'est pourquoi on va en général choisir <strong>un type de modèle</strong>, et ajuster <strong>automatiquement</strong> les paramètres à nos données.</p>
+<p>D'où l'expression "<strong>apprentissage automatique</strong>".</p>
+<p>Suivant les applications, il existe différents types d'apprentissage, avec pour chacun différents types de modèles possibles.
+Lors de ce cours, nous verrons 3 grands types d'apprentissage, et nous verrons pour chacun quelques exemples de modèles classiques.</p>
+<h3 id="les-3-grands-types-dapprentissages">Les 3 grands types d'apprentissages</h3>
+<p>En apprentissage, on appelle souvent en anglais <strong>les entrées</strong> d'un modèle les "<strong>features</strong>", et <strong>les sorties</strong> des "<strong>labels</strong>".</p>
+<p>Lors du processus d'<strong>apprentissage</strong> (ajustement des paramètres), on va enseigner au modèle comment déterminer des "labels" correspondant à des "features", en se basant sur ce qu'il a appris d'une <strong>base de données d'"entrainement"</strong> de "features".</p>
+<p>Par exemple, on peut vouloir entrainer un modèle à associer à une photo de viennoiserie (feature) le nom de la viennoiserie (label) :</p>
+<p><img alt="Exemple de modèle 1" src="../img/Chap1_modele_1.png" /></p>
+<p>Ou alors, on peut vouloir entrainer un modèle à associer à la masse de farine, la masse de beurre, le volume de lait et le diamètre d'un lot de crêpes (features) le prix de la crêpe (label) :</p>
+<p><img alt="Exemple de modèle 2" src="../img/Chap1_modele_2.png" /></p>
+<h4 id="apprentissage-supervise-ou-non-supervise">Apprentissage supervisé ou non-supervisé</h4>
+<p>Dans le cas où les données d'apprentissage ont des "labels" définis, le modèle va apprendre à retrouver ces "labels" (connus) pour ces "features".
+On espère alors qu'après apprentissage, le modèle pourra retourner les "labels" corrects une fois confronté à des "features" issus de nouvelles données.
+On parle alors de "<strong>généralisation</strong>".</p>
+<p>Comme on peut directement vérifier les performances du modèle à prédire les "labels" du jeu de données d'entrainement, on parle d'<strong>apprentissage supervisé</strong>.</p>
+<p>Le processus est en général itératif : le modèle va se mettre à jour au fur et à mesure des itérations pour réduire l'erreur de prédiction.
+On a donc besoin d'une fonction d'évaluation de l'erreur, aussi appelée "<strong>fonction de coût</strong>".</p>
+<p>Voici le concept résumé graphiquement, avec notre exemple de l'association d'un nom de viennoiserie à une photo :</p>
+<p><img alt="Exemple d'apprentissage supervisé" src="../img/Chap1_apprentissage_supervise.png" /></p>
+<p>Dans le cas où les données d'apprentissage n'ont pas de "labels", on peut tout de même essayer de diviser les individus des "features" en différent groupes, auxquels on assignera des "labels" plus tard.
+On appelle la première étape "<strong>partition</strong>", et la seconde "<strong>labélisation</strong>".</p>
+<p>On a besoin d'un critère de proximité entre individus afin de définir ces groupes, souvent une "<strong>distance</strong>".
+Il s'agit aussi souvent d'un processus itératif.</p>
+<p>Comme nous n'avons pas de "labels" d'entrainement comme référence, on parle d'<strong>apprentissage non-supervisé</strong> ou "clustering" ("partition de données").</p>
+<p>Voici le concept résumé graphiquement, toujours avec notre exemple de l'association d'un nom de viennoiserie à une photo :</p>
+<p><img alt="Exemple d'apprentissage non-supervisé" src="../img/Chap1_apprentissage_non_supervise.png" /></p>
+<h4 id="classification-et-regression">Classification et régression</h4>
+<p>On peut aussi diviser les apprentissages suivant la nature des sorties attendue, et donc de modèle à entrainer.</p>
+<p>Si la sortie est <strong>quantitative discrète</strong> ou <strong>qualitative</strong>, on va parler de "<strong>classification</strong>".</p>
+<p>Si la sortie est <strong>quantitative continue</strong>, on va parler de "<strong>régression</strong>".</p>
+<p>Si l'on reprend nos 2 exemples précédents :</p>
+<ul>
+<li>
+<p>Le nom d'une viennoiserie étant une étiquette, soit une variable qualitative, il s'agit d'un problème de classification.</p>
+</li>
+<li>
+<p>Le prix d'une crêpe étant une variable quatitative continue, il s'agit d'un problème de régression.</p>
+</li>
+</ul>
+<p><img alt="Classification et régression" src="../img/Chap1_classification_regression.png" /></p>
+<p>On peut entrainer un modèle de classification <strong>de manière supervisée ou non-supervisée</strong>.</p>
+<p>On ne peut entrainer un modèle de régression <strong>que de manière supervisée</strong>.</p>
+<p>NB : Seule la classification peut être "non-supervisée", et on parle en général directement de <strong>partitionnement</strong> ("clustering").</p>
+<h3 id="pour-aller-plus-loin">Pour aller plus loin...</h3>
+<p>Il existe un 3ème type d'apprentissage, que nous ne détaillerons pas dans ce cours, qui s'appelle "apprentissage par <strong>renforcement</strong>".</p>
+<p>L'idée est la suivante : </p>
+<ul>
+<li>
+<p>Le modèle est directement mis en place sur son cas d'application final.</p>
+</li>
+<li>
+<p>Le modèle prend des décisions en fonction des situations, et reçoit un retour ("feedback") sur sa décision, positif ou négatif.</p>
+</li>
+<li>
+<p>Le modèle se met à jour en fonction du retour qu'il a reçu.</p>
+</li>
+</ul>
+<p>Ce processus se répète pour chaque nouvelle situation, et ainsi <strong>le modèle apprend de ses expériences</strong>.</p>
+<p><strong>Voici un petit schéma récapitulatif des différents types d'apprentissages que nous avons vus :</strong></p>
+<p><img alt="Types d'apprentissage" src="../img/Chap1_types_apprentissage.png" /></p>
+<h2 id="difficultes-de-lapprentissage">Difficultés de l'apprentissage</h2>
+<p>Comme expliqué plus haut, l'<strong>apprentissage</strong> est un processus d'<strong>optimisation</strong>, qui consiste en l'<strong>ajustement des paramètres d'un modèle</strong> en se basant sur les données disponibles, dans le but de prendre des décisions correctes à partir de données futures (<strong>généralisation</strong>).</p>
+<p>La phase durant laquelle on ajuste les paramètres est appelée <strong>entraînement</strong>, et les données sur lesquelles cet ajustement est fait sont appelées "<strong>base de données d'entraînement</strong>".</p>
+<p>Dans la section qui suit, nous aurons un aperçu des grandes difficultées que l'on peut rencontrer lors de l'entrainement d'un modèle, tous types de modèles confondus.</p>
+<h3 id="quantite-et-qualite-des-donnees">Quantité et qualité des données</h3>
+<p>S'il n'y a pas de règle précise pour déterminer la <strong>quantité de données</strong> nécessaire à un apprentissage, il y a 2 maximes à retenir :</p>
+<ul>
+<li>
+<p>Plus on a de données d'entrainement, meilleur sera l'apprentissage par le modèle.</p>
+</li>
+<li>
+<p>Plus le problème complexe, plus il faudra de données d'entrainement.</p>
+</li>
+</ul>
+<p>Par exemple, dans notre exemple de classification des images de viennoiseries :</p>
+<p><img alt="Quantité de données" src="../img/Chap1_quantite.png" /></p>
+<p>Pour donner un ordre de grandeur, la quantité d'individus nécessaires à un apprentissage va en général <strong>de quelques milliers à des centaines de millions</strong>.
+Cependant, il n'est pas aisé de constituer une base de données aussi large, et de surcroit une base de donnée de qualité.</p>
+<p>En effet, comme on peut facilement le deviner, la <strong>qualité des données</strong> aura un impact sur l'apprentissage.
+La qualité des données peut par exemple être dégradée par :</p>
+<ul>
+<li>
+<p>La présence d'<strong>individus abérrants</strong> ("outliers"), liée à des erreurs de mesures ou à des cas exceptionnels.</p>
+</li>
+<li>
+<p>Des <strong>individus manquants</strong>, liés à notre échantillonnage ou a des erreurs de mesures.</p>
+</li>
+<li>
+<p>La présence de <strong>bruit</strong> dans les données.</p>
+</li>
+</ul>
+<p>Toujours pour notre exemple, on peut avoir des données manquantes ou abérrantes :</p>
+<p><img alt="Qualité de données" src="../img/Chap1_mauvaise_qualite.png" /></p>
+<p>D'où la nécessité de procéder à un <strong>nettoyage des données</strong> en amont de l'apprentissage : supprimer certaines données, les combler, ou faire de nouvelles mesures.</p>
+<p>Malheureusement, nettoyer les données implique parfois de diminuer la quantité de données : on est donc souvent confronté à un <strong>compromis entre quantité et qualité</strong> des données.</p>
+<h3 id="representativite-et-equilibre-des-donnees">Représentativité et équilibre des données</h3>
+<p>Comme expliqué précedemment, notre but est d'obtenir à partir de notre base de données d'entrainement un modèle qui soit <strong>généralisable</strong> à toutes nouvelles données que l'on peut rencontrer.</p>
+<p>Pour atteindre cet objectif, il faut que la base de données que l'on utilise pour entrainer le modèle soit <strong>représentative</strong> de la distribution des différentes variables de manière générale.
+Ceci implique de faire attention à la représentativité de notre population au moment de l'<strong>échantillonnage</strong>, sous peine que le modèle ait du mal à généraliser.</p>
+<p>Parfois, certains types d'individus sont par nature <strong>sous ou sur-représentés</strong> dans la population générale, et donc le seront toujours si on échantillonne de manière représentative.
+Comme on peut s'y attendre, ceci va avoir tendance à biaser notre modèle.</p>
+<p>Par exemple, mettons que l'on veuille entrainer un modèle à reconnaitre une photo d'un pain au chocolat d'un pain suisse.
+Les pains au chocolat étant plus courants en boulangerie que les pains suisses, on aura un <strong>déséquilibre</strong> dans la base de données d'entrainement, qui fera que notre modèle aura plus tendance à prédire qu'une photo montre un pain au chocolat qu'un pain suisse.</p>
+<p><img alt="Base de données désequilibrée" src="../img/Chap1_desequilibre.png" /></p>
+<p>Il existe plusieurs méthodes pour éviter les biais d'entrainement, en jouant soit sur l'échantillonage, soit sur les poids accordés aux différentes données pendant l'entrainement.</p>
+<p>Il est à noter qu'un mauvais échantillonage ou un déséquilibre d'une base de données utilisée pour la tester notre modèle après entrainement est aussi problématique : si on teste notre modèle sur une base de données ne contenant que des photos de pains au chocolat, il est évident que notre mesure des performances du modèle ne vaudra pas grand chose.</p>
+<h3 id="pertinence-des-variables">Pertinence des variables</h3>
+<p>Pour que notre modèle soit capable de renvoyer les labels (sorties) désirés, il faut que les features (entrées) le permettent.</p>
+<p>Le sélection de <strong>variables pertinentes</strong> pour un problème donné est donc capital.
+C'est ce que l'on appelle en anglais le "<strong>feature engineering</strong>".</p>
+<p>On peut diviser cette activité en 2 grandes techniques : la <strong>sélection de variables</strong> et l'<strong>extraction de variables</strong>.</p>
+<h4 id="la-selection-de-variables">La sélection de variables</h4>
+<p>Ce n'est pas parce qu'une variable est dans la base de données qu'il faut l'utiliser pour entrainer un modèle.
+Il faut faire un tri pour <strong>choisir les variables pertinentes</strong> pour un problème parmi toutes les variables disponibles.</p>
+<p>Par exemple, si pour estimer le prix d'une crêpe on a accès à la masse de farine, le volume de lait et l'âge du crêpier, on va intuitivement choisir comme features la masse de farine et le volume de lait, car on devine que l'âge du crêpier n'aura pas d'impact sur le prix.</p>
+<p>L'idée est donc de sélectionner comme features <strong>des variables qui soient corrélées aux labels</strong>.</p>
+<p>Pour ce faire, on utilise généralement des <strong>matrices de corrélations</strong> vues précédemment.</p>
+<h4 id="lextraction-de-variables">L'extraction de variables</h4>
+<p>Multiplier le nombre de variables revient à augmenter la dimensionnalité d'un problème, ce qui rend l'apprentissage plus compliqué.
+De plus, certaines variables peuvent être corrélées entre elles.
+C'est pourquoi on peut vouloir <strong>créer de nouvelles variables</strong> pour un problème, en <strong>combinant</strong> des variables parmi celles disponibles.</p>
+<p>Par exemple, plutôt que d'utiliser la masse de farine et le volume de lait pour prédire le prix d'une crêpe, on peut imaginer utiliser un ratio volume de lait / masse de farine.</p>
+<p>L'idée est donc de trouver des <strong>combinaisons de variables pertinentes</strong> pour prédire les labels.</p>
+<p>Pour ce faire, on peut se servir d'une méthode de <strong>réduction de dimensionnalité</strong> telle que l'<strong>ACP</strong> vue précédemment.</p>
+<h3 id="sur-apprentissage-sous-apprentissage">Sur-apprentissage / sous-apprentissage</h3>
+<p>Un des pires cauchemars de tout "data scientist" est le <strong>sur-apprentissage</strong>.</p>
+<p>Le but de tout apprentissage est d'<strong>obtenir un modèle capable de généraliser</strong> à de nouvelles données ce qu'il appris sur la base de données d'entrainement.</p>
+<p>Le problème est que lors de l'apprentissage, on va chercher à obtenir les meilleures performances possibles sur les données d'entrainement, ce qui peut pousser le modèle à <strong>apprendre des détails très spécifiques à ces données</strong> : le bruit et les "outliers" par exemple. 
+D'où le terme de "sur-apprentissage".</p>
+<p>Un tel modèle, trop compliqué, aura alors de mauvaises performances sur de nouvelles données : il sera <strong>incapable de généraliser</strong>.</p>
+<p>Nous verrons dans la suite de ce chapitre la stratégie classique pour détecter et éviter le sur-apprentissage.
+On peut néanmoins réduire les risques en :</p>
+<ul>
+<li>
+<p>Ayant des données nombreuses et représentatives.</p>
+</li>
+<li>
+<p>Choisissant d'abord un type de modèle simple, puis un plus complexe si besoin.</p>
+</li>
+<li>
+<p>Nettoyant les données pour éviter le bruit et les "outliers".</p>
+</li>
+</ul>
+<p>L'inverse du sur-apprentissage existe aussi, et se nomme "<strong>sous-apprentissage</strong>".
+Le modèle est alors trop simple pour capturer la complexité des données, et il tout aussi incapable de généraliser.</p>
+<p>Le bon compromis que l'on va rechercher se situe donc entre les 2 :</p>
+<p><img alt="Le sur-apprentissage" src="../img/Chap1_surapprentissage.png" /></p>
+<p>On appelle la recherche de ce compromis la "<strong>régularisation</strong>".</p>
+<h2 id="strategie-pour-lapprentissage">Stratégie pour l'apprentissage</h2>
+<p>Maintenant que nous avons passé en revue les principales difficultées auxquelles on doit faire face lors de l'apprentissage d'un modèle, nous allons nous intéresser aux <strong>stratégies d'apprentissage</strong> classiques. </p>
+<h3 id="hyperparametres">Hyperparamètres</h3>
+<p>Dans le contexte de l'apprentissage d'un modèle, on distingue 2 types de paramètres :</p>
+<ul>
+<li>
+<p>Les <strong>paramètres du modèle</strong> que nous allons vouloir ajuster au cours de l'apprentissage, afin d'obtenir les labels désirés à partir de features données.</p>
+</li>
+<li>
+<p>Les paramètres propres à l'<strong>apprentissage</strong>, que l'on nomme "<strong>hyperparamètres</strong>".</p>
+</li>
+</ul>
+<p>Parmis les hyperparamètres, on peut citer : la fonction de coût utilisée pour l'optimisation du modèle, l'algorithme d'optimisation utilisé, la vitesse de convergence choisie, le nombre d'itérations de l'entrainement, ou encore l'architecture du modèle.</p>
+<p>Il est évident que les hyperparamètres vont <strong>impacter les performances</strong> du modèle obtenu après entrainement.</p>
+<p>C'est pourquoi lors d'un apprentissage, on va en général réaliser <strong>plusieurs entrainements</strong>, avec des hyperparamètres différents, afin d'<strong>optimiser aussi les hyperparamètres</strong>.</p>
+<h4 id="fonction-de-cout">Fonction de coût</h4>
+<p>La <strong>fonction de coût</strong> ("loss function" en anglais), est une fonction qui prend en entrée les <strong>labels prédits</strong> par le modèle et les <strong>labels attendus</strong>, et retourne un score suivant la <strong>proximité</strong> de ces labels.
+On l'utilise comme <strong>critère de la qualité des labels prédits</strong> par un modèle <strong>lors de son entrainement</strong>.</p>
+<p><img alt="Fonction de coût" src="../img/Chap1_fonction_de_cout.png" /></p>
+<p>En général, plus la valeur retournée par la fonction de coût est faible, et meilleure est la prédiction.
+Le processus d'optimisation du modèle va donc chercher à <strong>minimiser la fonction de coût</strong>.</p>
+<p>On choisit une fonction de coût selon différents critères :</p>
+<ul>
+<li>
+<p>Qu'elle soit adaptée au type de problème de classification / régression auquel on est confronté.</p>
+</li>
+<li>
+<p>Qu'elle soit adaptée à l'algorithme d'optimisation choisi : certains algorithmes nécessitent par exemple une fonction continue ou différentiable.</p>
+</li>
+<li>
+<p>Qu'elle soit adaptée aux hypothèses que nous avons sur les données : certaines fonctions donneront par exemple plus ou moins de poids aux "outliers".</p>
+</li>
+</ul>
+<p>Dans les chapitres suivants, nous verrons quelques exemples de fonctions de coût, adaptées à différents types de problèmes.</p>
+<p><strong>Attention !</strong> La fonction de coût est utilisée pour évaluer la qualité de la prédiction d'un modèle sur des données labélisée.
+Il ne s'agit pas d'une évaluation de la performance d'un modèle en généralisation !
+Cette notion, bien différente, fera l'objet d'une section dans la suite de ce chapitre.</p>
+<h4 id="algorithme-doptimisation">Algorithme d'optimisation</h4>
+<p>On appelle "<strong>algorithme d'optimisation</strong>" un algorithme dont l'objectif est de <strong>trouver le minimum global</strong> de la fonction de coût, afin d'<strong>optimiser les paramètres</strong> d'un modèle.
+C'est lui qui <strong>réalise l'entrainement</strong> proprement dit.</p>
+<p>Il s'agit en général d'un algorithme <strong>itératif</strong>, qui va faire <strong>varier les paramètres du modèle</strong>, afin de trouver ceux qui minimisent la fonction de coût.
+On appelle souvent les itérations de l'algorithme <strong>époques</strong> ("epochs" en anglais).</p>
+<p>Voici une illustration pour un cas très simplifié de modèle à 1 paramètre :</p>
+<p><img alt="La descente de gradient" src="../img/Chap1_descente_de_gradient.png" /></p>
+<p>L'algorithme d'optimisation de base en apprentissage supervisé est celui de la <strong>descente de gradient</strong>.
+Son principe est le suivant :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Algorithme de descente de gradient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Soit <span class="arithmatex">\(f(x)\)</span> une fonction différentiable dont on cherche le minimum.</td>
+</tr>
+<tr>
+<td style="text-align: left;">On initialise une valeur de <span class="arithmatex">\(x\)</span> notée <span class="arithmatex">\(x_0\)</span>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">A chaque itération <span class="arithmatex">\(n\)</span> de l'algorithme, on va se déplacer dans l'espace des valeurs de <span class="arithmatex">\(x\)</span>, de <span class="arithmatex">\(x_n\)</span> à <span class="arithmatex">\(x_{n+1}\)</span>, avec la formule :</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="arithmatex">\(x_{n+1} = x_n - \gamma \nabla f(x_n)\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">avec <span class="arithmatex">\(\nabla f(x_n)\)</span> le gradient de la fonction en <span class="arithmatex">\(x_n\)</span>, et <span class="arithmatex">\(\gamma\)</span> le "taux d'apprentissage".</td>
+</tr>
+<tr>
+<td style="text-align: left;">On peut mettre un critère d'arrêt sur <span class="arithmatex">\(\| \nabla f(x_n) \|\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>L'idée est de parcourir l'espace des valeurs de la fonction de coût en fonction des paramètres du modèle, en suivant la direction inverse au gradient.</p>
+<p>On explique souvent le principe de cette méthode par l'analogie des "randonneurs dans le brouillard" :</p>
+<p><em>Des randonneurs de montagne se retrouvent piégés par le brouillard alors qu'il cherchent à rentrer dans la vallée.</em>
+<em>Comme ils ne peuvent plus voir le chemin, ils décident de se fier à leurs pieds : ils se dirigent dans la direction de la pente la plus forte.</em>
+<em>Sans le savoir, les randonneurs sont en train d'appliquer l'algorithme de descente de gradient pour trouver le point minimisant l'altitude : la vallée.</em></p>
+<p>Encore aujourd'hui, l'entrainement des modèles d'apprentissage supervisé se fait avec des algorithmes d'optimisation basés sur la descente de gradient.</p>
+<h4 id="vitesse-de-convergence-et-nombre-diterations">Vitesse de convergence et nombre d'itérations</h4>
+<p>Nous avons vu dans la section précédente que l'algorithme de la descente de gradient avait un paramètre appelé <strong>taux d'apprentissage</strong>.</p>
+<p>Il est inversement proportionnel au <strong>pas</strong> avec lequel l'algorithme d'optimisation va se déplacer dans l'espace des valeurs de la fonction de coût en fonction des paramètres du modèle.
+Par conséquent, le taux d'apprentissage permet de <strong>choisir la vitesse de convergence de l'algorithme d'optimisation</strong>.</p>
+<p>On s'attend à ce que plus le taux d'apprentissage soit élevé, plus la convergence vers le modèle optimal soit rapide.
+Or, ce n'est pas toujours le cas.</p>
+<p>En effet, si l'algorithme se déplace trop rapidement dans l'espace des valeurs de la fonction de coût, on a un risque de <strong>dépassement</strong> ("overshooting" en anglais) : l'algorithme peut passer "par-dessus" le minimum sans s'y arrêter, voir même <strong>diverger</strong> complètement.</p>
+<p>Le <strong>choix d'un taux d'apprentissage adapté</strong> est donc toujours affaire de <strong>compromis</strong> entre vitesse de convergence et non-dépassement.</p>
+<p><img alt="Le taux d'apprentissage" src="../img/Chap1_taux_apprentissage.png" /></p>
+<p>Nous avons également vu précédemment que l'on peut placer dans l'algorithme un critère sur le gradient pour arrêter les itérations.
+Cependant, il est possible que ce critère ne soit jamais vérifié si l'algorithme diverge.</p>
+<p>On va donc en général choisir par sécurité un <strong>nombre d'époques maximal</strong> comme critère d'arrêt additionnel.</p>
+<p>Un autre problème courant est le fait que l'espace des valeurs de la fonction de coût a souvent des <strong>minima locaux</strong>, dans lesquels l'algorithme peut se retrouver <strong>bloqué</strong>.</p>
+<p><img alt="Problème de minimum local" src="../img/Chap1_minimum_local.png" /></p>
+<p>C'est pourquoi en général, on ne va pas lancer un seul entrainement pour un jeu d'hyperparamètres, mais <strong>plusieurs avec des initialisations différentes</strong>.</p>
+<h4 id="architecture-du-modele">Architecture du modèle</h4>
+<p>Certains types de modèles peuvent avoir des architectures différentes, <strong>plus ou moins complexes</strong> suivant le problème à résoudre.</p>
+<p>L'exemple le plus évident sont les célèbres <strong>réseaux de neurones</strong>, dont nous reparlerons dans les chapitres suivants.</p>
+<p>Dans le cas de ce type de modèle, on peut jouer sur les hyperparmètres suivants:</p>
+<ul>
+<li>
+<p>Le nombre de couches de neurones.</p>
+</li>
+<li>
+<p>Le nombre de neurones par couche.</p>
+</li>
+<li>
+<p>La fonction d'activation de chaque neurone.</p>
+</li>
+</ul>
+<p>Nous développerons plus tard dans ce cours à quoi correspondent ces différents paramètres.</p>
+<h3 id="entrainement-validation-et-test">Entrainement, validation et test</h3>
+<p><strong>Ce n'est pas parce que notre modèle a convergé vers le minimum global de l'espace de la fonction de coût en fonction de ses paramètres qu'il aura de bonnes performances en généralisation !</strong></p>
+<h4 id="performances-en-generalisation">Performances en généralisation</h4>
+<p>En effet, nous avons vu plus tôt que le modèle peut être victime de <strong>sur-apprentissage</strong> : il a appris trop spécifiquement des données d'entrainement, et n'arrive donc pas à généraliser à de nouvelles données.</p>
+<p>Intuitivement, on devine qu'il faudrait mettre de côté une partie de notre base de données d'entrainement, sur laquelle nous n'entrainerons pas notre modèle.
+Ce sous-ensemble de données servira à tester le modèle une fois l'entrainement terminé, pour vérifier qu'il n'y a pas eu sur-apprentissage.</p>
+<p>C'est en effet la stratégie classique pour l'apprentissage d'un modèle.
+On dit alors que l'on a séparé la base de donnée en un <strong>jeu d'entrainement</strong> et un <strong>jeu de test</strong>.</p>
+<p>On considèrera alors que les performances obtenues par le modèle sur le jeu de test seront ses <strong>performances en généralisation</strong> : il aura des performances équivalentes sur tout nouveau jeu de données.</p>
+<p>Le problème est alors le suivant :</p>
+<ul>
+<li>
+<p>Plus on réserve de données pour les tests, et plus difficile sera l'apprentissage.</p>
+</li>
+<li>
+<p>Plus on réserve de données pour l'entrainement, et moins représentatif sera le test.</p>
+</li>
+</ul>
+<p>Souvent, le compromis retenu est <strong>80% des données pour l'entrainement</strong> et <strong>20% des données pour le test</strong>.</p>
+<p>Pour <strong>évaluer les performances</strong> en généralisation de notre modèle, on va utiliser une sélection de <strong>critères de performance</strong>, appelés "metrics" en anglais.</p>
+<p>Pour chaque type de modèle, il existe différents critères de performances, qui vont chacun essayer de capturer un aspect différent de la qualité de ses prédictions.
+Nous verrons des critères de performance classiques dans chacun des chapitres de ce cours.</p>
+<h4 id="validation-par-exclusion">Validation par exclusion</h4>
+<p>Une fois que nous avons séparé notre base de données en un jeu d'entrainement et un jeu de test, l'approche naïve pour éviter le sur-apprentissage serait d'entrainer plusieurs modèles avec différents hyperparamètres, et de retenir celui qui donne les meilleures performances en test.</p>
+<p>Cependant, si vous faites ceci, <strong>il y a peu de chances que votre modèle ait de bonnes performances en généralisation</strong>.</p>
+<p>En effet, ce processus revient à optimiser les hyperparamètres <strong>spécifiquement pour notre jeu de données de test</strong>.</p>
+<p>C'est pourquoi on va en réalité diviser extraire un 3ème sous-ensemble de notre base de jeu d'entrainement : un <strong>jeu de validation</strong>.</p>
+<p>L'<strong>optimisation des hyperparamètres</strong> se fera sur ce basant sur les performance en <strong>validation</strong>, et l'évaluation des <strong>performances en généralisation</strong> ce fera sur le <strong>jeu de test</strong>.</p>
+<p><strong>Attention ! Les performances en test ne doivent jamais être optimisées, au risque de ne plus être représentatives des performances en généralisation du modèle !</strong></p>
+<p>Le processus que nous avons décrit ici est connu sous le nom de <strong>validation par exclusion</strong>.
+Le voici décrit en détails :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Validation par exclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">- On sépare la base de données en un jeu d'entrainement, un jeu de validation et un jeu de test.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On entraine plusieurs modèles sur le jeu d'entrainement, avec différents hyperparamètres.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On sélectionne le modèle ayant les meilleurs résultats sur le jeu de validation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On ré-entraine ce modèle avec les mêmes hyperparamètres, sur les données d'entrainement et de validation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On évalue les performances en généralisation de ce modèle sur les données de test.</td>
+</tr>
+</tbody>
+</table>
+<p>Souvent, on retiendra <strong>60% des données pour l'entrainement</strong>, <strong>20% des données pour la validation</strong> et <strong>20% des données pour le test</strong>.</p>
+<p>Voici la validation par exclusion résumée schématiquement :</p>
+<p><img alt="Validation par exclusion" src="../img/Chap1_validation_par_exclusion.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La bibliothèque Scikit-Learn possède dans son package "model_selection" une fonction "train_test_split" pour séparer une base de données en jeux d'entrainement et de test.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="validation-croisee">Validation croisée</h4>
+<p>La validation par exclusion a 2 grands défauts :</p>
+<ul>
+<li>
+<p>En découpant en 3 jeux les données disponibles, nous réduisons la taille de la base de données d'entrainement, et donc nous rendons l'apprentissage plus difficile.</p>
+</li>
+<li>
+<p>Les résultats peuvent dépendre de la manière dont nous avons découpé notre base de données en 3.</p>
+</li>
+</ul>
+<p>C'est pourquoi on lui préfère souvent la <strong>validation croisée</strong>.</p>
+<p>L'idée est la suivante : on met toujours de côté un jeu de test, mais on ne réalise plus une séparation entre données d'entrainement et données de validation.
+A la place, on sépare la base d'entrainement en plusieurs petits jeux de données, et on réalise plusieurs entrainements du modèle, avec pour chacun jeu un de validation différent parmi ces petits jeux.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Validation croisée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">- On sépare la base de données en un jeu d'entrainement et un jeu de test.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On sépare le jeu d'entrainement en k sous-jeux.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On réalise k combinaisons, où un des k sous-jeux est utilisé pour la validation, pendant que les k-1 autres sont utilisées pour l'entrainement.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- La qualité des prédictions du modèle est évaluée à chaque itération comme étant la moyenne de celles évaluée pour chaque combinaison.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On sélectionne le modèle ayant en moyenne les meilleurs résultats en validation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On ré-entraine ce modèle avec les mêmes hyperparamètres, sur le jeu d'entrainement complet.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On évalue les performances en généralisation de ce modèle sur les données de test.</td>
+</tr>
+</tbody>
+</table>
+<p>Voici la validation croisée résumée schématiquement :</p>
+<p><img alt="Validation croisée" src="../img/Chap1_validation_croisee.png" /></p>
+<p>Cette stratégie d'apprentissage a tout de même un désavantage comparée à la validation par exclusion : elle nécessite un temps de calcul beaucoup plus long !</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">La bibliothèque Scikit-Learn possède dans son package "model_selection" une fonction "cross_validate".</td>
+</tr>
+</tbody>
+</table>
+<h4 id="regularisation-par-arret-premature">Régularisation par arrêt prématuré</h4>
+<p>Nous avons vu que la stratégie recommandée pour éviter les problèmes de généralisation est de comparer les performances du modèle obtenues sur les données d'entrainement à celles obtenues sur les données de validation.</p>
+<p>Pour <strong>éviter le sur-apprentissage</strong>, on peut en plus appliquer lors de l'entrainement la méthode de <strong>régularisation</strong> connue sous le nom d'<strong>arrêt prématuré</strong> ("early-stopping" en anglais).</p>
+<p>Son principe se base sur les idées suivantes :</p>
+<ul>
+<li>
+<p>Puisque nous optimisons les paramètres du modèle pour minimiser la fonction de coût, nous nous attendons à ce qu'au cours de l'entrainement, les valeurs de la fonction de coût <strong>décroissent avec les époques pour les données d'entrainement</strong>.</p>
+</li>
+<li>
+<p>A mesure que le modèle est optimisé sur les données d'entrainement, nous nous attendons d'abord à ce que <strong>dans un 1er temps</strong>, la fonction de coût <strong>décroisse aussi avec avec les époques pour les données de validation</strong>.</p>
+</li>
+<li>
+<p>Mais lorsque le modèle se met à souffrir de <strong>sur-apprentissage</strong>, nous nous attendons à ce que la fonction de coût se mette à <strong>croître avec les époques pour les données de validation</strong>.</p>
+</li>
+</ul>
+<p>On peut donc détecter le début du sur-apprentissage comme étant l'époque où la fonction de coût se met à croitre pour les données de validation, et arrêter l'apprentissage à cette itération.
+D'où le nom d'"<strong>arrêt prématuré</strong>".</p>
+<p><img alt="Arrêt prématuré" src="../img/Chap1_arret_premature.png" /></p>
+<p>Le processus exact est le suivant :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Arrêt prématuré</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Pour chaque itération du processus d'apprentissage :</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On évalue la fonction de coût pour les prédictions de la méthode sur le jeu d'entrainement.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On évalue la fonction de coût pour les prédictions de la méthode sur le jeu d'évaluation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">- On vérifie qu'on a bien une décroissance pour les 2 valeurs, sinon on stoppe l'entrainement.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="import-de-donnees-et-fichiers-csv">Import de données et fichiers CSV</h2>
+<p>Pour enregistrer une base de données sous la forme d'un tableau, on utilise couramment le format <strong>CSV</strong> : "Comma Separated Values".</p>
+<p>Il s'agit d'un format ouvert, compréhensible par un humain, qui peut être lu par n'importe quel éditeur de texte.</p>
+<p>Comme son nom l'indique, un fichier CSV s'organise de la manière suivante :</p>
+<ul>
+<li>
+<p><strong>Chaque ligne correspond à une ligne du tableau</strong>. Les lignes sont séparées par un retour à la ligne "\n".</p>
+</li>
+<li>
+<p>Au sein d'une ligne, <strong>les éléments de chaque colonnes sont séparés par des virgules</strong> ",".</p>
+</li>
+<li>
+<p>La <strong>première ligne</strong> est souvent considérée comme l'<strong>en-tête</strong> du tableau (le nom des colonnes).</p>
+</li>
+</ul>
+<p>D'où le nom "Comma Separated Values".</p>
+<p>Voici un exemple de tableau de données : </p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Ville</th>
+<th style="text-align: center;">Latitude</th>
+<th style="text-align: center;">Longitude</th>
+<th style="text-align: center;">Nom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Paris</td>
+<td style="text-align: center;">48.866667</td>
+<td style="text-align: center;">2.333333</td>
+<td style="text-align: center;">Pain au chocolat</td>
+</tr>
+<tr>
+<td style="text-align: center;">Orléans</td>
+<td style="text-align: center;">47.902734</td>
+<td style="text-align: center;">1.908607</td>
+<td style="text-align: center;">Pain au chocolat</td>
+</tr>
+<tr>
+<td style="text-align: center;">Bordeaux</td>
+<td style="text-align: center;">44.841225</td>
+<td style="text-align: center;">-0.580036</td>
+<td style="text-align: center;">Chocolatine</td>
+</tr>
+<tr>
+<td style="text-align: center;">Brest</td>
+<td style="text-align: center;">48.390528</td>
+<td style="text-align: center;">-4.486009</td>
+<td style="text-align: center;">Pain au chocolat</td>
+</tr>
+<tr>
+<td style="text-align: center;">Toulouse</td>
+<td style="text-align: center;">43.604464</td>
+<td style="text-align: center;">1.444243</td>
+<td style="text-align: center;">Chocolatine</td>
+</tr>
+</tbody>
+</table>
+<p>Et voici tout simplement sa conversion en format CSV :</p>
+<pre><code>Ville,Latitude,Longitude,Nom
+Paris,48.866667,2.333333,Pain au chocolat
+Orléans,47.902734,1.908607,Pain au chocolat
+Bordeaux,44.841225,-0.580036,Chocolatine
+Brest,48.390528,-4.486009,Pain au chocolat
+Toulouse,43.604464,1.444243,Chocolatine
+</code></pre>
+<p>L'extension d'un fichier CSV est "<strong>.csv</strong>".
+Il peut être importé par la plupart des logiciels tableurs (Excel, OpenOffice Calc), et sous Python avec la bibliothèque Pandas, dont nous reparlerons plus loin.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Astuce Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Avec la bibliothèque Python "Pandas", on peut importer un fichier CSV sous la forme d'un "DataFrame" (tableau de données propre à "Pandas") avec la méthode "read_csv".</td>
+</tr>
+</tbody>
+</table>
+<p>Bien qu'il soit très utilisé, le format CSV a quelques désavantages.
+Notamment :</p>
+<ul>
+<li>
+<p>Il n'est pas optimal en terme de mémoire.</p>
+</li>
+<li>
+<p>Il empêche d'utiliser le caractère "," pour autre chose que séparer les colonnes du tableau.</p>
+</li>
+</ul>
+<p>C'est pourquoi, suivant les applications, on préfèrera utiliser un fichier binaire.</p>
+<h2 id="outils-python-pour-lapprentissage">Outils Python pour l'apprentissage</h2>
+<p><strong>Pour chacun des programmes Python présentés dans ce cours, on partira du principe que les bibliothèques Numpy et Matplotlib sont importées</strong>.</p>
+<h3 id="pandas">Pandas</h3>
+<p><strong>Pandas</strong> est une bibliothèque Python très populaire pour l'<strong>analyse de données</strong>.</p>
+<p>Elle permet :</p>
+<ul>
+<li>
+<p>D'<strong>importer des données</strong> sous la forme d'un conteneur nommé "<strong>DataFrame</strong>".</p>
+</li>
+<li>
+<p>De <strong>manipuler</strong> ces données de manière efficace.</p>
+</li>
+<li>
+<p>D'afficher facilement des <strong>graphiques</strong> à partir de ces données.</p>
+</li>
+<li>
+<p>D'<strong>exporter</strong> ces données en différents formats.</p>
+</li>
+<li>
+<p>De fournir une <strong>entrée</strong> pour l'<strong>apprentissage</strong> de modèles.</p>
+</li>
+</ul>
+<p>Elle s'importe souvent sous le nom "pd" avec la commande :</p>
+<pre><code>import pandas as pd
+</code></pre>
+<p>Un <strong>DataFrame</strong> Pandas contient un jeu de données sous la forme d'un <strong>tableau 2D</strong>, pouvant contenir des objets de types différents.</p>
+<p>On associe à chaque donnée dans un DataFrame une "<strong>column</strong>" correspondant au nom de la variable, et un "<strong>index</strong>" correspondant au numéro de l'individu.</p>
+<p>Voici notre exemple de tableau précédent, converti en DataFrame :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">'Ville'</th>
+<th style="text-align: center;">'Latitude'</th>
+<th style="text-align: center;">'Longitude'</th>
+<th style="text-align: center;">'Nom'</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">'Paris'</td>
+<td style="text-align: center;">48.866667</td>
+<td style="text-align: center;">2.333333</td>
+<td style="text-align: center;">'Pain au chocolat'</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">'Orléans'</td>
+<td style="text-align: center;">47.902734</td>
+<td style="text-align: center;">1.908607</td>
+<td style="text-align: center;">'Pain au chocolat'</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">'Bordeaux'</td>
+<td style="text-align: center;">44.841225</td>
+<td style="text-align: center;">-0.580036</td>
+<td style="text-align: center;">'Chocolatine'</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">'Brest'</td>
+<td style="text-align: center;">48.390528</td>
+<td style="text-align: center;">-4.486009</td>
+<td style="text-align: center;">'Pain au chocolat'</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">'Toulouse'</td>
+<td style="text-align: center;">43.604464</td>
+<td style="text-align: center;">1.444243</td>
+<td style="text-align: center;">'Chocolatine'</td>
+</tr>
+</tbody>
+</table>
+<p>On peut accéder à une ligne d'indice <code>i</code> d'un DataFrame <code>df</code> avec la commande :</p>
+<pre><code>df.loc[i]
+</code></pre>
+<p>Et on peut accéder à une colonne <code>'col'</code> d'un DataFrame <code>df</code> avec la commande :</p>
+<pre><code>df['col']
+</code></pre>
+<p>On peut également sélectionner un sous-ensemble de données à partir d'un DataFrame, de manière conditionnelle.</p>
+<p>Par exemple, pour créer un DataFrame <code>df2</code> à partir de notre DataFrame précédent que nous nommerons <code>df</code>, mais ne contenant que les individus pour lesquels la variable <code>'Latitude'</code> est inférieure à 48.5, et la variable <code>'Nom'</code> est égale à 'Pain au chocolat', on utilisera la commande :</p>
+<pre><code>df2 = df[(df['Latitude']&lt;48.5)&amp;(df['Nom']=='Pain au chocolat')]
+</code></pre>
+<p>On obtient alors le DataFrame <code>df2</code> suivant : </p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">'Ville'</th>
+<th style="text-align: center;">'Latitude'</th>
+<th style="text-align: center;">'Longitude'</th>
+<th style="text-align: center;">'Nom'</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">'Orléans'</td>
+<td style="text-align: center;">47.902734</td>
+<td style="text-align: center;">1.908607</td>
+<td style="text-align: center;">'Pain au chocolat'</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">'Brest'</td>
+<td style="text-align: center;">48.390528</td>
+<td style="text-align: center;">-4.486009</td>
+<td style="text-align: center;">'Pain au chocolat'</td>
+</tr>
+</tbody>
+</table>
+<p>On remarque que pour l'opérateur booléen ET on doit utiliser "&amp;", et pour l'opérateur booléen OU on doit utiliser "|".</p>
+<p><strong>Nous utiliserons la bibliothèque Pandas afin d'importer, d'analyser et de manipuler des données dans le cadre de ce cours</strong>.</p>
+<h3 id="scipy">Scipy</h3>
+<p>Bien que <strong>Scipy</strong> ne soit pas à proprement parler une bibliothèque d'apprentissage automatique, on trouve dans son module "stats" des <strong>outils d'inférence statistique de base</strong> pour de la classification et de la régression.</p>
+<p>On peut importer ce module avec la commande Python suivante :</p>
+<pre><code>import scipy.stats
+</code></pre>
+<p><strong>Dans le cadre de ce cours, nous utiliserons Scipy pour certaines méthodes de base</strong>, car ses implémentations sont moins des "boites noires" que pour d'autres bibliothèques.</p>
+<h3 id="scikit-learn">Scikit-Learn</h3>
+<p><strong>Scikit-Learn</strong> est une bibliothèque Python pour l'<strong>apprentissage automatique</strong>.</p>
+<p>Elle contient des implémentations de méthodes pour :</p>
+<ul>
+<li>
+<p>La <strong>classification supervisée</strong>.</p>
+</li>
+<li>
+<p>La <strong>régression</strong>.</p>
+</li>
+<li>
+<p>Le <strong>partitionnement</strong>.</p>
+</li>
+<li>
+<p>La réduction de dimensionnalité.</p>
+</li>
+</ul>
+<p>On peut importer cette bibliothèque Python avec la commande :</p>
+<pre><code>import sklearn
+</code></pre>
+<p>Même si en général on n'importe pas toute la bibliothèque, mais seulement les packages dont on a besoin.</p>
+<p><strong>Nous utiliserons la bibliothèque Scikit-Learn pour de l'apprentissage de modèles dans le cadre de ce cours</strong>.</p>
+<h3 id="seaborn">Seaborn</h3>
+<p><strong>Seaborn</strong> est une bibliothèque Python d'<strong>affichage graphique</strong> de données statistiques.</p>
+<p>Ses outils d'affichage peuvent s'avérer utiles en complément de ceux de Pandas et Matplotlib.</p>
+<p>Elle s'importe souvent sous le nom "sns" avec la commande :</p>
+<pre><code>import seaborn as sns
+</code></pre>
+<p><strong>Nous utiliserons quelques outils d'affichage graphique de Seaborn dans le cadre de ce cours</strong>.</p>
+<h3 id="keras-tensorflow-pytorch">Keras-Tensorflow, Pytorch</h3>
+<p>Pour aller plus loin, lorsque le modèle est un réseau de neurones, et que ce réseau contient de nombreuses couches de neurones, on entre dans un sous-domaine de l'apprentissage appelé <strong>apprentissage profond</strong> ("deep learning" en anglais).
+(Nous reparlerons des réseaux de neurones dans les chapitres suivants).</p>
+<p>Pour l'apprentissage profond, il existe 2 grandes bibliothèques concurrentes sur Python : <strong>Keras-Tensorflow</strong> et <strong>Pytorch</strong>.</p>
+<p><strong>L'apprentissage profond ne sera pas au programme de ce cours, qui n'est qu'une introduction aux sciences des données</strong>.</p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>Ce chapitre vous a donné une <strong>introduction très générale aux sciences des données</strong>.
+La suite de ce cours sera découpée en 3 chapitres, portant chacun sur un type d'apprentissage automatique :</p>
+<ul>
+<li>
+<p>La <strong>classification supervisée</strong>.</p>
+</li>
+<li>
+<p>La <strong>régression</strong>.</p>
+</li>
+<li>
+<p>Le <strong>partitionnement</strong> ("clustering" ou "classification non-supervisée").</p>
+</li>
+</ul>
+<p>Chacun introduira de manière générale son type d'apprentissage, présentera un panel des <strong>modèles</strong> de base, et donnera des outils d'<strong>évaluation des performances</strong>.
+Un <strong>exemple "fil rouge"</strong> d'application sera utilisé pour illustrer chaque chapitre.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Accueil"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Chap2_Classification_supervisee/" class="btn btn-neutral float-right" title="II. Classification supervisée">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Chap2_Classification_supervisee/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../javascripts/mathjax.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
